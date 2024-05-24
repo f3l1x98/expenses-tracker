@@ -16,7 +16,7 @@ export class RecurringIncomeEntity implements IRecurringIncome {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, type: 'decimal', scale: 2, precision: 12 })
   amount!: number;
 
   @Column({
