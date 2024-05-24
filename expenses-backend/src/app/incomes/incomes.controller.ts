@@ -11,7 +11,10 @@ import { Request } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
-@Controller('incomes')
+@Controller({
+  path: 'incomes',
+  version: '1',
+})
 export class IncomesController {
   constructor(private incomesService: IncomesService) {}
 

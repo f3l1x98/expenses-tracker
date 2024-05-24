@@ -14,7 +14,10 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UserAlreadyExistsError } from '../exceptions/user-already-exists-error';
 import { IUser } from './entities/user';
 
-@Controller('users')
+@Controller({
+  path: 'users',
+  version: '1',
+})
 export class UsersController {
   readonly logger = new Logger(UsersController.name);
 

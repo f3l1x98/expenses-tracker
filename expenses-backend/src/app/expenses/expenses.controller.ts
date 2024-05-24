@@ -11,7 +11,10 @@ import { IUser } from '../users/entities/user';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
-@Controller('expenses')
+@Controller({
+  path: 'expenses',
+  version: '1',
+})
 export class ExpensesController {
   constructor(private expensesService: ExpensesService) {}
 

@@ -4,7 +4,9 @@ import { LocalAuthGuard } from './auth/local-auth.guard';
 import { Request } from 'express';
 import { IUser } from './users/entities/user';
 
-@Controller()
+@Controller({
+  version: '1',
+})
 export class AppController {
   constructor(private authService: AuthService) {}
 

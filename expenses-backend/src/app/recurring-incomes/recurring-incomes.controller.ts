@@ -11,7 +11,10 @@ import { IUser } from '../users/entities/user';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
-@Controller('recurring-incomes')
+@Controller({
+  path: 'recurring-incomes',
+  version: '1',
+})
 export class RecurringIncomesController {
   constructor(private recurringIncomesService: RecurringIncomesService) {}
 
