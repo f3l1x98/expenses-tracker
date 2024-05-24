@@ -1,3 +1,4 @@
+import { HealthModule } from './health/health.module';
 import { RecurringIncomesModule } from './recurring-incomes/recurring-incomes.module';
 import { RecurringExpensesModule } from './recurring-expenses/recurring-expenses.module';
 import { AuthModule } from './auth/auth.module';
@@ -13,6 +14,7 @@ import { DbConfigService } from './db-config.service';
 
 @Module({
   imports: [
+    HealthModule,
     RecurringIncomesModule,
     RecurringExpensesModule,
     AuthModule,
