@@ -6,6 +6,7 @@ import { IncomeEntity } from './incomes/entities/income.entity';
 import { UserEntity } from './users/entities/user.entity';
 import { RecurringExpenseEntity } from './recurring-expenses/entities/recurring-expense.entity';
 import { RecurringIncomeEntity } from './recurring-incomes/entities/recurring-income.entitiy';
+import { Init1716545106223 } from './migrations/1716545106223-Init';
 
 @Injectable()
 export class DbConfigService implements TypeOrmOptionsFactory {
@@ -26,6 +27,8 @@ export class DbConfigService implements TypeOrmOptionsFactory {
         RecurringExpenseEntity,
         RecurringIncomeEntity,
       ],
+      migrationsRun: true,
+      migrations: [Init1716545106223],
     };
   }
 }

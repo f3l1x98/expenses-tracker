@@ -6,4 +6,5 @@
 1. Make the changes in the corresponding `.entity.ts` files and make sure they are added to `db-config.service.ts`
 2. Generate migrations with `npm run migrations:generate --name=<name>`.<br />Example: `nx run hub-backend:migrations:generate --name=Init`.
 3. Add the newly generated migrations file to the array in `db-config.service.ts`.
-4. Apply migrations with `npm run migrations:run`
+
+Note: Migrations can be manually run with `npm run migrations:run` and reverted with `npm run migrations:revert`
