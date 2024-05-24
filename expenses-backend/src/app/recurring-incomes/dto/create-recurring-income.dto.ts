@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsPositive } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsDate, IsNumber, IsPositive } from 'class-validator';
 import { IncomeCategory } from 'src/app/incomes/entities/income-category';
+import { IsAfterDate } from 'src/app/utils/is-after-date';
 import { IsValidCron } from 'src/app/utils/is-valid-cron';
 
 export abstract class CreateRecurringIncomeDto {
@@ -34,17 +36,21 @@ export abstract class CreateRecurringIncomeDto {
   @IsValidCron()
   cron: string;
 
-  // TODO ensure start before end
   @ApiProperty({
     description:
       'The start date for the first execution of this recurring income',
     required: false,
   })
+  @Type(() => Date)
+  @IsDate()
   startDate?: Date;
 
   @ApiProperty({
     description: 'The end date for the last execution of this recurring income',
     required: false,
   })
+  @Type(() => Date)
+  @IsDate()
+  @IsAfterDate('startDate')
   endDate?: Date;
 }

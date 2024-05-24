@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsPositive } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsDate, IsNotEmpty, IsNumber, IsPositive } from 'class-validator';
 import { ExpenseCategory } from 'src/app/expenses/entities/expense-category';
+import { IsAfterDate } from 'src/app/utils/is-after-date';
 import { IsValidCron } from 'src/app/utils/is-valid-cron';
 
 export abstract class CreateRecurringExpenseDto {
@@ -31,21 +33,30 @@ export abstract class CreateRecurringExpenseDto {
     required: true,
     example: '* * * * *',
   })
-  @IsValidCron()
+  @IsNotEmpty()
+  @IsValidCron({
+    message: 'This must be a valid cron expression',
+  })
   cron: string;
 
-  // TODO ensure start before end
   @ApiProperty({
     description:
       'The start date for the first execution of this recurring expense',
     required: false,
   })
+  @Type(() => Date)
+  @IsDate()
   startDate?: Date;
 
   @ApiProperty({
     description:
       'The end date for the last execution of this recurring expense',
     required: false,
+  })
+  @Type(() => Date)
+  @IsDate()
+  @IsAfterDate('startDate', {
+    message: 'endDate must be after startDate',
   })
   endDate?: Date;
 }
