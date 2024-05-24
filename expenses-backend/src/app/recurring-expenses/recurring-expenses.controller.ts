@@ -9,7 +9,17 @@ import { RecurringExpenseEntity } from './entities/recurring-expense.entity';
 import { Request } from 'express';
 import { IUser } from '../users/entities/user';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 
+@ApiTags('recurring-expenses')
+@ApiBearerAuth()
+@ApiUnauthorizedResponse()
 @UseGuards(JwtAuthGuard)
 @Controller({
   path: 'recurring-expenses',
@@ -18,6 +28,12 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 export class RecurringExpensesController {
   constructor(private recurringExpensesService: RecurringExpensesService) {}
 
+  @ApiOperation({ summary: 'Creates a new recurring expense.' })
+  @ApiBody({
+    type: CreateRecurringExpenseDto,
+    required: true,
+    description: 'Recurring expense information',
+  })
   @Post()
   async create(
     @Body() createRecurringExpenseDto: CreateRecurringExpenseDto,
@@ -29,6 +45,9 @@ export class RecurringExpensesController {
     );
   }
 
+  @ApiOperation({
+    summary: 'Returns all recurring expenses for the requesting user.',
+  })
   @Get()
   async findOwn(@Req() req: Request): Promise<RecurringExpenseEntity[]> {
     return this.recurringExpensesService.findAllForUser((req.user as IUser).id);

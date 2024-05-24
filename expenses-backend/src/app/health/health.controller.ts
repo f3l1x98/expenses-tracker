@@ -3,6 +3,7 @@ https://docs.nestjs.com/controllers#controllers
 */
 
 import { Controller, Get } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   HealthCheck,
   HealthCheckResult,
@@ -10,6 +11,7 @@ import {
   TypeOrmHealthIndicator,
 } from '@nestjs/terminus';
 
+@ApiTags('health')
 @Controller({
   path: 'health',
   version: '1',
@@ -20,6 +22,9 @@ export class HealthController {
     private dbHealthIndicator: TypeOrmHealthIndicator,
   ) {}
 
+  @ApiOperation({
+    description: 'Application health check',
+  })
   @Get()
   @HealthCheck()
   check(): Promise<HealthCheckResult> {

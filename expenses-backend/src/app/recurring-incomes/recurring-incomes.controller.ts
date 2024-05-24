@@ -9,7 +9,17 @@ import { RecurringIncomeEntity } from './entities/recurring-income.entitiy';
 import { Request } from 'express';
 import { IUser } from '../users/entities/user';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 
+@ApiTags('recurring-incomes')
+@ApiBearerAuth()
+@ApiUnauthorizedResponse()
 @UseGuards(JwtAuthGuard)
 @Controller({
   path: 'recurring-incomes',
@@ -18,6 +28,12 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 export class RecurringIncomesController {
   constructor(private recurringIncomesService: RecurringIncomesService) {}
 
+  @ApiOperation({ summary: 'Creates a new recurring income.' })
+  @ApiBody({
+    type: CreateRecurringIncomeDto,
+    required: true,
+    description: 'Recurring income information',
+  })
   @Post()
   async create(
     @Body() createRecurringIncomeDto: CreateRecurringIncomeDto,
@@ -29,6 +45,9 @@ export class RecurringIncomesController {
     );
   }
 
+  @ApiOperation({
+    summary: 'Returns all recurring incomes for the requesting user.',
+  })
   @Get()
   async findOwn(@Req() req: Request): Promise<RecurringIncomeEntity[]> {
     return this.recurringIncomesService.findAllForUser((req.user as IUser).id);
