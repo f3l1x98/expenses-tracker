@@ -1,6 +1,6 @@
 import { IsNumber, IsPositive } from 'class-validator';
 import { IncomeCategory } from 'src/app/incomes/entities/income-category';
-import { IsValidCron } from 'src/app/is-valid-cron';
+import { IsValidCron } from 'src/app/utils/is-valid-cron';
 
 export abstract class CreateRecurringIncomeDto {
   // TODO has IsCurrency which expects string
