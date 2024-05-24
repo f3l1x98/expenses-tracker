@@ -11,16 +11,11 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { DbConfigService } from './db-config.service';
+import { AutomapperModule } from '@automapper/nestjs';
+import { classes } from '@automapper/classes';
 
 @Module({
   imports: [
-    HealthModule,
-    RecurringIncomesModule,
-    RecurringExpensesModule,
-    AuthModule,
-    UsersModule,
-    IncomesModule,
-    ExpensesModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -28,6 +23,16 @@ import { DbConfigService } from './db-config.service';
       imports: [ConfigModule],
       useClass: DbConfigService,
     }),
+    AutomapperModule.forRoot({
+      strategyInitializer: classes(),
+    }),
+    HealthModule,
+    RecurringIncomesModule,
+    RecurringExpensesModule,
+    AuthModule,
+    UsersModule,
+    IncomesModule,
+    ExpensesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

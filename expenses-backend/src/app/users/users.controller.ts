@@ -12,13 +12,13 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserAlreadyExistsError } from '../exceptions/user-already-exists-error';
-import { IUser } from './entities/user';
 import {
   ApiBadRequestResponse,
   ApiBody,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { UserDto } from './dto/user.dto';
 
 @ApiTags('users')
 @Controller({
@@ -38,13 +38,12 @@ export class UsersController {
     description: 'User information',
   })
   @Post()
-  async create(@Body() createUserDto: CreateUserDto): Promise<IUser> {
+  async create(@Body() createUserDto: CreateUserDto): Promise<UserDto> {
     try {
-      const user = await this.usersService.create(
+      return await this.usersService.create(
         createUserDto.username,
         createUserDto.password,
       );
-      return { id: user.id, username: user.username };
     } catch (e) {
       if (e instanceof UserAlreadyExistsError) {
         throw new BadRequestException(e.message);
