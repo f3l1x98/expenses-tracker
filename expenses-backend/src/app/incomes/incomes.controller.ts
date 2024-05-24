@@ -2,7 +2,7 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { IncomesService } from './incomes.service';
 import { CreateIncomeDto } from './dto/create-income.dto';
 import { IncomeEntity } from './entities/income.entity';
@@ -21,5 +21,10 @@ export class IncomesController {
     @Req() req: Request,
   ): Promise<IncomeEntity> {
     return this.incomesService.create((req.user as IUser).id, createIncomeDto);
+  }
+
+  @Get()
+  async findOwn(@Req() req: Request): Promise<IncomeEntity[]> {
+    return this.incomesService.findAllForUser((req.user as IUser).id);
   }
 }

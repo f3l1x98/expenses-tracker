@@ -33,4 +33,10 @@ export class RecurringIncomesService {
 
     return this.recurringIncomesRepository.save(recurringIncome);
   }
+
+  async findAllForUser(userId: string): Promise<RecurringIncomeEntity[]> {
+    return this.recurringIncomesRepository.find({
+      where: { user: { id: userId } },
+    });
+  }
 }

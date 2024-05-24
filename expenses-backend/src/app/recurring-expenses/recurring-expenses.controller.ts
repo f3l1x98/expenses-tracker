@@ -2,7 +2,7 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { RecurringExpensesService } from './recurring-expenses.service';
 import { CreateRecurringExpenseDto } from './dto/create-recurring-expense.dto';
 import { RecurringExpenseEntity } from './entities/recurring-expense.entity';
@@ -24,5 +24,10 @@ export class RecurringExpensesController {
       (req.user as IUser).id,
       createRecurringExpenseDto,
     );
+  }
+
+  @Get()
+  async findOwn(@Req() req: Request): Promise<RecurringExpenseEntity[]> {
+    return this.recurringExpensesService.findAllForUser((req.user as IUser).id);
   }
 }

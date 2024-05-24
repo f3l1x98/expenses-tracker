@@ -2,7 +2,7 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { RecurringIncomesService } from './recurring-incomes.service';
 import { CreateRecurringIncomeDto } from './dto/create-recurring-income.dto';
 import { RecurringIncomeEntity } from './entities/recurring-income.entitiy';
@@ -24,5 +24,10 @@ export class RecurringIncomesController {
       (req.user as IUser).id,
       createRecurringIncomeDto,
     );
+  }
+
+  @Get()
+  async findOwn(@Req() req: Request): Promise<RecurringIncomeEntity[]> {
+    return this.recurringIncomesService.findAllForUser((req.user as IUser).id);
   }
 }

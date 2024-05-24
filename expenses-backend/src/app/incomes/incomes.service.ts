@@ -29,4 +29,10 @@ export class IncomesService {
 
     return this.incomesRepository.save(income);
   }
+
+  async findAllForUser(userId: string): Promise<IncomeEntity[]> {
+    return this.incomesRepository.find({
+      where: { user: { id: userId } },
+    });
+  }
 }

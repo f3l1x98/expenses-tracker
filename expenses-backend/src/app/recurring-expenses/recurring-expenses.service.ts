@@ -33,4 +33,10 @@ export class RecurringExpensesService {
 
     return this.recurringExpensesRepository.save(recurringExpense);
   }
+
+  async findAllForUser(userId: string): Promise<RecurringExpenseEntity[]> {
+    return this.recurringExpensesRepository.find({
+      where: { user: { id: userId } },
+    });
+  }
 }
