@@ -4,4 +4,4 @@ async function bootstrap() {
   const app = await initApp();
   await app.listen(3000);
 }
-bootstrap();
+bootstrap().then().catch(console.error);
