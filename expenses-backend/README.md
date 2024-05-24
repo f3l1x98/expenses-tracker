@@ -1,5 +1,8 @@
 # TODO
-- Add automapper: https://www.npmjs.com/package/@automapper/nestjs
+- Add automapper: https://www.npmjs.com/package/@automapper/nestjs:
+  - Install and use transformer-plugin
+  - Currently not usable with NestJS without --legacy-peer-deps, see https://github.com/nartc/mapper/issues/606
+    -> Open PR: https://github.com/nartc/mapper/pull/615
 
 # Database migrations
 
