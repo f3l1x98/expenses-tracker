@@ -30,26 +30,41 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
   async onApplicationBootstrap() {
     const recurringExpenses = await this.recurringExpensesRepository.find();
     for (const recurringExpense of recurringExpenses) {
-      this.startRecurringExpenseCronJob(recurringExpense);
+      this.createRecurringExpenseCronJob(recurringExpense);
     }
   }
 
-  private startRecurringExpenseCronJob(
+  private createRecurringExpenseCronJob(
     recurringExpense: RecurringExpenseEntity,
   ) {
     const job = new CronJob(recurringExpense.cron, async () => {
-      const expenseDto = new CreateExpenseDto();
-      expenseDto.category = recurringExpense.category;
-      expenseDto.notes = recurringExpense.notes;
-      expenseDto.price = recurringExpense.price;
+      const recurringExpenseEntity =
+        await this.recurringExpensesRepository.findOne({
+          where: { id: recurringExpense.id },
+        });
 
-      await this.expensesService.create(recurringExpense.user.id, expenseDto);
+      if (recurringExpenseEntity === null) {
+        this.logger.warn(
+          `RecurringExpense with id ${recurringExpense.id} was deleted, but its CronJob is still running!`,
+        );
+        return;
+      }
+
+      const expenseDto = new CreateExpenseDto();
+      expenseDto.category = recurringExpenseEntity.category;
+      expenseDto.notes = recurringExpenseEntity.notes;
+      expenseDto.price = recurringExpenseEntity.price;
+
+      await this.expensesService.create(
+        recurringExpenseEntity.user.id,
+        expenseDto,
+      );
     });
 
     this.schedulerRegistry.addCronJob(recurringExpense.id, job);
 
     if (
-      recurringExpense.startDate !== undefined &&
+      recurringExpense.startDate === undefined ||
       recurringExpense.startDate.getTime() <= Date.now()
     ) {
       job.start();
@@ -97,7 +112,7 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
     const recurringExpenseEntity =
       await this.recurringExpensesRepository.save(recurringExpense);
 
-    this.startRecurringExpenseCronJob(recurringExpenseEntity);
+    this.createRecurringExpenseCronJob(recurringExpenseEntity);
 
     return recurringExpenseEntity;
   }

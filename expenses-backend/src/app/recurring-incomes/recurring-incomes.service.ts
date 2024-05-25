@@ -30,24 +30,39 @@ export class RecurringIncomesService implements OnApplicationBootstrap {
   async onApplicationBootstrap() {
     const recurringIncomes = await this.recurringIncomesRepository.find();
     for (const recurringIncome of recurringIncomes) {
-      this.startRecurringIncomeCronJob(recurringIncome);
+      this.createRecurringIncomeCronJob(recurringIncome);
     }
   }
 
-  private startRecurringIncomeCronJob(recurringIncome: RecurringIncomeEntity) {
+  private createRecurringIncomeCronJob(recurringIncome: RecurringIncomeEntity) {
     const job = new CronJob(recurringIncome.cron, async () => {
-      const incomeDto = new CreateIncomeDto();
-      incomeDto.category = recurringIncome.category;
-      incomeDto.notes = recurringIncome.notes;
-      incomeDto.price = recurringIncome.price;
+      const recurringIncomeEntity =
+        await this.recurringIncomesRepository.findOne({
+          where: { id: recurringIncome.id },
+        });
 
-      await this.incomesService.create(recurringIncome.user.id, incomeDto);
+      if (recurringIncomeEntity === null) {
+        this.logger.warn(
+          `RecurringIncome with id ${recurringIncome.id} was deleted, but its CronJob is still running!`,
+        );
+        return;
+      }
+
+      const incomeDto = new CreateIncomeDto();
+      incomeDto.category = recurringIncomeEntity.category;
+      incomeDto.notes = recurringIncomeEntity.notes;
+      incomeDto.price = recurringIncomeEntity.price;
+
+      await this.incomesService.create(
+        recurringIncomeEntity.user.id,
+        incomeDto,
+      );
     });
 
     this.schedulerRegistry.addCronJob(recurringIncome.id, job);
 
     if (
-      recurringIncome.startDate !== undefined &&
+      recurringIncome.startDate === undefined ||
       recurringIncome.startDate.getTime() <= Date.now()
     ) {
       job.start();
@@ -95,7 +110,7 @@ export class RecurringIncomesService implements OnApplicationBootstrap {
     const recurringIncomeEntity =
       await this.recurringIncomesRepository.save(recurringIncome);
 
-    this.startRecurringIncomeCronJob(recurringIncomeEntity);
+    this.createRecurringIncomeCronJob(recurringIncomeEntity);
 
     return recurringIncomeEntity;
   }
