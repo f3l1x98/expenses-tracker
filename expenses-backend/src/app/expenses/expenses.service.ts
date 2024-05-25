@@ -31,6 +31,7 @@ export class ExpensesService {
     expense.category = createExpenseDto.category;
     expense.notes = createExpenseDto.notes;
     expense.user = userId as unknown as UserEntity;
+    expense.recurringExpense = createExpenseDto.recurringExpense;
 
     return this.expensesRepository.save(expense);
   }

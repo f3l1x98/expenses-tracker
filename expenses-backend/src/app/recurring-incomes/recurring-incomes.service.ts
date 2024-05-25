@@ -36,6 +36,9 @@ export class RecurringIncomesService implements OnApplicationBootstrap {
 
   private createRecurringIncomeCronJob(recurringIncome: RecurringIncomeEntity) {
     const job = new CronJob(recurringIncome.cron, async () => {
+      this.logger.debug(
+        `Executing cron job for recurring income ${recurringIncome.id}`,
+      );
       const recurringIncomeEntity =
         await this.recurringIncomesRepository.findOne({
           where: { id: recurringIncome.id },
@@ -52,6 +55,7 @@ export class RecurringIncomesService implements OnApplicationBootstrap {
       incomeDto.category = recurringIncomeEntity.category;
       incomeDto.notes = recurringIncomeEntity.notes;
       incomeDto.price = recurringIncomeEntity.price;
+      incomeDto.recurringIncome = recurringIncomeEntity;
 
       await this.incomesService.create(
         recurringIncomeEntity.user.id,
@@ -72,6 +76,7 @@ export class RecurringIncomesService implements OnApplicationBootstrap {
 
   @Cron('0 2 * * *')
   async checkRecurringIncomeJobs() {
+    this.logger.debug('Checking recurring income jobs');
     const recurringIncomes = await this.recurringIncomesRepository.find();
     for (const recurringIncome of recurringIncomes) {
       this.updateJobStatusById(

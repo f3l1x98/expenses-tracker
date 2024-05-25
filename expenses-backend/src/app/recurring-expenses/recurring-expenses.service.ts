@@ -38,6 +38,9 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
     recurringExpense: RecurringExpenseEntity,
   ) {
     const job = new CronJob(recurringExpense.cron, async () => {
+      this.logger.debug(
+        `Executing cron job for recurring expense ${recurringExpense.id}`,
+      );
       const recurringExpenseEntity =
         await this.recurringExpensesRepository.findOne({
           where: { id: recurringExpense.id },
@@ -54,6 +57,7 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
       expenseDto.category = recurringExpenseEntity.category;
       expenseDto.notes = recurringExpenseEntity.notes;
       expenseDto.price = recurringExpenseEntity.price;
+      expenseDto.recurringExpense = recurringExpenseEntity;
 
       await this.expensesService.create(
         recurringExpenseEntity.user.id,
@@ -74,6 +78,7 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
 
   @Cron('0 2 * * *')
   async checkRecurringExpenseJobs() {
+    this.logger.debug('Checking recurring expense jobs');
     const recurringExpenses = await this.recurringExpensesRepository.find();
     for (const recurringExpense of recurringExpenses) {
       this.updateJobStatusById(

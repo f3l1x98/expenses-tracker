@@ -31,6 +31,7 @@ export class IncomesService {
     income.category = createIncomeDto.category;
     income.notes = createIncomeDto.notes;
     income.user = userId as unknown as UserEntity;
+    income.recurringIncome = createIncomeDto.recurringIncome;
 
     return this.incomesRepository.save(income);
   }

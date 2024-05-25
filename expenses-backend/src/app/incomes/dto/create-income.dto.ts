@@ -1,7 +1,8 @@
 import { IncomeCategory } from '../entities/income-category';
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Exclude, Type } from 'class-transformer';
 import { IsDefined, IsNotEmptyObject, ValidateNested } from 'class-validator';
+import { RecurringIncomeEntity } from 'src/app/recurring-incomes/entities/recurring-income.entitiy';
 import { PriceDto } from 'src/app/shared/prices/price.dto';
 
 export class CreateIncomeDto {
@@ -27,4 +28,7 @@ export class CreateIncomeDto {
     required: false,
   })
   notes?: string;
+
+  @Exclude()
+  recurringIncome?: RecurringIncomeEntity;
 }

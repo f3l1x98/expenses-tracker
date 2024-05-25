@@ -1,7 +1,8 @@
 import { ExpenseCategory } from '../entities/expense-category';
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Exclude, Type } from 'class-transformer';
 import { IsDefined, IsNotEmptyObject, ValidateNested } from 'class-validator';
+import { RecurringExpenseEntity } from 'src/app/recurring-expenses/entities/recurring-expense.entity';
 import { PriceDto } from 'src/app/shared/prices/price.dto';
 
 export class CreateExpenseDto {
@@ -27,4 +28,7 @@ export class CreateExpenseDto {
     required: false,
   })
   notes?: string;
+
+  @Exclude()
+  recurringExpense?: RecurringExpenseEntity;
 }
