@@ -11,7 +11,7 @@ import { UserEntity } from '../users/entities/user.entity';
 import { RecurringExpenseNotFoundException } from './exceptions/recurring-expense-not-found';
 import { PriceEntity } from '../shared/prices/price.entity';
 import { SchedulerRegistry, Cron } from '@nestjs/schedule';
-import { CronJob } from 'cron';
+import { CronJob, CronTime } from 'cron';
 import { ExpensesService } from '../expenses/expenses.service';
 import { CreateExpenseDto } from '../expenses/dto/create-expense.dto';
 import { UpdateRecurringExpenseDto } from './dto/update-recurring-expense.dto';
@@ -171,8 +171,36 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
     const updatedEntity =
       await this.recurringExpensesRepository.save(recurringExpense);
 
-    // TODO update scheduled jobs
+    if (
+      updateRecurringExpenseDto.cron !== undefined ||
+      updateRecurringExpenseDto.startDate !== undefined ||
+      updateRecurringExpenseDto.endDate !== undefined
+    ) {
+      this.updateRecurringExpenseCronJob(updatedEntity);
+    }
 
     return updatedEntity;
+  }
+
+  private updateRecurringExpenseCronJob(
+    recurringExpense: RecurringExpenseEntity,
+  ) {
+    const job = this.schedulerRegistry.getCronJob(recurringExpense.id);
+
+    const newCronTime = new CronTime(recurringExpense.cron);
+    if (job.cronTime !== newCronTime) {
+      job.setTime(newCronTime);
+    }
+
+    const currentDate = Date.now();
+    const start = recurringExpense.startDate?.getTime() ?? currentDate - 1;
+    const end = recurringExpense.endDate?.getTime() ?? currentDate + 1;
+    const shouldBeRunning = start <= currentDate && end > currentDate;
+
+    if (shouldBeRunning && !job.running) {
+      job.start();
+    } else if (!shouldBeRunning && job.running) {
+      job.stop();
+    }
   }
 }

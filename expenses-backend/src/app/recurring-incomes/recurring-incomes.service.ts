@@ -11,7 +11,7 @@ import { UserEntity } from '../users/entities/user.entity';
 import { RecurringIncomeNotFoundException } from './exceptions/recurring-income-not-found';
 import { PriceEntity } from '../shared/prices/price.entity';
 import { Cron, SchedulerRegistry } from '@nestjs/schedule';
-import { CronJob } from 'cron';
+import { CronJob, CronTime } from 'cron';
 import { IncomesService } from '../incomes/incomes.service';
 import { CreateIncomeDto } from '../incomes/dto/create-income.dto';
 import { UpdateRecurringIncomeDto } from './dto/update-recurring-income.dto';
@@ -169,8 +169,34 @@ export class RecurringIncomesService implements OnApplicationBootstrap {
     const updatedEntity =
       await this.recurringIncomesRepository.save(recurringIncome);
 
-    // TODO update scheduled jobs
+    if (
+      updateRecurringIncomeDto.cron !== undefined ||
+      updateRecurringIncomeDto.startDate !== undefined ||
+      updateRecurringIncomeDto.endDate !== undefined
+    ) {
+      this.updateRecurringIncomeCronJob(updatedEntity);
+    }
 
     return updatedEntity;
+  }
+
+  private updateRecurringIncomeCronJob(recurringIncome: RecurringIncomeEntity) {
+    const job = this.schedulerRegistry.getCronJob(recurringIncome.id);
+
+    const newCronTime = new CronTime(recurringIncome.cron);
+    if (job.cronTime !== newCronTime) {
+      job.setTime(newCronTime);
+    }
+
+    const nowInMs = Date.now();
+    const startInMs = recurringIncome.startDate?.getTime() ?? nowInMs - 1;
+    const endInMs = recurringIncome.endDate?.getTime() ?? nowInMs + 1;
+    const shouldBeRunning = startInMs <= nowInMs && endInMs > nowInMs;
+
+    if (shouldBeRunning && !job.running) {
+      job.start();
+    } else if (!shouldBeRunning && job.running) {
+      job.stop();
+    }
   }
 }
