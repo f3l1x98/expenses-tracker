@@ -12,7 +12,7 @@ import { PriceDto } from 'src/app/shared/prices/price.dto';
 import { IsAfterDate } from 'src/app/utils/is-after-date';
 import { IsValidCron } from 'src/app/utils/is-valid-cron';
 
-export abstract class CreateRecurringExpenseDto {
+export class CreateRecurringExpenseDto {
   @ApiProperty({
     description: 'Price of the recurring expense',
     required: true,

@@ -4,7 +4,7 @@ import { Type } from 'class-transformer';
 import { IsDefined, IsNotEmptyObject, ValidateNested } from 'class-validator';
 import { PriceDto } from 'src/app/shared/prices/price.dto';
 
-export abstract class CreateIncomeDto {
+export class CreateIncomeDto {
   @ApiProperty({
     description: 'Price of the income',
     required: true,
