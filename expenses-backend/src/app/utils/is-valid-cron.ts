@@ -13,6 +13,9 @@ export function IsValidCron(validationOptions?: ValidationOptions) {
         validate(value, validationArguments) {
           return typeof value === 'string' && cron(value).isValid();
         },
+        defaultMessage: () => {
+          return 'Invalid cron expression';
+        },
       },
     });
   };
