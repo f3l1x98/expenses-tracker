@@ -22,12 +22,6 @@ export class RecurringExpenseEntity implements IRecurringExpense {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  /*@ApiProperty({
-    description: 'Monetary amount of the recurring expense',
-    required: true,
-  })
-  @Column({ nullable: false, type: 'decimal', scale: 2, precision: 12 })
-  amount!: number;*/
   @Column(() => PriceEntity)
   price!: PriceEntity;
 
@@ -73,7 +67,7 @@ export class RecurringExpenseEntity implements IRecurringExpense {
       'The start date for the first execution of this recurring expense',
     required: false,
   })
-  @Column({ nullable: true, type: 'date' })
+  @Column({ nullable: true, type: 'timestamptz' })
   startDate?: Date;
 
   @ApiProperty({
@@ -81,7 +75,7 @@ export class RecurringExpenseEntity implements IRecurringExpense {
       'The end date for the last execution of this recurring expense',
     required: false,
   })
-  @Column({ nullable: true, type: 'date' })
+  @Column({ nullable: true, type: 'timestamptz' })
   endDate?: Date;
 
   @ApiProperty({

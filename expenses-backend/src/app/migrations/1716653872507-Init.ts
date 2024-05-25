@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class Init1716627198597 implements MigrationInterface {
-  name = 'Init1716627198597';
+export class Init1716653872507 implements MigrationInterface {
+  name = 'Init1716653872507';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
@@ -11,13 +11,13 @@ export class Init1716627198597 implements MigrationInterface {
       `CREATE INDEX "IDX_9b998bada7cff93fcb953b0c37" ON "user_entity" ("username") `,
     );
     await queryRunner.query(
-      `CREATE TABLE "recurring_expense_entity" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "category" "public"."recurring_expense_entity_category_enum" NOT NULL DEFAULT 'invoice', "notes" character varying, "cron" character varying NOT NULL, "startDate" date, "endDate" date, "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "userId" uuid, "priceAmount" numeric(12,2) NOT NULL, "priceCurrency" character varying NOT NULL, CONSTRAINT "PK_c22417a6d5383f27685188ddd23" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "recurring_expense_entity" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "category" "public"."recurring_expense_entity_category_enum" NOT NULL DEFAULT 'invoice', "notes" character varying, "cron" character varying NOT NULL, "startDate" TIMESTAMP WITH TIME ZONE, "endDate" TIMESTAMP WITH TIME ZONE, "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "userId" uuid, "priceAmount" numeric(12,2) NOT NULL, "priceCurrency" character varying NOT NULL, CONSTRAINT "PK_c22417a6d5383f27685188ddd23" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "expense_entity" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "category" "public"."expense_entity_category_enum" NOT NULL DEFAULT 'misc', "notes" character varying, "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "userId" uuid, "recurringExpenseId" uuid, "priceAmount" numeric(12,2) NOT NULL, "priceCurrency" character varying NOT NULL, CONSTRAINT "PK_925dcb90c5f37e7ee13141379fa" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "recurring_income_entity" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "category" "public"."recurring_income_entity_category_enum" NOT NULL DEFAULT 'salary', "notes" character varying, "cron" character varying NOT NULL, "startDate" date, "endDate" date, "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "userId" uuid, "priceAmount" numeric(12,2) NOT NULL, "priceCurrency" character varying NOT NULL, CONSTRAINT "PK_739fa03b2454d61a4ef017fc8ec" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "recurring_income_entity" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "category" "public"."recurring_income_entity_category_enum" NOT NULL DEFAULT 'salary', "notes" character varying, "cron" character varying NOT NULL, "startDate" TIMESTAMP WITH TIME ZONE, "endDate" TIMESTAMP WITH TIME ZONE, "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "userId" uuid, "priceAmount" numeric(12,2) NOT NULL, "priceCurrency" character varying NOT NULL, CONSTRAINT "PK_739fa03b2454d61a4ef017fc8ec" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "income_entity" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "category" "public"."income_entity_category_enum" NOT NULL DEFAULT 'salary', "notes" character varying, "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "userId" uuid, "recurringIncomeId" uuid, "priceAmount" numeric(12,2) NOT NULL, "priceCurrency" character varying NOT NULL, CONSTRAINT "PK_14a9aa8770e3b7ee0f1bf48e475" PRIMARY KEY ("id"))`,

@@ -66,14 +66,14 @@ export class RecurringIncomeEntity implements IRecurringIncome {
       'The start date for the first execution of this recurring income',
     required: false,
   })
-  @Column({ nullable: true, type: 'date' })
+  @Column({ nullable: true, type: 'timestamptz' })
   startDate?: Date;
 
   @ApiProperty({
     description: 'The end date for the last execution of this recurring income',
     required: false,
   })
-  @Column({ nullable: true, type: 'date' })
+  @Column({ nullable: true, type: 'timestamptz' })
   endDate?: Date;
 
   @ApiProperty({
