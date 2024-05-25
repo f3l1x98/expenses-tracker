@@ -10,6 +10,7 @@ import { CreateIncomeDto } from './dto/create-income.dto';
 import { UserEntity } from '../users/entities/user.entity';
 import { IncomeNotFoundException } from './exceptions/income-not-found';
 import { PriceEntity } from '../shared/prices/price.entity';
+import { UpdateIncomeDto } from './dto/update-income.dto';
 
 @Injectable()
 export class IncomesService {
@@ -49,5 +50,31 @@ export class IncomesService {
       throw new IncomeNotFoundException(id);
     }
     await this.incomesRepository.delete(id);
+  }
+
+  async update(
+    id: string,
+    userId: string,
+    updateIncomeDto: UpdateIncomeDto,
+  ): Promise<IncomeEntity> {
+    const income = await this.incomesRepository.findOne({
+      where: { id: id, user: { id: userId } },
+    });
+
+    if (income === null) {
+      throw new IncomeNotFoundException(id);
+    }
+
+    if (updateIncomeDto.category !== undefined) {
+      income.category = updateIncomeDto.category;
+    }
+    if (updateIncomeDto.notes !== undefined) {
+      income.notes = updateIncomeDto.notes;
+    }
+    if (updateIncomeDto.price !== undefined) {
+      income.price = updateIncomeDto.price;
+    }
+
+    return this.incomesRepository.save(income);
   }
 }

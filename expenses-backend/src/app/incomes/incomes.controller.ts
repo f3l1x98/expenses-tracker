@@ -10,6 +10,7 @@ import {
   NotFoundException,
   Param,
   Post,
+  Put,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -28,6 +29,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { IncomeNotFoundException } from './exceptions/income-not-found';
+import { UpdateIncomeDto } from './dto/update-income.dto';
 
 @ApiTags('incomes')
 @ApiBearerAuth()
@@ -73,6 +75,38 @@ export class IncomesController {
   async delete(@Param('id') id: string, @Req() req: Request) {
     try {
       await this.incomesService.delete(id, (req.user as IUser).id);
+    } catch (e) {
+      if (e instanceof IncomeNotFoundException) {
+        throw new NotFoundException();
+      }
+      throw e;
+    }
+  }
+
+  @ApiOperation({
+    summary: 'Updates the income with the specified id using the provided body',
+  })
+  @ApiBody({
+    type: UpdateIncomeDto,
+    required: true,
+    description: 'Income information',
+  })
+  @ApiNotFoundResponse({
+    description:
+      'No income with the specified id was found for the requesting user',
+  })
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Body() updateIncomeDto: UpdateIncomeDto,
+  ) {
+    try {
+      await this.incomesService.update(
+        id,
+        (req.user as IUser).id,
+        updateIncomeDto,
+      );
     } catch (e) {
       if (e instanceof IncomeNotFoundException) {
         throw new NotFoundException();

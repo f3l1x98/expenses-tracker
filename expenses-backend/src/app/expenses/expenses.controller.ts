@@ -10,6 +10,7 @@ import {
   NotFoundException,
   Param,
   Post,
+  Put,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -28,6 +29,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { ExpenseNotFoundException } from './exceptions/expense-not-found';
+import { UpdateExpenseDto } from './dto/update-expense.dto';
 
 @ApiTags('expenses')
 @ApiBearerAuth()
@@ -76,6 +78,39 @@ export class ExpensesController {
   async delete(@Param('id') id: string, @Req() req: Request) {
     try {
       await this.expensesService.delete(id, (req.user as IUser).id);
+    } catch (e) {
+      if (e instanceof ExpenseNotFoundException) {
+        throw new NotFoundException();
+      }
+      throw e;
+    }
+  }
+
+  @ApiOperation({
+    summary:
+      'Updates the expense with the specified id using the provided body',
+  })
+  @ApiBody({
+    type: UpdateExpenseDto,
+    required: true,
+    description: 'Expense information',
+  })
+  @ApiNotFoundResponse({
+    description:
+      'No expense with the specified id was found for the requesting user',
+  })
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Body() updateExpenseDto: UpdateExpenseDto,
+  ) {
+    try {
+      await this.expensesService.update(
+        id,
+        (req.user as IUser).id,
+        updateExpenseDto,
+      );
     } catch (e) {
       if (e instanceof ExpenseNotFoundException) {
         throw new NotFoundException();

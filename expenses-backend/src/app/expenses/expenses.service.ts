@@ -10,6 +10,7 @@ import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UserEntity } from '../users/entities/user.entity';
 import { ExpenseNotFoundException } from './exceptions/expense-not-found';
 import { PriceEntity } from '../shared/prices/price.entity';
+import { UpdateExpenseDto } from './dto/update-expense.dto';
 
 @Injectable()
 export class ExpensesService {
@@ -49,5 +50,31 @@ export class ExpensesService {
       throw new ExpenseNotFoundException(id);
     }
     await this.expensesRepository.delete(id);
+  }
+
+  async update(
+    id: string,
+    userId: string,
+    updateExpenseDto: UpdateExpenseDto,
+  ): Promise<ExpenseEntity> {
+    const expense = await this.expensesRepository.findOne({
+      where: { id: id, user: { id: userId } },
+    });
+
+    if (expense === null) {
+      throw new ExpenseNotFoundException(id);
+    }
+
+    if (updateExpenseDto.category !== undefined) {
+      expense.category = updateExpenseDto.category;
+    }
+    if (updateExpenseDto.notes !== undefined) {
+      expense.notes = updateExpenseDto.notes;
+    }
+    if (updateExpenseDto.price !== undefined) {
+      expense.price = updateExpenseDto.price;
+    }
+
+    return this.expensesRepository.save(expense);
   }
 }

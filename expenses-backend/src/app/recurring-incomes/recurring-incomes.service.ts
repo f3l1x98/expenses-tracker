@@ -14,6 +14,7 @@ import { Cron, SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron';
 import { IncomesService } from '../incomes/incomes.service';
 import { CreateIncomeDto } from '../incomes/dto/create-income.dto';
+import { UpdateRecurringIncomeDto } from './dto/update-recurring-income.dto';
 
 @Injectable()
 export class RecurringIncomesService implements OnApplicationBootstrap {
@@ -116,5 +117,45 @@ export class RecurringIncomesService implements OnApplicationBootstrap {
     await this.recurringIncomesRepository.delete(id);
 
     this.schedulerRegistry.deleteCronJob(id);
+  }
+
+  async update(
+    id: string,
+    userId: string,
+    updateRecurringIncomeDto: UpdateRecurringIncomeDto,
+  ): Promise<RecurringIncomeEntity> {
+    const recurringIncome = await this.recurringIncomesRepository.findOne({
+      where: { id: id, user: { id: userId } },
+    });
+
+    if (recurringIncome === null) {
+      throw new RecurringIncomeNotFoundException(id);
+    }
+
+    if (updateRecurringIncomeDto.category !== undefined) {
+      recurringIncome.category = updateRecurringIncomeDto.category;
+    }
+    if (updateRecurringIncomeDto.notes !== undefined) {
+      recurringIncome.notes = updateRecurringIncomeDto.notes;
+    }
+    if (updateRecurringIncomeDto.price !== undefined) {
+      recurringIncome.price = updateRecurringIncomeDto.price;
+    }
+    if (updateRecurringIncomeDto.cron !== undefined) {
+      recurringIncome.cron = updateRecurringIncomeDto.cron;
+    }
+    if (updateRecurringIncomeDto.endDate !== undefined) {
+      recurringIncome.endDate = updateRecurringIncomeDto.endDate;
+    }
+    if (updateRecurringIncomeDto.startDate !== undefined) {
+      recurringIncome.startDate = updateRecurringIncomeDto.startDate;
+    }
+
+    const updatedEntity =
+      await this.recurringIncomesRepository.save(recurringIncome);
+
+    // TODO update scheduled jobs
+
+    return updatedEntity;
   }
 }

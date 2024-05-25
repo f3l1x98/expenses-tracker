@@ -14,6 +14,7 @@ import { SchedulerRegistry, Cron } from '@nestjs/schedule';
 import { CronJob } from 'cron';
 import { ExpensesService } from '../expenses/expenses.service';
 import { CreateExpenseDto } from '../expenses/dto/create-expense.dto';
+import { UpdateRecurringExpenseDto } from './dto/update-recurring-expense.dto';
 
 @Injectable()
 export class RecurringExpensesService implements OnApplicationBootstrap {
@@ -118,5 +119,45 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
     await this.recurringExpensesRepository.delete(id);
 
     this.schedulerRegistry.deleteCronJob(id);
+  }
+
+  async update(
+    id: string,
+    userId: string,
+    updateRecurringExpenseDto: UpdateRecurringExpenseDto,
+  ): Promise<RecurringExpenseEntity> {
+    const recurringExpense = await this.recurringExpensesRepository.findOne({
+      where: { id: id, user: { id: userId } },
+    });
+
+    if (recurringExpense === null) {
+      throw new RecurringExpenseNotFoundException(id);
+    }
+
+    if (updateRecurringExpenseDto.category !== undefined) {
+      recurringExpense.category = updateRecurringExpenseDto.category;
+    }
+    if (updateRecurringExpenseDto.notes !== undefined) {
+      recurringExpense.notes = updateRecurringExpenseDto.notes;
+    }
+    if (updateRecurringExpenseDto.price !== undefined) {
+      recurringExpense.price = updateRecurringExpenseDto.price;
+    }
+    if (updateRecurringExpenseDto.cron !== undefined) {
+      recurringExpense.cron = updateRecurringExpenseDto.cron;
+    }
+    if (updateRecurringExpenseDto.endDate !== undefined) {
+      recurringExpense.endDate = updateRecurringExpenseDto.endDate;
+    }
+    if (updateRecurringExpenseDto.startDate !== undefined) {
+      recurringExpense.startDate = updateRecurringExpenseDto.startDate;
+    }
+
+    const updatedEntity =
+      await this.recurringExpensesRepository.save(recurringExpense);
+
+    // TODO update scheduled jobs
+
+    return updatedEntity;
   }
 }

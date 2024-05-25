@@ -10,6 +10,7 @@ import {
   NotFoundException,
   Param,
   Post,
+  Put,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -28,6 +29,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { RecurringIncomeNotFoundException } from './exceptions/recurring-income-not-found';
+import { UpdateRecurringIncomeDto } from './dto/update-recurring-income.dto';
 
 @ApiTags('recurring-incomes')
 @ApiBearerAuth()
@@ -76,6 +78,39 @@ export class RecurringIncomesController {
   async delete(@Param('id') id: string, @Req() req: Request) {
     try {
       await this.recurringIncomesService.delete(id, (req.user as IUser).id);
+    } catch (e) {
+      if (e instanceof RecurringIncomeNotFoundException) {
+        throw new NotFoundException();
+      }
+      throw e;
+    }
+  }
+
+  @ApiOperation({
+    summary:
+      'Updates the recurring income with the specified id using the provided body',
+  })
+  @ApiBody({
+    type: UpdateRecurringIncomeDto,
+    required: true,
+    description: 'Recurring income information',
+  })
+  @ApiNotFoundResponse({
+    description:
+      'No recurring income with the specified id was found for the requesting user',
+  })
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Body() updateRecurringIncomeDto: UpdateRecurringIncomeDto,
+  ) {
+    try {
+      await this.recurringIncomesService.update(
+        id,
+        (req.user as IUser).id,
+        updateRecurringIncomeDto,
+      );
     } catch (e) {
       if (e instanceof RecurringIncomeNotFoundException) {
         throw new NotFoundException();

@@ -10,6 +10,7 @@ import {
   NotFoundException,
   Param,
   Post,
+  Put,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -28,6 +29,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { RecurringExpenseNotFoundException } from './exceptions/recurring-expense-not-found';
+import { UpdateRecurringExpenseDto } from './dto/update-recurring-expense.dto';
 
 @ApiTags('recurring-expenses')
 @ApiBearerAuth()
@@ -76,6 +78,39 @@ export class RecurringExpensesController {
   async delete(@Param('id') id: string, @Req() req: Request) {
     try {
       await this.recurringExpensesService.delete(id, (req.user as IUser).id);
+    } catch (e) {
+      if (e instanceof RecurringExpenseNotFoundException) {
+        throw new NotFoundException();
+      }
+      throw e;
+    }
+  }
+
+  @ApiOperation({
+    summary:
+      'Updates the recurring expense with the specified id using the provided body',
+  })
+  @ApiBody({
+    type: UpdateRecurringExpenseDto,
+    required: true,
+    description: 'Recurring expense information',
+  })
+  @ApiNotFoundResponse({
+    description:
+      'No recurring expense with the specified id was found for the requesting user',
+  })
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Body() updateRecurringExpenseDto: UpdateRecurringExpenseDto,
+  ) {
+    try {
+      await this.recurringExpensesService.update(
+        id,
+        (req.user as IUser).id,
+        updateRecurringExpenseDto,
+      );
     } catch (e) {
       if (e instanceof RecurringExpenseNotFoundException) {
         throw new NotFoundException();
