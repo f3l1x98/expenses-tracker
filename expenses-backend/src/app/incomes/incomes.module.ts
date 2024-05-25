@@ -12,5 +12,6 @@ import { Module } from '@nestjs/common';
   imports: [TypeOrmModule.forFeature([IncomeEntity])],
   controllers: [IncomesController],
   providers: [IncomesService],
+  exports: [IncomesService],
 })
 export class IncomesModule {}

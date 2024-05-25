@@ -12,5 +12,6 @@ import { Module } from '@nestjs/common';
   imports: [TypeOrmModule.forFeature([ExpenseEntity])],
   controllers: [ExpensesController],
   providers: [ExpensesService],
+  exports: [ExpensesService],
 })
 export class ExpensesModule {}
