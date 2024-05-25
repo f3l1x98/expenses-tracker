@@ -7,7 +7,7 @@ import { UserEntity } from './entities/user.entity';
 import { QueryFailedError, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserAlreadyExistsError } from '../exceptions/user-already-exists-error';
+import { UserAlreadyExistsError } from './exceptions/user-already-exists-error';
 
 @Injectable()
 export class UsersService {

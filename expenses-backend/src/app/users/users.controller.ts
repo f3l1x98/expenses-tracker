@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UserAlreadyExistsError } from '../exceptions/user-already-exists-error';
+import { UserAlreadyExistsError } from './exceptions/user-already-exists-error';
 import { IUser } from './entities/user';
 import {
   ApiBadRequestResponse,
