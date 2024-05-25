@@ -63,8 +63,6 @@ export class CreateRecurringExpenseDto {
   })
   @Type(() => Date)
   @IsDate()
-  @IsAfterDate('startDate', {
-    message: 'endDate must be after startDate',
-  })
+  @IsAfterDate('startDate')
   endDate?: Date;
 }

@@ -30,6 +30,10 @@ export function IsAfterDate(
             value.getTime() > relatedValue.getTime()
           );
         },
+        defaultMessage: (validationArguments: ValidationArguments) => {
+          const [relatedPropertyName] = validationArguments.constraints;
+          return `${propertyName} must be after ${relatedPropertyName}`;
+        },
       },
     });
   };
