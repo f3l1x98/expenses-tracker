@@ -2,7 +2,7 @@
 https://docs.nestjs.com/providers#services
 */
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
 import { RecurringExpenseEntity } from './entities/recurring-expense.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -10,13 +10,72 @@ import { CreateRecurringExpenseDto } from './dto/create-recurring-expense.dto';
 import { UserEntity } from '../users/entities/user.entity';
 import { RecurringExpenseNotFoundException } from './exceptions/recurring-expense-not-found';
 import { PriceEntity } from '../shared/prices/price.entity';
+import { SchedulerRegistry, Cron } from '@nestjs/schedule';
+import { CronJob } from 'cron';
+import { ExpensesService } from '../expenses/expenses.service';
+import { CreateExpenseDto } from '../expenses/dto/create-expense.dto';
 
 @Injectable()
-export class RecurringExpensesService {
+export class RecurringExpensesService implements OnApplicationBootstrap {
+  readonly logger = new Logger(RecurringExpensesService.name);
+
   constructor(
     @InjectRepository(RecurringExpenseEntity)
     private recurringExpensesRepository: Repository<RecurringExpenseEntity>,
+    private expensesService: ExpensesService,
+    private schedulerRegistry: SchedulerRegistry,
   ) {}
+
+  async onApplicationBootstrap() {
+    const recurringExpenses = await this.recurringExpensesRepository.find();
+    for (const recurringExpense of recurringExpenses) {
+      this.startRecurringExpenseCronJob(recurringExpense);
+    }
+  }
+
+  private startRecurringExpenseCronJob(
+    recurringExpense: RecurringExpenseEntity,
+  ) {
+    const job = new CronJob(recurringExpense.cron, async () => {
+      const expenseDto = new CreateExpenseDto();
+      expenseDto.category = recurringExpense.category;
+      expenseDto.notes = recurringExpense.notes;
+      expenseDto.price = recurringExpense.price;
+
+      await this.expensesService.create(recurringExpense.user.id, expenseDto);
+    });
+
+    this.schedulerRegistry.addCronJob(recurringExpense.id, job);
+
+    if (
+      recurringExpense.startDate !== undefined &&
+      recurringExpense.startDate.getTime() <= Date.now()
+    ) {
+      job.start();
+    }
+  }
+
+  @Cron('0 2 * * *')
+  async checkRecurringExpenseJobs() {
+    const recurringExpenses = await this.recurringExpensesRepository.find();
+    const currentDate = Date.now();
+    for (const recurringExpense of recurringExpenses) {
+      if (
+        recurringExpense.startDate !== undefined &&
+        recurringExpense.startDate.getTime() <= currentDate
+      ) {
+        const job = this.schedulerRegistry.getCronJob(recurringExpense.id);
+        if (!job.running) {
+          job.start();
+        }
+      } else if (
+        recurringExpense.endDate !== undefined &&
+        recurringExpense.endDate.getTime() >= currentDate
+      ) {
+        this.schedulerRegistry.deleteCronJob(recurringExpense.id);
+      }
+    }
+  }
 
   async create(
     userId: string,
@@ -34,7 +93,12 @@ export class RecurringExpensesService {
     recurringExpense.startDate = createRecurringExpenseDto.startDate;
     recurringExpense.endDate = createRecurringExpenseDto.endDate;
 
-    return this.recurringExpensesRepository.save(recurringExpense);
+    const recurringExpenseEntity =
+      await this.recurringExpensesRepository.save(recurringExpense);
+
+    this.startRecurringExpenseCronJob(recurringExpenseEntity);
+
+    return recurringExpenseEntity;
   }
 
   async findAllForUser(userId: string): Promise<RecurringExpenseEntity[]> {
@@ -52,5 +116,7 @@ export class RecurringExpensesService {
       throw new RecurringExpenseNotFoundException(id);
     }
     await this.recurringExpensesRepository.delete(id);
+
+    this.schedulerRegistry.deleteCronJob(id);
   }
 }
