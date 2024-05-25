@@ -9,6 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateRecurringIncomeDto } from './dto/create-recurring-income.dto';
 import { UserEntity } from '../users/entities/user.entity';
 import { RecurringIncomeNotFoundException } from './exceptions/recurring-income-not-found';
+import { PriceEntity } from '../shared/prices/price.entity';
 
 @Injectable()
 export class RecurringIncomesService {
@@ -23,7 +24,9 @@ export class RecurringIncomesService {
   ): Promise<RecurringIncomeEntity> {
     const recurringIncome = new RecurringIncomeEntity();
 
-    recurringIncome.amount = createRecurringIncomeDto.amount;
+    recurringIncome.price = new PriceEntity();
+    recurringIncome.price.amount = createRecurringIncomeDto.price.amount;
+    recurringIncome.price.currency = createRecurringIncomeDto.price.currency;
     recurringIncome.category = createRecurringIncomeDto.category;
     recurringIncome.notes = createRecurringIncomeDto.notes;
     recurringIncome.user = userId as unknown as UserEntity;

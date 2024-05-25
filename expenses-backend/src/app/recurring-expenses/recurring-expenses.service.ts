@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { CreateRecurringExpenseDto } from './dto/create-recurring-expense.dto';
 import { UserEntity } from '../users/entities/user.entity';
 import { RecurringExpenseNotFoundException } from './exceptions/recurring-expense-not-found';
+import { PriceEntity } from '../shared/prices/price.entity';
 
 @Injectable()
 export class RecurringExpensesService {
@@ -23,7 +24,9 @@ export class RecurringExpensesService {
   ): Promise<RecurringExpenseEntity> {
     const recurringExpense = new RecurringExpenseEntity();
 
-    recurringExpense.amount = createRecurringExpenseDto.amount;
+    recurringExpense.price = new PriceEntity();
+    recurringExpense.price.amount = createRecurringExpenseDto.price.amount;
+    recurringExpense.price.currency = createRecurringExpenseDto.price.currency;
     recurringExpense.category = createRecurringExpenseDto.category;
     recurringExpense.notes = createRecurringExpenseDto.notes;
     recurringExpense.user = userId as unknown as UserEntity;

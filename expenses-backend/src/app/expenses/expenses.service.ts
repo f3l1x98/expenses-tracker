@@ -9,6 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UserEntity } from '../users/entities/user.entity';
 import { ExpenseNotFoundException } from './exceptions/expense-not-found';
+import { PriceEntity } from '../shared/prices/price.entity';
 
 @Injectable()
 export class ExpensesService {
@@ -23,7 +24,9 @@ export class ExpensesService {
   ): Promise<ExpenseEntity> {
     const expense = new ExpenseEntity();
 
-    expense.amount = createExpenseDto.amount;
+    expense.price = new PriceEntity();
+    expense.price.amount = createExpenseDto.price.amount;
+    expense.price.currency = createExpenseDto.price.currency;
     expense.category = createExpenseDto.category;
     expense.notes = createExpenseDto.notes;
     expense.user = userId as unknown as UserEntity;

@@ -1,16 +1,19 @@
-import { IsNumber, IsPositive } from 'class-validator';
 import { ExpenseCategory } from '../entities/expense-category';
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
+import { IsDefined, IsNotEmptyObject, ValidateNested } from 'class-validator';
+import { PriceDto } from 'src/app/shared/prices/price.dto';
 
 export class CreateExpenseDto {
-  // TODO has IsCurrency which expects string
   @ApiProperty({
-    description: 'Monetary amount of the expense',
+    description: 'Price of the expense',
     required: true,
   })
-  @IsNumber({ maxDecimalPlaces: 2, allowInfinity: false, allowNaN: false })
-  @IsPositive()
-  amount: number;
+  @IsDefined()
+  @IsNotEmptyObject()
+  @ValidateNested()
+  @Type(() => PriceDto)
+  price: PriceDto;
 
   @ApiProperty({
     description: 'The category of the expense',

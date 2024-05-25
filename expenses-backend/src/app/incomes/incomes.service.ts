@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { CreateIncomeDto } from './dto/create-income.dto';
 import { UserEntity } from '../users/entities/user.entity';
 import { IncomeNotFoundException } from './exceptions/income-not-found';
+import { PriceEntity } from '../shared/prices/price.entity';
 
 @Injectable()
 export class IncomesService {
@@ -23,7 +24,9 @@ export class IncomesService {
   ): Promise<IncomeEntity> {
     const income = new IncomeEntity();
 
-    income.amount = createIncomeDto.amount;
+    income.price = new PriceEntity();
+    income.price.amount = createIncomeDto.price.amount;
+    income.price.currency = createIncomeDto.price.currency;
     income.category = createIncomeDto.category;
     income.notes = createIncomeDto.notes;
     income.user = userId as unknown as UserEntity;
