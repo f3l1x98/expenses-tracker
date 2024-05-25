@@ -65,6 +65,7 @@ export class RecurringIncomesService implements OnApplicationBootstrap {
       recurringIncome.startDate === undefined ||
       recurringIncome.startDate.getTime() <= Date.now()
     ) {
+      this.logger.log(`Started job with id ${recurringIncome.id}`);
       job.start();
     }
   }
@@ -72,22 +73,32 @@ export class RecurringIncomesService implements OnApplicationBootstrap {
   @Cron('0 2 * * *')
   async checkRecurringIncomeJobs() {
     const recurringIncomes = await this.recurringIncomesRepository.find();
-    const currentDate = Date.now();
     for (const recurringIncome of recurringIncomes) {
-      if (
-        recurringIncome.startDate !== undefined &&
-        recurringIncome.startDate.getTime() <= currentDate
-      ) {
-        const job = this.schedulerRegistry.getCronJob(recurringIncome.id);
-        if (!job.running) {
-          job.start();
-        }
-      } else if (
-        recurringIncome.endDate !== undefined &&
-        recurringIncome.endDate.getTime() >= currentDate
-      ) {
-        this.schedulerRegistry.deleteCronJob(recurringIncome.id);
-      }
+      this.updateJobStatusById(
+        recurringIncome.id,
+        recurringIncome.startDate,
+        recurringIncome.endDate,
+      );
+    }
+  }
+
+  private updateJobStatusById(
+    jobId: string,
+    startDate: Date | undefined,
+    endDate: Date | undefined,
+  ) {
+    const job = this.schedulerRegistry.getCronJob(jobId);
+    const currentDate = Date.now();
+    const start = startDate?.getTime() ?? currentDate - 1;
+    const end = endDate?.getTime() ?? currentDate + 1;
+    const shouldBeRunning = start <= currentDate && end > currentDate;
+
+    if (shouldBeRunning && !job.running) {
+      this.logger.log(`Started job with id ${jobId}`);
+      job.start();
+    } else if (!shouldBeRunning && job.running) {
+      this.logger.log(`Started job with id ${jobId}`);
+      job.stop();
     }
   }
 
@@ -188,15 +199,10 @@ export class RecurringIncomesService implements OnApplicationBootstrap {
       job.setTime(newCronTime);
     }
 
-    const nowInMs = Date.now();
-    const startInMs = recurringIncome.startDate?.getTime() ?? nowInMs - 1;
-    const endInMs = recurringIncome.endDate?.getTime() ?? nowInMs + 1;
-    const shouldBeRunning = startInMs <= nowInMs && endInMs > nowInMs;
-
-    if (shouldBeRunning && !job.running) {
-      job.start();
-    } else if (!shouldBeRunning && job.running) {
-      job.stop();
-    }
+    this.updateJobStatusById(
+      recurringIncome.id,
+      recurringIncome.startDate,
+      recurringIncome.endDate,
+    );
   }
 }

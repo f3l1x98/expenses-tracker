@@ -67,6 +67,7 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
       recurringExpense.startDate === undefined ||
       recurringExpense.startDate.getTime() <= Date.now()
     ) {
+      this.logger.log(`Started job with id ${recurringExpense.id}`);
       job.start();
     }
   }
@@ -74,22 +75,32 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
   @Cron('0 2 * * *')
   async checkRecurringExpenseJobs() {
     const recurringExpenses = await this.recurringExpensesRepository.find();
-    const currentDate = Date.now();
     for (const recurringExpense of recurringExpenses) {
-      if (
-        recurringExpense.startDate !== undefined &&
-        recurringExpense.startDate.getTime() <= currentDate
-      ) {
-        const job = this.schedulerRegistry.getCronJob(recurringExpense.id);
-        if (!job.running) {
-          job.start();
-        }
-      } else if (
-        recurringExpense.endDate !== undefined &&
-        recurringExpense.endDate.getTime() >= currentDate
-      ) {
-        this.schedulerRegistry.deleteCronJob(recurringExpense.id);
-      }
+      this.updateJobStatusById(
+        recurringExpense.id,
+        recurringExpense.startDate,
+        recurringExpense.endDate,
+      );
+    }
+  }
+
+  private updateJobStatusById(
+    jobId: string,
+    startDate: Date | undefined,
+    endDate: Date | undefined,
+  ) {
+    const job = this.schedulerRegistry.getCronJob(jobId);
+    const currentDate = Date.now();
+    const start = startDate?.getTime() ?? currentDate - 1;
+    const end = endDate?.getTime() ?? currentDate + 1;
+    const shouldBeRunning = start <= currentDate && end > currentDate;
+
+    if (shouldBeRunning && !job.running) {
+      this.logger.log(`Started job with id ${jobId}`);
+      job.start();
+    } else if (!shouldBeRunning && job.running) {
+      this.logger.log(`Started job with id ${jobId}`);
+      job.stop();
     }
   }
 
@@ -192,15 +203,10 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
       job.setTime(newCronTime);
     }
 
-    const currentDate = Date.now();
-    const start = recurringExpense.startDate?.getTime() ?? currentDate - 1;
-    const end = recurringExpense.endDate?.getTime() ?? currentDate + 1;
-    const shouldBeRunning = start <= currentDate && end > currentDate;
-
-    if (shouldBeRunning && !job.running) {
-      job.start();
-    } else if (!shouldBeRunning && job.running) {
-      job.stop();
-    }
+    this.updateJobStatusById(
+      recurringExpense.id,
+      recurringExpense.startDate,
+      recurringExpense.endDate,
+    );
   }
 }
