@@ -2,7 +2,17 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { RecurringIncomesService } from './recurring-incomes.service';
 import { CreateRecurringIncomeDto } from './dto/create-recurring-income.dto';
 import { RecurringIncomeEntity } from './entities/recurring-income.entitiy';
@@ -12,10 +22,12 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiNotFoundResponse,
   ApiOperation,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { RecurringIncomeNotFoundException } from './exceptions/recurring-income-not-found';
 
 @ApiTags('recurring-incomes')
 @ApiBearerAuth()
@@ -51,5 +63,24 @@ export class RecurringIncomesController {
   @Get()
   async findOwn(@Req() req: Request): Promise<RecurringIncomeEntity[]> {
     return this.recurringIncomesService.findAllForUser((req.user as IUser).id);
+  }
+
+  @ApiOperation({
+    summary: 'Deletes the recurring income with the specified id',
+  })
+  @ApiNotFoundResponse({
+    description:
+      'No recurring income with the specified id was found for the requesting user',
+  })
+  @Delete(':id')
+  async delete(@Param('id') id: string, @Req() req: Request) {
+    try {
+      await this.recurringIncomesService.delete(id, (req.user as IUser).id);
+    } catch (e) {
+      if (e instanceof RecurringIncomeNotFoundException) {
+        throw new NotFoundException();
+      }
+      throw e;
+    }
   }
 }

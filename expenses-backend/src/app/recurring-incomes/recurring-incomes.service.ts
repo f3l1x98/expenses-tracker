@@ -8,6 +8,7 @@ import { RecurringIncomeEntity } from './entities/recurring-income.entitiy';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateRecurringIncomeDto } from './dto/create-recurring-income.dto';
 import { UserEntity } from '../users/entities/user.entity';
+import { RecurringIncomeNotFoundException } from './exceptions/recurring-income-not-found';
 
 @Injectable()
 export class RecurringIncomesService {
@@ -27,7 +28,6 @@ export class RecurringIncomesService {
     recurringIncome.notes = createRecurringIncomeDto.notes;
     recurringIncome.user = userId as unknown as UserEntity;
     recurringIncome.cron = createRecurringIncomeDto.cron;
-    // TODO either class-validator or here: start before end!
     recurringIncome.startDate = createRecurringIncomeDto.startDate;
     recurringIncome.endDate = createRecurringIncomeDto.endDate;
 
@@ -38,5 +38,16 @@ export class RecurringIncomesService {
     return this.recurringIncomesRepository.find({
       where: { user: { id: userId } },
     });
+  }
+
+  async delete(id: string, userId: string) {
+    const user = await this.recurringIncomesRepository.findOne({
+      where: { user: { id: userId } },
+    });
+
+    if (user === null) {
+      throw new RecurringIncomeNotFoundException(id);
+    }
+    await this.recurringIncomesRepository.delete(id);
   }
 }

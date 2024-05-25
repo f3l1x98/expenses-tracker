@@ -2,7 +2,17 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { ExpensesService } from './expenses.service';
 import { ExpenseEntity } from './entities/expense.entity';
 import { CreateExpenseDto } from './dto/create-expense.dto';
@@ -12,10 +22,12 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiNotFoundResponse,
   ApiOperation,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { ExpenseNotFoundException } from './exceptions/expense-not-found';
 
 @ApiTags('expenses')
 @ApiBearerAuth()
@@ -51,5 +63,24 @@ export class ExpensesController {
   @Get()
   async findOwn(@Req() req: Request): Promise<ExpenseEntity[]> {
     return this.expensesService.findAllForUser((req.user as IUser).id);
+  }
+
+  @ApiOperation({
+    summary: 'Deletes the expense with the specified id',
+  })
+  @ApiNotFoundResponse({
+    description:
+      'No expense with the specified id was found for the requesting user',
+  })
+  @Delete(':id')
+  async delete(@Param('id') id: string, @Req() req: Request) {
+    try {
+      await this.expensesService.delete(id, (req.user as IUser).id);
+    } catch (e) {
+      if (e instanceof ExpenseNotFoundException) {
+        throw new NotFoundException();
+      }
+      throw e;
+    }
   }
 }

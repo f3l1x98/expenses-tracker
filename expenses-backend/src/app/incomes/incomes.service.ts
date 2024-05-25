@@ -8,6 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateIncomeDto } from './dto/create-income.dto';
 import { UserEntity } from '../users/entities/user.entity';
+import { IncomeNotFoundException } from './exceptions/income-not-found';
 
 @Injectable()
 export class IncomesService {
@@ -34,5 +35,16 @@ export class IncomesService {
     return this.incomesRepository.find({
       where: { user: { id: userId } },
     });
+  }
+
+  async delete(id: string, userId: string) {
+    const user = await this.incomesRepository.findOne({
+      where: { user: { id: userId } },
+    });
+
+    if (user === null) {
+      throw new IncomeNotFoundException(id);
+    }
+    await this.incomesRepository.delete(id);
   }
 }

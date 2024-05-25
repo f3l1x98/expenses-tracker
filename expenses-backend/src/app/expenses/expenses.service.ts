@@ -8,6 +8,7 @@ import { ExpenseEntity } from './entities/expense.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UserEntity } from '../users/entities/user.entity';
+import { ExpenseNotFoundException } from './exceptions/expense-not-found';
 
 @Injectable()
 export class ExpensesService {
@@ -34,5 +35,16 @@ export class ExpensesService {
     return this.expensesRepository.find({
       where: { user: { id: userId } },
     });
+  }
+
+  async delete(id: string, userId: string) {
+    const user = await this.expensesRepository.findOne({
+      where: { user: { id: userId } },
+    });
+
+    if (user === null) {
+      throw new ExpenseNotFoundException(id);
+    }
+    await this.expensesRepository.delete(id);
   }
 }
