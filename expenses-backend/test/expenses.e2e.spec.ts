@@ -1,4 +1,4 @@
-import { ExecutionContext, INestApplication } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { setupApp } from 'src/app/app';
 import { ExpenseEntity } from 'src/app/expenses/entities/expense.entity';
@@ -11,6 +11,7 @@ import { CreateExpenseDto } from 'src/app/expenses/dto/create-expense.dto';
 import { ExpenseCategory } from 'src/app/expenses/entities/expense-category';
 import { UserEntity } from 'src/app/users/entities/user.entity';
 import { IUser } from 'src/app/users/entities/user';
+import { PriceDto } from 'src/app/shared/prices/price.dto';
 
 describe('Expenses', () => {
   let app: INestApplication;
@@ -63,16 +64,104 @@ describe('Expenses', () => {
   });
 
   describe('/expenses (POST)', () => {
+    describe('with valid dto', () => {
+      it('should return 201 Created', () => {
+        const dto = {
+          category: ExpenseCategory.MISC,
+          price: {
+            amount: 20.14,
+            currency: 'EUR',
+          } as PriceDto,
+        } as CreateExpenseDto;
+
+        return request(app.getHttpServer())
+          .post('/v1/expenses')
+          .send(dto)
+          .expect(201);
+      });
+    });
+
     describe('with price', () => {
       describe('being empty', () => {
         it('should return 400 Bad Request', () => {
-          const dto = new CreateExpenseDto();
-          dto.category = ExpenseCategory.MISC;
+          const dto = {
+            category: ExpenseCategory.MISC,
+          } as CreateExpenseDto;
+
           return request(app.getHttpServer())
             .post('/v1/expenses')
-            .set({ authorization: 'TODO' })
             .send(dto)
             .expect(400);
+        });
+      });
+
+      describe('amount negative number', () => {
+        describe('negative', () => {
+          it('should return 400 Bad Request', () => {
+            const dto = {
+              category: ExpenseCategory.MISC,
+              price: {
+                amount: -1,
+                currency: 'EUR',
+              } as PriceDto,
+            } as CreateExpenseDto;
+
+            return request(app.getHttpServer())
+              .post('/v1/expenses')
+              .send(dto)
+              .expect(400);
+          });
+        });
+        describe('zero', () => {
+          it('should return 400 Bad Request', () => {
+            const dto = {
+              category: ExpenseCategory.MISC,
+              price: {
+                amount: 0,
+                currency: 'EUR',
+              } as PriceDto,
+            } as CreateExpenseDto;
+
+            return request(app.getHttpServer())
+              .post('/v1/expenses')
+              .send(dto)
+              .expect(400);
+          });
+        });
+      });
+
+      describe('currency', () => {
+        describe('empty', () => {
+          it('should return 400 Bad Request', () => {
+            const dto = {
+              category: ExpenseCategory.MISC,
+              price: {
+                amount: 20.14,
+                currency: '',
+              } as PriceDto,
+            } as CreateExpenseDto;
+
+            return request(app.getHttpServer())
+              .post('/v1/expenses')
+              .send(dto)
+              .expect(400);
+          });
+        });
+        describe('not a valid ISO currencyCode', () => {
+          it('should return 400 Bad Request', () => {
+            const dto = {
+              category: ExpenseCategory.MISC,
+              price: {
+                amount: 20.14,
+                currency: 'EU',
+              } as PriceDto,
+            } as CreateExpenseDto;
+
+            return request(app.getHttpServer())
+              .post('/v1/expenses')
+              .send(dto)
+              .expect(400);
+          });
         });
       });
     });
