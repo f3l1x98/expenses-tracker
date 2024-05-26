@@ -166,4 +166,49 @@ describe('Expenses', () => {
       });
     });
   });
+
+  describe('/expenses (GET)', () => {
+    let findAllForUserSpy: jest.SpyInstance<
+      Promise<ExpenseEntity[]>,
+      [userId: string]
+    >;
+
+    beforeEach(() => {
+      findAllForUserSpy = jest
+        .spyOn(expensesServiceMock, 'findAllForUser')
+        .mockResolvedValue([
+          {
+            id: 'ab1f810c-676f-2aa3-8e23-3dba8d0f393e',
+            category: ExpenseCategory.MISC,
+            price: {
+              amount: 20.0,
+              currency: 'EUR',
+            },
+            user: user as UserEntity,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+        ]);
+    });
+
+    it('200 Ok', async () => {
+      const response = await request(app.getHttpServer())
+        .get('/v1/expenses')
+        .send()
+        .expect(200);
+
+      expect(response.body).toEqual([
+        expect.objectContaining({
+          category: 'misc',
+          id: 'ab1f810c-676f-2aa3-8e23-3dba8d0f393e',
+          price: { amount: 20, currency: 'EUR' },
+          user: {
+            id: '784f94c2-1909-423c-9cec-41eed35ef013',
+            username: 'TestUser',
+          },
+        }),
+      ]);
+      expect(findAllForUserSpy).toHaveBeenCalledTimes(1);
+    });
+  });
 });
