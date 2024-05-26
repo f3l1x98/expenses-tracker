@@ -3,7 +3,7 @@ import { ExpensesController } from './expenses.controller';
 import { ExpensesService } from './expenses.service';
 import { ExpenseEntity } from './entities/expense.entity';
 import { Request } from 'express';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
 
 describe('ExpensesController', () => {
   let expensesController: ExpensesController;
@@ -11,11 +11,14 @@ describe('ExpensesController', () => {
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
-      // TODO missing TypeOrm
       imports: [TypeOrmModule.forFeature([ExpenseEntity])],
       controllers: [ExpensesController],
       providers: [ExpensesService],
-    }).compile();
+    })
+      .overrideProvider(getRepositoryToken(ExpenseEntity))
+      .useValue({})
+
+      .compile();
 
     expensesService = moduleRef.get<ExpensesService>(ExpensesService);
     expensesController = moduleRef.get<ExpensesController>(ExpensesController);
