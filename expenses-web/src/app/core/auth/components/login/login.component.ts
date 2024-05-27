@@ -3,13 +3,20 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
 import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: 'login.component.html',
   standalone: true,
-  imports: [CardModule, ButtonModule, InputTextModule, FormsModule],
+  imports: [
+    CardModule,
+    ButtonModule,
+    InputTextModule,
+    FormsModule,
+    PasswordModule,
+  ],
 })
 export class LoginComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<boolean>();
