@@ -1,19 +1,8 @@
 import { NgModule } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivateFn,
-  Route,
-  RouterModule,
-  RouterStateSnapshot,
-  Routes,
-} from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './core/auth/auth.guard';
 
 const routes: Routes = [
-  /*{
-    path: '',
-    redirectTo: 'features',
-    pathMatch: 'full',
-  },*/
   {
     path: 'login',
     loadChildren: () =>
@@ -23,7 +12,12 @@ const routes: Routes = [
     path: 'features',
     loadChildren: () =>
       import('./features/features.module').then((m) => m.FeaturesModule),
-    // TODO canActivate
+    canActivate: [AuthGuard],
+  },
+  {
+    path: '**',
+    redirectTo: 'features',
+    pathMatch: 'full',
   },
 ];
 
