@@ -1,12 +1,15 @@
 <p-card>
+  <form [formGroup]="formGroup">
     <label for="email">Email</label>
     <!--TODO look into inputmask to validate email-->
-    <input pInputText class="w-full mb-3" id="email" [(ngModel)]="email" type="text" placeholder="example@test.com">
+    <input pInputText class="w-full mb-3" id="email" formControlName="username" type="text"
+      placeholder="example@test.com">
 
     <label for="password">Password</label>
-    <p-password inputStyleClass="w-full mb-3" styleClass="w-full mb-3" inputId="password" [(ngModel)]="password"
-        [feedback]="false" />
+    <p-password inputStyleClass="w-full mb-3" styleClass="w-full mb-3" inputId="password" formControlName="password"
+      [feedback]="false" />
     <!--<input pInputText class="w-full mb-3" id="password" [(ngModel)]="password" type="password" placeholder="Password">-->
+  </form>
 
-    <p-button label="Login" icon="pi pi-user" clas="w-full" (onClick)="submit()" [loading]="true"></p-button>
+  <p-button label="Login" icon="pi pi-user" clas="w-full" (onClick)="submit()" [loading]="true"></p-button>
 </p-card>

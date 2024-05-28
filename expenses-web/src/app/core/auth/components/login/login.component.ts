@@ -1,5 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
@@ -11,6 +18,7 @@ import { Subject } from 'rxjs';
   templateUrl: 'login.component.html',
   standalone: true,
   imports: [
+    ReactiveFormsModule,
     CardModule,
     ButtonModule,
     InputTextModule,
@@ -20,14 +28,9 @@ import { Subject } from 'rxjs';
 })
 export class LoginComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<boolean>();
+  formGroup!: FormGroup;
 
-  email: string;
-  password: string;
-
-  constructor() {
-    this.email = '';
-    this.password = '';
-  }
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnDestroy(): void {
     this.destroy$.next(true);
@@ -35,6 +38,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.formGroup = this.formBuilder.group({
+      username: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
+    });
     // TODO listen to auth service with pipe(takeUntil(this.destroy$))
   }
 
