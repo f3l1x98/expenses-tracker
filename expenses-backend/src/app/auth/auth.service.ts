@@ -7,10 +7,6 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { IUser } from '../users/entities/user';
 
-export interface JwtResponse {
-  access_token: string;
-}
-
 @Injectable()
 export class AuthService {
   constructor(
@@ -32,20 +28,13 @@ export class AuthService {
     return undefined;
   }
 
-  async generateJwt(
-    user: IUser,
-    expiresIn?: number | string,
-  ): Promise<JwtResponse> {
+  async generateJwt(user: IUser, expiresIn?: number | string): Promise<string> {
     const payload = { username: user.username, sub: user.id };
 
     if (expiresIn !== undefined) {
-      return Promise.resolve({
-        access_token: this.jwtService.sign(payload, { expiresIn }),
-      });
+      return Promise.resolve(this.jwtService.sign(payload, { expiresIn }));
     }
 
-    return Promise.resolve({
-      access_token: this.jwtService.sign(payload),
-    });
+    return Promise.resolve(this.jwtService.sign(payload));
   }
 }
