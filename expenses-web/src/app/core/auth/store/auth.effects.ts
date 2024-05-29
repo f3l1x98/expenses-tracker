@@ -4,10 +4,14 @@ import { AuthService } from '../auth.service';
 import * as UserActions from './user.actions';
 import * as AuthActions from './auth.actions';
 import { catchError, map, of, switchMap, take } from 'rxjs';
+import { AuthApiService } from '../api/auth-api.service';
 
 @Injectable()
 export class AuthEffects {
-  constructor(private actions$: Actions, private authService: AuthService) {}
+  constructor(
+    private actions$: Actions,
+    private authApiService: AuthApiService
+  ) {}
 
   loginStart$ = createEffect(() =>
     this.actions$.pipe(
@@ -21,13 +25,11 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthActions.loginStart),
       switchMap((action) =>
-        this.authService
-          .login$(action.request.username, action.request.password)
-          .pipe(
-            take(1),
-            map((result) => AuthActions.loginSuccess({ result })),
-            catchError((error) => of(AuthActions.loginFailure({ error })))
-          )
+        this.authApiService.login$(action.request).pipe(
+          take(1),
+          map((result) => AuthActions.loginSuccess({ result })),
+          catchError((error) => of(AuthActions.loginFailure({ error })))
+        )
       )
     )
   );

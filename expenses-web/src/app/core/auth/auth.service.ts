@@ -1,18 +1,27 @@
-import { Injectable } from '@angular/core';
-import { AuthApiService } from './api/auth-api.service';
-import { Observable } from 'rxjs';
-import { UserLoginResponse } from './api/user-login-response.interface';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Subject } from 'rxjs';
+import { AuthStoreService } from './store/auth-store.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
-  constructor(private authApiService: AuthApiService) {}
+export class AuthService implements OnDestroy {
+  private destroy$ = new Subject<void>();
 
-  public login$(
-    username: string,
-    password: string
-  ): Observable<UserLoginResponse> {
-    return this.authApiService.login$({ username, password });
+  status$ = this.authStore.status$;
+
+  constructor(private authStore: AuthStoreService) {}
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  public login(username: string, password: string) {
+    this.authStore.login(username, password);
+  }
+
+  public logout() {
+    this.authStore.logout();
   }
 }
