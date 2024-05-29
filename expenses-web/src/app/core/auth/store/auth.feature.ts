@@ -3,7 +3,7 @@ import { AuthState, AuthStatus } from './auth.state';
 
 import * as AuthActions from './auth.actions';
 
-const initialState: AuthState = {
+export const initialState: AuthState = {
   user: undefined,
   token: undefined,
   status: {
