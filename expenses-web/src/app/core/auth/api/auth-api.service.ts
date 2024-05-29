@@ -10,7 +10,8 @@ import { UserLoginResponse } from './user-login-response.interface';
 export class AuthApiService {
   constructor(private apiService: BaseApiService) {}
 
-  private readonly loginUrl: string = `${this.apiService.apiRoot}/login`;
+  private readonly authUrl: string = `${this.apiService.apiRoot}/auth`;
+  private readonly loginUrl: string = `${this.authUrl}/login`;
 
   login$(request: UserLoginRequest): Observable<UserLoginResponse> {
     return this.apiService.post(this.loginUrl, request);
