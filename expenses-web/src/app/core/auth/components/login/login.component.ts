@@ -64,6 +64,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   submit() {
+    if (!this.formGroup.valid) return;
+
     this.authService.login(
       this.formGroup.get('username')!.value,
       this.formGroup.get('password')!.value
