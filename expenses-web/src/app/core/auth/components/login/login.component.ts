@@ -11,13 +11,18 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
-import { Subject } from 'rxjs';
+import { Subject, map, takeUntil } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { AuthService } from '../../auth.service';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: 'login.component.html',
   standalone: true,
   imports: [
+    RouterModule,
+    CommonModule,
     ReactiveFormsModule,
     CardModule,
     ButtonModule,
@@ -29,8 +34,15 @@ import { Subject } from 'rxjs';
 export class LoginComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<boolean>();
   formGroup!: FormGroup;
+  loading$ = this.authService.status$.pipe(
+    map((status) => status.value == 'running')
+  );
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnDestroy(): void {
     this.destroy$.next(true);
@@ -42,10 +54,19 @@ export class LoginComponent implements OnInit, OnDestroy {
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
     });
-    // TODO listen to auth service with pipe(takeUntil(this.destroy$))
+    this.authService.status$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((status) => {
+        if (status.value == 'success') {
+          this.router.navigate(['/features']);
+        }
+      });
   }
 
   submit() {
-    // TODO submit to auth service
+    this.authService.login(
+      this.formGroup.get('username')!.value,
+      this.formGroup.get('password')!.value
+    );
   }
 }
