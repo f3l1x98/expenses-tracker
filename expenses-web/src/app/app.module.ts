@@ -6,7 +6,8 @@ import { StoreModule } from '@ngrx/store';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthModule } from './core/auth/auth.module';
 import { EffectsModule } from '@ngrx/effects';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from './core/auth/auth.interceptor';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
@@ -29,7 +30,9 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     }),
   ],
   exports: [],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
