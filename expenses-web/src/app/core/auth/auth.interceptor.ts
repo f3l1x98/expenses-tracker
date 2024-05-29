@@ -5,22 +5,25 @@ import {
   HttpHandler,
   HttpRequest,
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
+import { AuthStoreService } from './store/auth-store.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private auth: TODO) {}
+  constructor(private auth: AuthStoreService) {}
 
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const authToken = this.auth.accessToken;
+    return this.auth.token$.pipe(
+      switchMap((token) => {
+        const authReq = req.clone({
+          headers: req.headers.set('Authorization', `Bearer ${token}`),
+        });
 
-    const authReq = req.clone({
-      headers: req.headers.set('Authorization', `Bearer ${authToken}`),
-    });
-
-    return next.handle(authReq);
+        return next.handle(authReq);
+      })
+    );
   }
 }
