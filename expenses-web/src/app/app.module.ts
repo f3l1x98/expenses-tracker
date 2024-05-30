@@ -9,9 +9,16 @@ import { EffectsModule } from '@ngrx/effects';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './core/auth/auth.interceptor';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { SpinnerComponent } from './shell/spinner/spinner.component';
+import { SidebarComponent } from './shell/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [AppComponent],
+  exports: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
+  bootstrap: [AppComponent],
   imports: [
     AppRoutingModule,
     AuthModule,
@@ -28,11 +35,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
       connectInZone: true, // If set to true, the connection is established within the Angular zone
     }),
+    SpinnerComponent,
+    SidebarComponent,
   ],
-  exports: [],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-  ],
-  bootstrap: [AppComponent],
 })
 export class AppModule {}
