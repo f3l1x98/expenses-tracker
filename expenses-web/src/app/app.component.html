@@ -1,13 +1,5 @@
 <div class="page-layout-wrapper">
-    <!--TODO idea:
-    - left side menu with header at top, followed by home/dashboard, expenses, income, settings and logout at the bottom-->
-    <!--TODO for mobile see https://primeng.org/sidebar#headless-->
-    <section class="page-layout-sidebar">
-        <app-sidebar></app-sidebar>
-    </section>
-    <section class="page-layout-content">
-        <router-outlet></router-outlet>
-    </section>
+    <router-outlet></router-outlet>
 </div>
 <app-spinner></app-spinner>
 <app-notification></app-notification>

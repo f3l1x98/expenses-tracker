@@ -10,7 +10,6 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './core/auth/auth.interceptor';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { SpinnerComponent } from './shell/spinner/spinner.component';
-import { SidebarComponent } from './shell/sidebar/sidebar.component';
 import { NotificationComponent } from './shell/notification/notification.component';
 
 @NgModule({
@@ -37,7 +36,6 @@ import { NotificationComponent } from './shell/notification/notification.compone
       connectInZone: true, // If set to true, the connection is established within the Angular zone
     }),
     SpinnerComponent,
-    SidebarComponent,
     NotificationComponent,
   ],
 })

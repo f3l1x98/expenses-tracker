@@ -2,17 +2,4 @@
   height: calc((var(--vh, 1vh) * 100));
   width: 100%;
   padding: 0;
-  display: grid;
-  grid-template-areas: "sidebar content";
-  grid-template-columns: 10vw auto;
-}
-.page-layout-sidebar {
-  grid-area: "sidebar";
-  height: 100%;
-  margin-right: 1rem;
-}
-.page-layout-content {
-  grid-area: "content";
-  height: 100%;
-  overflow-y: auto;
 }
