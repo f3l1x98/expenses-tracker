@@ -11,6 +11,7 @@ import { AuthInterceptor } from './core/auth/auth.interceptor';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { SpinnerComponent } from './shell/spinner/spinner.component';
 import { SidebarComponent } from './shell/sidebar/sidebar.component';
+import { NotificationComponent } from './shell/notification/notification.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -37,6 +38,7 @@ import { SidebarComponent } from './shell/sidebar/sidebar.component';
     }),
     SpinnerComponent,
     SidebarComponent,
+    NotificationComponent,
   ],
 })
 export class AppModule {}
