@@ -15,6 +15,7 @@ import { Subject, map, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../auth.service';
 import { Router, RouterModule } from '@angular/router';
+import { AppHeaderComponent } from '../../../../shared/components/app-header/app-header.component';
 
 @Component({
   selector: 'app-login',
@@ -29,6 +30,7 @@ import { Router, RouterModule } from '@angular/router';
     InputTextModule,
     FormsModule,
     PasswordModule,
+    AppHeaderComponent,
   ],
 })
 export class LoginComponent implements OnInit, OnDestroy {

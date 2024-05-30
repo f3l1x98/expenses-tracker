@@ -1,13 +1,18 @@
-<p-card>
-  <form [formGroup]="formGroup" (keydown.enter)="submit()">
-    <label for="username">Username</label>
-    <input pInputText class="w-full mb-3" id="username" formControlName="username" type="text">
+<div class="flex justify-content-center align-content-center w-full h-full">
+  <p-card class="w-3">
+    <div class="flex justify-content-center px-4 pt-3 pb-5">
+      <app-header></app-header>
+    </div>
+    <form [formGroup]="formGroup" (keydown.enter)="submit()">
+      <label for="username">Username</label>
+      <input pInputText class="w-full mb-3" id="username" formControlName="username" type="text">
 
-    <label for="password">Password</label>
-    <p-password inputStyleClass="w-full mb-3" styleClass="w-full mb-3" inputId="password" formControlName="password"
-      [feedback]="false" />
-  </form>
+      <label for="password">Password</label>
+      <p-password inputStyleClass="w-full mb-3" styleClass="w-full mb-3" inputId="password" formControlName="password"
+        [feedback]="false" />
+    </form>
 
-  <p-button label="Login" icon="pi pi-user" clas="w-full" (onClick)="submit()" [loading]="(loading$ | async)"
-    [disabled]="!formGroup.valid"></p-button>
-</p-card>
+    <p-button label="Login" icon="pi pi-user" clas="w-full" (onClick)="submit()" [loading]="(loading$ | async)"
+      [disabled]="!formGroup.valid"></p-button>
+  </p-card>
+</div>
