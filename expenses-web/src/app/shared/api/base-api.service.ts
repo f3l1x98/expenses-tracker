@@ -1,7 +1,13 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+  HttpParams,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Observable, catchError, throwError } from 'rxjs';
+import { NotificationService } from '../../shell/notification/notification.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +18,10 @@ export class BaseApiService {
     'Content-Type': 'application/json',
   });
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private notificationService: NotificationService
+  ) {}
 
   public get<T>(url: string): Observable<T> {
     return this.request<T>('get', url);
@@ -45,8 +54,11 @@ export class BaseApiService {
       })
       .pipe(
         catchError((err) => {
-          // TODO error handling
-          console.error(err);
+          let errorMsg: string = 'Unexpected error';
+          if (err instanceof HttpErrorResponse) {
+            errorMsg = err.message;
+          }
+          this.notificationService.error(errorMsg);
           return throwError(() => err);
         })
       );
