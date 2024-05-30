@@ -4,12 +4,20 @@
       <app-header></app-header>
     </div>
     <form [formGroup]="formGroup" (keydown.enter)="submit()">
-      <label for="username">Username</label>
-      <input pInputText class="w-full mb-3" id="username" formControlName="username" type="text">
+      <div class="mb-5">
+        <p-floatLabel>
+          <input pInputText class="w-full" id="username" formControlName="username" type="text">
+          <label for="username">Username</label>
+        </p-floatLabel>
+      </div>
 
-      <label for="password">Password</label>
-      <p-password inputStyleClass="w-full mb-3" styleClass="w-full mb-3" inputId="password" formControlName="password"
-        [feedback]="false" />
+      <div class="mb-5">
+        <p-floatLabel>
+          <p-password inputStyleClass="w-full" styleClass="w-full" inputId="password" formControlName="password"
+            [feedback]="false" />
+          <label for="password">Password</label>
+        </p-floatLabel>
+      </div>
     </form>
 
     <p-button label="Login" icon="pi pi-user" clas="w-full" (onClick)="submit()" [loading]="(loading$ | async)"

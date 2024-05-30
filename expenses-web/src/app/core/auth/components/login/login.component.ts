@@ -15,6 +15,7 @@ import { Subject, map, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../auth.service';
 import { Router, RouterModule } from '@angular/router';
+import { FloatLabelModule } from 'primeng/floatlabel';
 import { AppHeaderComponent } from '../../../../shared/components/app-header/app-header.component';
 
 @Component({
@@ -31,6 +32,7 @@ import { AppHeaderComponent } from '../../../../shared/components/app-header/app
     FormsModule,
     PasswordModule,
     AppHeaderComponent,
+    FloatLabelModule,
   ],
 })
 export class LoginComponent implements OnInit, OnDestroy {
