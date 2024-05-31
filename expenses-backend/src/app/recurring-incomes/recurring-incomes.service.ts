@@ -134,6 +134,9 @@ export class RecurringIncomesService implements OnApplicationBootstrap {
   async findAllForUser(userId: string): Promise<RecurringIncomeEntity[]> {
     return this.recurringIncomesRepository.find({
       where: { user: { id: userId } },
+      order: {
+        createdAt: 'DESC',
+      },
     });
   }
 

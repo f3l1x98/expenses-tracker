@@ -39,6 +39,9 @@ export class ExpensesService {
   async findAllForUser(userId: string): Promise<ExpenseEntity[]> {
     return this.expensesRepository.find({
       where: { user: { id: userId } },
+      order: {
+        createdAt: 'DESC',
+      },
     });
   }
 

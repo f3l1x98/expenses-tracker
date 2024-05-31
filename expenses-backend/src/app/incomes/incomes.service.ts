@@ -39,6 +39,9 @@ export class IncomesService {
   async findAllForUser(userId: string): Promise<IncomeEntity[]> {
     return this.incomesRepository.find({
       where: { user: { id: userId } },
+      order: {
+        createdAt: 'DESC',
+      },
     });
   }
 
