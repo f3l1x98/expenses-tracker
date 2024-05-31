@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BaseApiService } from '../../../shared/api/base-api.service';
+import { BaseApiService } from '../../../../shared/api/base-api.service';
 import { UserLoginRequest } from './user-login-request.interface';
 import { Observable } from 'rxjs';
 import { UserLoginResponse } from './user-login-response.interface';
