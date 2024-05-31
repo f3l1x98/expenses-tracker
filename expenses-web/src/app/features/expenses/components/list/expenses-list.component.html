@@ -1,6 +1,6 @@
 <div class="p-4">
     <p-card>
-        <p-dataView [value]="(expenses$ | async) ?? undefined" [rows]="12" [paginator]="true">
+        <p-dataView [value]="(expenses$ | async) ?? undefined" [rows]="16" [paginator]="true">
             <ng-template pTemplate="list" let-expenses>
                 <div class="grid grid-nogutter">
                     <div class="col-12" *ngFor="let expense of expenses; let first = first">
