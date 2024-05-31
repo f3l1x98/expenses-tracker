@@ -63,6 +63,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       .subscribe((status) => {
         if (status.value == 'success') {
           this.router.navigate(['/features']);
+          this.formGroup.reset();
         }
       });
   }
