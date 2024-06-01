@@ -13,13 +13,13 @@
                         class="flex flex-column md:flex-row justify-content-between md:align-items-center flex-1 gap-4">
                         <div class="flex flex-row md:flex-column justify-content-between align-items-start gap-2">
                             <div>
-                                <div class="text-lg font-medium text-900 mt-2">
-                                    {{ expense.category }}
-                                    <i class="pi pi-info-circle" *ngIf="expense.notes" pTooltip="{{expense.notes}}"
-                                        tooltipPosition="right"></i>
+                                <span class="font-medium text-secondary text-sm">{{ expense.category}}</span>
+                                <div class="text-lg font-medium text-900">
+                                    {{expense.description}}
                                 </div>
-                                <span class="font-medium text-secondary text-sm">{{ expense.createdAt |
-                                    formatDate:"DD MMM YYYY" }}</span>
+                                <span class="font-medium text-secondary text-sm">
+                                    {{ expense.createdAt | formatDate:"DD MMM YYYY" }}
+                                </span>
                             </div>
                         </div>
                         <div class="flex flex-row align-items-center gap-2">

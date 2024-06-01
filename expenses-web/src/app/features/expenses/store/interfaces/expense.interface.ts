@@ -3,10 +3,10 @@ import { User } from '../../../../shared/interfaces/user.interface';
 
 export interface Expense {
   id: string;
+  description: string;
   price: Price;
   category: string;
   user: User;
-  notes?: string;
   createdAt: Date;
   updatedAt: Date;
   //recurringExpense?: IRecurringExpense;
