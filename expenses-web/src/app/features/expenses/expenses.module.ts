@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { ExpensesListComponent } from './components/list/expenses-list.component';
+import { ExpensesComponent } from './components/expenses.component';
 import { ExpensesRoutingModule } from './expenses-routing.module';
 import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
@@ -12,6 +12,8 @@ import { DataViewModule } from 'primeng/dataview';
 import { ExpensesService } from './expenses.service';
 import { TooltipModule } from 'primeng/tooltip';
 import { SharedModule } from '../../shared/shared.nodule';
+import { ExpensesListComponent } from './components/expenses-list/expenses-list.component';
+import { RecurringExpensesListComponent } from './components/recurring-expenses-list/recurring-expenses-list.component';
 
 @NgModule({
   imports: [
@@ -25,7 +27,11 @@ import { SharedModule } from '../../shared/shared.nodule';
     SharedModule,
   ],
   exports: [],
-  declarations: [ExpensesListComponent],
+  declarations: [
+    ExpensesComponent,
+    ExpensesListComponent,
+    RecurringExpensesListComponent,
+  ],
   providers: [ExpensesService],
 })
 export class ExpensesModule {}
