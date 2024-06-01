@@ -1,1 +1,19 @@
-<span class="text-2xl">TODO HOME</span>
+<app-content-wrapper>
+    <div slot="header" class="flex justify-content-between">
+        <span>Home</span>
+        <p-calendar [(ngModel)]="dateRangeFilter" selectionMode="range" dateFormat="dd/mm/yy"
+            placeholder="Filter date range" />
+    </div>
+    <div class="grid">
+        <p-card class="col-6">
+            Expenses per category
+            <p-chart type="pie" [data]="expensesPerCategoryData$ | async" [options]="expensesPerCategoryOptions" />
+        </p-card>
+
+        <!--<p-card class="col-6">
+        Expenses and Income over last x months
+        <p-chart type="line" [data]="data" [options]="options" />
+    </p-card>-->
+    </div>
+
+</app-content-wrapper>
