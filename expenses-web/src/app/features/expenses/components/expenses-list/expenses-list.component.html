@@ -22,10 +22,16 @@
                                     formatDate:"DD MMM YYYY" }}</span>
                             </div>
                         </div>
-                        <div class="flex flex-column md:align-items-end gap-5">
-                            <span class="text-xl font-semibold text-900">
-                                {{ expense.price.amount + ' ' + expense.price.currency }}
-                            </span>
+                        <div class="flex flex-row align-items-center gap-2">
+                            <div>
+                                <span class="text-xl font-semibold text-900">
+                                    {{ expense.price.amount + ' ' + expense.price.currency }}
+                                </span>
+                            </div>
+                            <div>
+                                <p-menu #menu [model]="actionMenuItems" [popup]="true" appendTo="body" />
+                                <p-button [text]="true" (click)="menu.toggle($event)" icon="pi pi-ellipsis-v" />
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -14,6 +14,8 @@ import { TooltipModule } from 'primeng/tooltip';
 import { SharedModule } from '../../shared/shared.nodule';
 import { ExpensesListComponent } from './components/expenses-list/expenses-list.component';
 import { RecurringExpensesListComponent } from './components/recurring-expenses-list/recurring-expenses-list.component';
+import { ButtonModule } from 'primeng/button';
+import { MenuModule } from 'primeng/menu';
 
 @NgModule({
   imports: [
@@ -25,6 +27,8 @@ import { RecurringExpensesListComponent } from './components/recurring-expenses-
     DataViewModule,
     TooltipModule,
     SharedModule,
+    ButtonModule,
+    MenuModule,
   ],
   exports: [],
   declarations: [
