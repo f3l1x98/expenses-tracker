@@ -16,6 +16,7 @@ import { ExpensesListComponent } from './components/expenses-list/expenses-list.
 import { RecurringExpensesListComponent } from './components/recurring-expenses-list/recurring-expenses-list.component';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
+import { AppContentWrapperComponent } from '../../shared/components/app-content-wrapper/app-content-wrapper.component';
 
 @NgModule({
   imports: [
@@ -29,6 +30,7 @@ import { MenuModule } from 'primeng/menu';
     SharedModule,
     ButtonModule,
     MenuModule,
+    AppContentWrapperComponent,
   ],
   exports: [],
   declarations: [
