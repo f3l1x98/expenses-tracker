@@ -5,11 +5,10 @@ import { IUser } from 'src/app/users/entities/user';
 
 export interface IExpense {
   id: string;
-  //amount: number;
+  description: string;
   price: IPrice;
   category: ExpenseCategory;
   user: IUser;
-  notes?: string;
   createdAt: Date;
   updatedAt: Date;
   recurringExpense?: IRecurringExpense;

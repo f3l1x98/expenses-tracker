@@ -22,6 +22,13 @@ export class RecurringIncomeEntity implements IRecurringIncome {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
+  @ApiProperty({
+    description: 'Description the recurring income',
+    required: true,
+  })
+  @Column({ nullable: false })
+  description: string;
+
   @Column(() => PriceEntity)
   price!: PriceEntity;
 
@@ -45,13 +52,6 @@ export class RecurringIncomeEntity implements IRecurringIncome {
   @ManyToOne(() => UserEntity, { eager: true })
   @JoinColumn()
   user!: UserEntity;
-
-  @ApiProperty({
-    description: 'Additional information about the recurring income',
-    required: false,
-  })
-  @Column({ nullable: true })
-  notes?: string;
 
   @ApiProperty({
     description: 'The cron expression for this recurring income',

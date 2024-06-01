@@ -5,10 +5,10 @@ import { IUser } from 'src/app/users/entities/user';
 
 export interface IIncome {
   id: string;
+  description: string;
   price: IPrice;
   category: IncomeCategory;
   user: IUser;
-  notes?: string;
   createdAt: Date;
   updatedAt: Date;
   recurringIncome?: IRecurringIncome;

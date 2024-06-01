@@ -7,6 +7,12 @@ import { PriceDto } from 'src/app/shared/prices/price.dto';
 
 export class CreateIncomeDto {
   @ApiProperty({
+    description: 'Description of the income',
+    required: true,
+  })
+  description: string;
+
+  @ApiProperty({
     description: 'Price of the income',
     required: true,
   })
@@ -22,12 +28,6 @@ export class CreateIncomeDto {
     enum: IncomeCategory,
   })
   category: IncomeCategory;
-
-  @ApiProperty({
-    description: 'Additional information about the income',
-    required: false,
-  })
-  notes?: string;
 
   @Exclude()
   recurringIncome?: RecurringIncomeEntity;

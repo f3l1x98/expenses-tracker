@@ -23,6 +23,13 @@ export class IncomeEntity implements IIncome {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
+  @ApiProperty({
+    description: 'Description the income',
+    required: true,
+  })
+  @Column({ nullable: false })
+  description: string;
+
   @Column(() => PriceEntity)
   price!: PriceEntity;
 
@@ -46,13 +53,6 @@ export class IncomeEntity implements IIncome {
   @ManyToOne(() => UserEntity, { eager: true })
   @JoinColumn()
   user!: UserEntity;
-
-  @ApiProperty({
-    description: 'Additional information about the income',
-    required: false,
-  })
-  @Column({ nullable: true })
-  notes?: string;
 
   @ApiProperty({
     description: 'The recurring income that created this income',

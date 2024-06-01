@@ -7,6 +7,12 @@ import { PriceDto } from 'src/app/shared/prices/price.dto';
 
 export class CreateExpenseDto {
   @ApiProperty({
+    description: 'Description of the expense',
+    required: true,
+  })
+  description: string;
+
+  @ApiProperty({
     description: 'Price of the expense',
     required: true,
   })
@@ -22,12 +28,6 @@ export class CreateExpenseDto {
     enum: ExpenseCategory,
   })
   category: ExpenseCategory;
-
-  @ApiProperty({
-    description: 'Additional information about the expense',
-    required: false,
-  })
-  notes?: string;
 
   @Exclude()
   recurringExpense?: RecurringExpenseEntity;

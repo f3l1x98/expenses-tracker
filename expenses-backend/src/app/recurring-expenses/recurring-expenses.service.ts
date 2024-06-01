@@ -54,8 +54,8 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
       }
 
       const expenseDto = new CreateExpenseDto();
+      expenseDto.description = recurringExpenseEntity.description;
       expenseDto.category = recurringExpenseEntity.category;
-      expenseDto.notes = recurringExpenseEntity.notes;
       expenseDto.price = recurringExpenseEntity.price;
       expenseDto.recurringExpense = recurringExpenseEntity;
 
@@ -116,10 +116,10 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
     const recurringExpense = new RecurringExpenseEntity();
 
     recurringExpense.price = new PriceEntity();
+    recurringExpense.description = createRecurringExpenseDto.description;
     recurringExpense.price.amount = createRecurringExpenseDto.price.amount;
     recurringExpense.price.currency = createRecurringExpenseDto.price.currency;
     recurringExpense.category = createRecurringExpenseDto.category;
-    recurringExpense.notes = createRecurringExpenseDto.notes;
     recurringExpense.user = userId as unknown as UserEntity;
     recurringExpense.cron = createRecurringExpenseDto.cron;
     recurringExpense.startDate = createRecurringExpenseDto.startDate;
@@ -168,11 +168,11 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
       throw new RecurringExpenseNotFoundException(id);
     }
 
+    if (updateRecurringExpenseDto.description !== undefined) {
+      recurringExpense.description = updateRecurringExpenseDto.description;
+    }
     if (updateRecurringExpenseDto.category !== undefined) {
       recurringExpense.category = updateRecurringExpenseDto.category;
-    }
-    if (updateRecurringExpenseDto.notes !== undefined) {
-      recurringExpense.notes = updateRecurringExpenseDto.notes;
     }
     if (updateRecurringExpenseDto.price !== undefined) {
       recurringExpense.price = updateRecurringExpenseDto.price;

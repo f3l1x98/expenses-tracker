@@ -26,10 +26,10 @@ export class IncomesService {
     const income = new IncomeEntity();
 
     income.price = new PriceEntity();
+    income.description = createIncomeDto.description;
     income.price.amount = createIncomeDto.price.amount;
     income.price.currency = createIncomeDto.price.currency;
     income.category = createIncomeDto.category;
-    income.notes = createIncomeDto.notes;
     income.user = userId as unknown as UserEntity;
     income.recurringIncome = createIncomeDto.recurringIncome;
 
@@ -69,11 +69,11 @@ export class IncomesService {
       throw new IncomeNotFoundException(id);
     }
 
+    if (updateIncomeDto.description !== undefined) {
+      income.description = updateIncomeDto.description;
+    }
     if (updateIncomeDto.category !== undefined) {
       income.category = updateIncomeDto.category;
-    }
-    if (updateIncomeDto.notes !== undefined) {
-      income.notes = updateIncomeDto.notes;
     }
     if (updateIncomeDto.price !== undefined) {
       income.price = updateIncomeDto.price;

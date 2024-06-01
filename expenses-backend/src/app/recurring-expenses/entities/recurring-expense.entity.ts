@@ -22,6 +22,13 @@ export class RecurringExpenseEntity implements IRecurringExpense {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
+  @ApiProperty({
+    description: 'Description the recurring expense',
+    required: true,
+  })
+  @Column({ nullable: false })
+  description: string;
+
   @Column(() => PriceEntity)
   price!: PriceEntity;
 
@@ -46,13 +53,6 @@ export class RecurringExpenseEntity implements IRecurringExpense {
   @ManyToOne(() => UserEntity, { eager: true })
   @JoinColumn()
   user!: UserEntity;
-
-  @ApiProperty({
-    description: 'Additional information about the recurring expense',
-    required: true,
-  })
-  @Column({ nullable: true })
-  notes?: string;
 
   @ApiProperty({
     description: 'The cron expression for this recurring expense',

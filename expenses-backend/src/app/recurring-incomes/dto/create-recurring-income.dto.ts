@@ -13,6 +13,12 @@ import { IsValidCron } from 'src/app/utils/is-valid-cron';
 
 export class CreateRecurringIncomeDto {
   @ApiProperty({
+    description: 'Description of the recurring income',
+    required: true,
+  })
+  description: string;
+
+  @ApiProperty({
     description: 'Price of the recurring income',
     required: true,
   })
@@ -28,12 +34,6 @@ export class CreateRecurringIncomeDto {
     enum: IncomeCategory,
   })
   category: IncomeCategory;
-
-  @ApiProperty({
-    description: 'Additional information about this recurring income',
-    required: false,
-  })
-  notes?: string;
 
   @ApiProperty({
     description: 'The cron expression for this recurring income',

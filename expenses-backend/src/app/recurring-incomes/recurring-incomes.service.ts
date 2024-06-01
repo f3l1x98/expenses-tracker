@@ -52,8 +52,8 @@ export class RecurringIncomesService implements OnApplicationBootstrap {
       }
 
       const incomeDto = new CreateIncomeDto();
+      incomeDto.description = recurringIncomeEntity.description;
       incomeDto.category = recurringIncomeEntity.category;
-      incomeDto.notes = recurringIncomeEntity.notes;
       incomeDto.price = recurringIncomeEntity.price;
       incomeDto.recurringIncome = recurringIncomeEntity;
 
@@ -114,10 +114,10 @@ export class RecurringIncomesService implements OnApplicationBootstrap {
     const recurringIncome = new RecurringIncomeEntity();
 
     recurringIncome.price = new PriceEntity();
+    recurringIncome.description = createRecurringIncomeDto.description;
     recurringIncome.price.amount = createRecurringIncomeDto.price.amount;
     recurringIncome.price.currency = createRecurringIncomeDto.price.currency;
     recurringIncome.category = createRecurringIncomeDto.category;
-    recurringIncome.notes = createRecurringIncomeDto.notes;
     recurringIncome.user = userId as unknown as UserEntity;
     recurringIncome.cron = createRecurringIncomeDto.cron;
     recurringIncome.startDate = createRecurringIncomeDto.startDate;
@@ -166,11 +166,11 @@ export class RecurringIncomesService implements OnApplicationBootstrap {
       throw new RecurringIncomeNotFoundException(id);
     }
 
+    if (updateRecurringIncomeDto.description !== undefined) {
+      recurringIncome.description = updateRecurringIncomeDto.description;
+    }
     if (updateRecurringIncomeDto.category !== undefined) {
       recurringIncome.category = updateRecurringIncomeDto.category;
-    }
-    if (updateRecurringIncomeDto.notes !== undefined) {
-      recurringIncome.notes = updateRecurringIncomeDto.notes;
     }
     if (updateRecurringIncomeDto.price !== undefined) {
       recurringIncome.price = updateRecurringIncomeDto.price;

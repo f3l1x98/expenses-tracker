@@ -14,6 +14,12 @@ import { IsValidCron } from 'src/app/utils/is-valid-cron';
 
 export class CreateRecurringExpenseDto {
   @ApiProperty({
+    description: 'Description of the expense',
+    required: true,
+  })
+  description: string;
+
+  @ApiProperty({
     description: 'Price of the recurring expense',
     required: true,
   })
@@ -29,12 +35,6 @@ export class CreateRecurringExpenseDto {
     enum: ExpenseCategory,
   })
   category: ExpenseCategory;
-
-  @ApiProperty({
-    description: 'Additional information about this recurring expense',
-    required: false,
-  })
-  notes?: string;
 
   @ApiProperty({
     description: 'The cron expression for this recurring expense',
