@@ -17,6 +17,9 @@ import { RecurringExpensesListComponent } from './components/recurring-expenses-
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { AppContentWrapperComponent } from '../../shared/components/app-content-wrapper/app-content-wrapper.component';
+import { recurringExpensesFeature } from './store/features/recurring-expenses.feature';
+import { RecurringExpensesEffect } from './store/effects/recurring-expenses.effects';
+import { RecurringExpensesService } from './recurring-expenses.service';
 
 @NgModule({
   imports: [
@@ -24,6 +27,8 @@ import { AppContentWrapperComponent } from '../../shared/components/app-content-
     ExpensesRoutingModule,
     StoreModule.forFeature(expensesFeature),
     EffectsModule.forFeature([ExpensesEffect]),
+    StoreModule.forFeature(recurringExpensesFeature),
+    EffectsModule.forFeature([RecurringExpensesEffect]),
     CardModule,
     DataViewModule,
     TooltipModule,
@@ -38,6 +43,6 @@ import { AppContentWrapperComponent } from '../../shared/components/app-content-
     ExpensesListComponent,
     RecurringExpensesListComponent,
   ],
-  providers: [ExpensesService],
+  providers: [ExpensesService, RecurringExpensesService],
 })
 export class ExpensesModule {}
