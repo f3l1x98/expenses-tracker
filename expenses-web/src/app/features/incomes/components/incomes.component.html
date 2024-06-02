@@ -1,4 +1,11 @@
 <app-content-wrapper>
     <span slot="header">Income</span>
-    <span class="text-2xl">TODO INCOMES</span>
+    <div class="grid m-0">
+        <p-card class="col-8">
+            <app-incomes-list></app-incomes-list>
+        </p-card>
+        <p-card class="col-4">
+            <app-recurring-incomes-list></app-recurring-incomes-list>
+        </p-card>
+    </div>
 </app-content-wrapper>
