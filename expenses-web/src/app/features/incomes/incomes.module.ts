@@ -19,6 +19,7 @@ import { IncomesListComponent } from './components/incomes-list/incomes-list.com
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.nodule';
 import { RecurringIncomesListComponent } from './components/recurring-incomes-list/recurring-incomes-list.component';
+import { RecurringIncomesService } from './recurring-incomes.service';
 
 @NgModule({
   exports: [],
@@ -27,7 +28,7 @@ import { RecurringIncomesListComponent } from './components/recurring-incomes-li
     IncomesListComponent,
     RecurringIncomesListComponent,
   ],
-  providers: [IncomesService],
+  providers: [IncomesService, RecurringIncomesService],
   imports: [
     CommonModule,
     IncomesRoutingModule,
