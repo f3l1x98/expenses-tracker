@@ -1,20 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { ExpensesService } from '../../expenses.service';
 import { Subject, takeUntil } from 'rxjs';
 import { SpinnerService } from '../../../../shell/spinner/spinner.service';
+import { RecurringExpensesService } from '../../recurring-expenses.service';
 
 @Component({
   selector: 'app-recurring-expenses-list',
   templateUrl: 'recurring-expenses-list.component.html',
 })
 export class RecurringExpensesListComponent implements OnInit {
-  expenses$ = this.service.expenses$;
+  recurringExpenses$ = this.service.recurringExpenses$;
 
   private destory$ = new Subject<void>();
 
   constructor(
-    // TODO replace with service for recurring expenses
-    private service: ExpensesService,
+    private service: RecurringExpensesService,
     private spinnerService: SpinnerService
   ) {}
 
