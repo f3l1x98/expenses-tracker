@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ExpensesStoreService } from './store/expenses-store.service';
+import { ExpensesStoreService } from './store/services/expenses-store.service';
 
 @Injectable()
 export class ExpensesService {

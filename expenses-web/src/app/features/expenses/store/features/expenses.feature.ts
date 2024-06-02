@@ -1,7 +1,7 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { ExpensesState } from './interfaces/expenses.state';
-import * as ApiActions from './expenses-api.actions';
-import { StoreStateStatus } from '../../../shared/interfaces/store-state-status.interface';
+import { ExpensesState } from '../interfaces/expenses.state';
+import * as ApiActions from '../actions/expenses-api.actions';
+import { StoreStateStatus } from '../../../../shared/interfaces/store-state-status.interface';
 
 export const initialState: ExpensesState = {
   expenses: [],

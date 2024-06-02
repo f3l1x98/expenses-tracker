@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BaseApiService } from '../../../../shared/api/base-api.service';
-import { CreateExpenseRequest } from '../interfaces/create-expense-request.interface';
+import { BaseApiService } from '../../../../../shared/api/base-api.service';
+import { CreateExpenseRequest } from '../../interfaces/create-expense-request.interface';
 import { Observable } from 'rxjs';
-import { Expense } from '../interfaces/expense.interface';
-import { UpdateExpenseRequest } from '../interfaces/update-expense-request.interface';
+import { Expense } from '../../interfaces/expense.interface';
+import { UpdateExpenseRequest } from '../../interfaces/update-expense-request.interface';
 
 @Injectable({ providedIn: 'root' })
 export class ExpensesApiService {
