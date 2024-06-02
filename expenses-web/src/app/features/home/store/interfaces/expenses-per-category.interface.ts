@@ -1,5 +1,5 @@
-export interface ExpensesPerCategory {
+export interface ExpensesPerCategoryData {
   category: string;
   amount: number;
-  colorName: string;
+  color: string;
 }
