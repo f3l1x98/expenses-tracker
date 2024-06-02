@@ -22,7 +22,7 @@ export class AuthService {
     const isValid = await this.usersService.validate(name, password);
 
     if (user && isValid) {
-      return { id: user.id, username: user.username };
+      return { id: user.id, username: user.username, settings: user.settings };
     }
 
     return undefined;

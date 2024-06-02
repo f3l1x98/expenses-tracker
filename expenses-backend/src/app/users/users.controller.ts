@@ -44,7 +44,7 @@ export class UsersController {
         createUserDto.username,
         createUserDto.password,
       );
-      return { id: user.id, username: user.username };
+      return { id: user.id, username: user.username, settings: user.settings };
     } catch (e) {
       if (e instanceof UserAlreadyExistsError) {
         throw new BadRequestException(e.message);

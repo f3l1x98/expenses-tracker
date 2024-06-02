@@ -9,6 +9,7 @@ import { RecurringIncomeEntity } from './recurring-incomes/entities/recurring-in
 import { Init1716653872507 } from './migrations/1716653872507-Init';
 import { NotesToDescription1717245991082 } from './migrations/1717245991082-NotesToDescription';
 import { CurrencyRemoval1717362011785 } from './migrations/1717362011785-CurrencyRemoval';
+import { UserSettingsCurrency1717362794097 } from './migrations/1717362794097-UserSettingsCurrency';
 
 @Injectable()
 export class DbConfigService implements TypeOrmOptionsFactory {
@@ -34,6 +35,7 @@ export class DbConfigService implements TypeOrmOptionsFactory {
         Init1716653872507,
         NotesToDescription1717245991082,
         CurrencyRemoval1717362011785,
+        UserSettingsCurrency1717362794097,
       ],
     };
   }

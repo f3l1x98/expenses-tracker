@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { IUser } from './user';
+import { IUserSettings, defaultSettings } from './user-settings';
 
 @Entity()
 export class UserEntity implements IUser {
@@ -30,6 +31,9 @@ export class UserEntity implements IUser {
    */
   @Column({ nullable: false, select: false })
   salt?: string;
+
+  @Column({ type: 'jsonb', nullable: false, default: defaultSettings })
+  settings!: IUserSettings;
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt!: Date;
