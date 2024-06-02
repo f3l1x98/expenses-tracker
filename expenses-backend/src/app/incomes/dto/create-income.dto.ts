@@ -1,9 +1,8 @@
 import { IncomeCategory } from '../entities/income-category';
 import { ApiProperty } from '@nestjs/swagger';
-import { Exclude, Type } from 'class-transformer';
-import { IsDefined, IsNotEmptyObject, ValidateNested } from 'class-validator';
+import { Exclude } from 'class-transformer';
+import { IsNumber, IsPositive } from 'class-validator';
 import { RecurringIncomeEntity } from 'src/app/recurring-incomes/entities/recurring-income.entitiy';
-import { PriceDto } from 'src/app/shared/prices/price.dto';
 
 export class CreateIncomeDto {
   @ApiProperty({
@@ -13,14 +12,12 @@ export class CreateIncomeDto {
   description: string;
 
   @ApiProperty({
-    description: 'Price of the income',
+    description: 'Amount of the income',
     required: true,
   })
-  @IsDefined()
-  @IsNotEmptyObject()
-  @ValidateNested()
-  @Type(() => PriceDto)
-  price: PriceDto;
+  @IsNumber({ maxDecimalPlaces: 2, allowInfinity: false, allowNaN: false })
+  @IsPositive()
+  amount!: number;
 
   @ApiProperty({
     description: 'The category of the income',

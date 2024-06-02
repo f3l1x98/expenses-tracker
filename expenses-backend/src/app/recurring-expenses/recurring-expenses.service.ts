@@ -9,7 +9,6 @@ import { Repository } from 'typeorm';
 import { CreateRecurringExpenseDto } from './dto/create-recurring-expense.dto';
 import { UserEntity } from '../users/entities/user.entity';
 import { RecurringExpenseNotFoundException } from './exceptions/recurring-expense-not-found';
-import { PriceEntity } from '../shared/prices/price.entity';
 import { SchedulerRegistry, Cron } from '@nestjs/schedule';
 import { CronJob, CronTime } from 'cron';
 import { ExpensesService } from '../expenses/expenses.service';
@@ -56,7 +55,7 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
       const expenseDto = new CreateExpenseDto();
       expenseDto.description = recurringExpenseEntity.description;
       expenseDto.category = recurringExpenseEntity.category;
-      expenseDto.price = recurringExpenseEntity.price;
+      expenseDto.amount = recurringExpenseEntity.amount;
       expenseDto.recurringExpense = recurringExpenseEntity;
 
       await this.expensesService.create(
@@ -115,10 +114,8 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
   ): Promise<RecurringExpenseEntity> {
     const recurringExpense = new RecurringExpenseEntity();
 
-    recurringExpense.price = new PriceEntity();
     recurringExpense.description = createRecurringExpenseDto.description;
-    recurringExpense.price.amount = createRecurringExpenseDto.price.amount;
-    recurringExpense.price.currency = createRecurringExpenseDto.price.currency;
+    recurringExpense.amount = createRecurringExpenseDto.amount;
     recurringExpense.category = createRecurringExpenseDto.category;
     recurringExpense.user = userId as unknown as UserEntity;
     recurringExpense.cron = createRecurringExpenseDto.cron;
@@ -174,8 +171,8 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
     if (updateRecurringExpenseDto.category !== undefined) {
       recurringExpense.category = updateRecurringExpenseDto.category;
     }
-    if (updateRecurringExpenseDto.price !== undefined) {
-      recurringExpense.price = updateRecurringExpenseDto.price;
+    if (updateRecurringExpenseDto.amount !== undefined) {
+      recurringExpense.amount = updateRecurringExpenseDto.amount;
     }
     if (updateRecurringExpenseDto.cron !== undefined) {
       recurringExpense.cron = updateRecurringExpenseDto.cron;

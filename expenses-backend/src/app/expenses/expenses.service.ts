@@ -9,7 +9,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UserEntity } from '../users/entities/user.entity';
 import { ExpenseNotFoundException } from './exceptions/expense-not-found';
-import { PriceEntity } from '../shared/prices/price.entity';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
 
 @Injectable()
@@ -25,10 +24,8 @@ export class ExpensesService {
   ): Promise<ExpenseEntity> {
     const expense = new ExpenseEntity();
 
-    expense.price = new PriceEntity();
     expense.description = createExpenseDto.description;
-    expense.price.amount = createExpenseDto.price.amount;
-    expense.price.currency = createExpenseDto.price.currency;
+    expense.amount = createExpenseDto.amount;
     expense.category = createExpenseDto.category;
     expense.user = userId as unknown as UserEntity;
     expense.recurringExpense = createExpenseDto.recurringExpense;
@@ -75,8 +72,8 @@ export class ExpensesService {
     if (updateExpenseDto.category !== undefined) {
       expense.category = updateExpenseDto.category;
     }
-    if (updateExpenseDto.price !== undefined) {
-      expense.price = updateExpenseDto.price;
+    if (updateExpenseDto.amount !== undefined) {
+      expense.amount = updateExpenseDto.amount;
     }
 
     return this.expensesRepository.save(expense);

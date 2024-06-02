@@ -9,7 +9,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateRecurringIncomeDto } from './dto/create-recurring-income.dto';
 import { UserEntity } from '../users/entities/user.entity';
 import { RecurringIncomeNotFoundException } from './exceptions/recurring-income-not-found';
-import { PriceEntity } from '../shared/prices/price.entity';
 import { Cron, SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob, CronTime } from 'cron';
 import { IncomesService } from '../incomes/incomes.service';
@@ -54,7 +53,7 @@ export class RecurringIncomesService implements OnApplicationBootstrap {
       const incomeDto = new CreateIncomeDto();
       incomeDto.description = recurringIncomeEntity.description;
       incomeDto.category = recurringIncomeEntity.category;
-      incomeDto.price = recurringIncomeEntity.price;
+      incomeDto.amount = recurringIncomeEntity.amount;
       incomeDto.recurringIncome = recurringIncomeEntity;
 
       await this.incomesService.create(
@@ -113,10 +112,8 @@ export class RecurringIncomesService implements OnApplicationBootstrap {
   ): Promise<RecurringIncomeEntity> {
     const recurringIncome = new RecurringIncomeEntity();
 
-    recurringIncome.price = new PriceEntity();
     recurringIncome.description = createRecurringIncomeDto.description;
-    recurringIncome.price.amount = createRecurringIncomeDto.price.amount;
-    recurringIncome.price.currency = createRecurringIncomeDto.price.currency;
+    recurringIncome.amount = createRecurringIncomeDto.amount;
     recurringIncome.category = createRecurringIncomeDto.category;
     recurringIncome.user = userId as unknown as UserEntity;
     recurringIncome.cron = createRecurringIncomeDto.cron;
@@ -172,8 +169,8 @@ export class RecurringIncomesService implements OnApplicationBootstrap {
     if (updateRecurringIncomeDto.category !== undefined) {
       recurringIncome.category = updateRecurringIncomeDto.category;
     }
-    if (updateRecurringIncomeDto.price !== undefined) {
-      recurringIncome.price = updateRecurringIncomeDto.price;
+    if (updateRecurringIncomeDto.amount !== undefined) {
+      recurringIncome.amount = updateRecurringIncomeDto.amount;
     }
     if (updateRecurringIncomeDto.cron !== undefined) {
       recurringIncome.cron = updateRecurringIncomeDto.cron;

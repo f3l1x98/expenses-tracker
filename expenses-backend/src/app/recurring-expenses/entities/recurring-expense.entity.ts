@@ -11,7 +11,6 @@ import { ExpenseCategory } from '../../expenses/entities/expense-category';
 import { UserEntity } from 'src/app/users/entities/user.entity';
 import { IRecurringExpense } from './recurring-expense';
 import { ApiProperty } from '@nestjs/swagger';
-import { PriceEntity } from 'src/app/shared/prices/price.entity';
 
 @Entity()
 export class RecurringExpenseEntity implements IRecurringExpense {
@@ -29,8 +28,8 @@ export class RecurringExpenseEntity implements IRecurringExpense {
   @Column({ nullable: false })
   description: string;
 
-  @Column(() => PriceEntity)
-  price!: PriceEntity;
+  @Column({ nullable: false, type: 'decimal', scale: 2, precision: 12 })
+  amount!: number;
 
   // TODO strictly speaking repeated clothing expenses make no sense
   @ApiProperty({

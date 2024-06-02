@@ -9,7 +9,6 @@ import { Repository } from 'typeorm';
 import { CreateIncomeDto } from './dto/create-income.dto';
 import { UserEntity } from '../users/entities/user.entity';
 import { IncomeNotFoundException } from './exceptions/income-not-found';
-import { PriceEntity } from '../shared/prices/price.entity';
 import { UpdateIncomeDto } from './dto/update-income.dto';
 
 @Injectable()
@@ -25,10 +24,8 @@ export class IncomesService {
   ): Promise<IncomeEntity> {
     const income = new IncomeEntity();
 
-    income.price = new PriceEntity();
     income.description = createIncomeDto.description;
-    income.price.amount = createIncomeDto.price.amount;
-    income.price.currency = createIncomeDto.price.currency;
+    income.amount = createIncomeDto.amount;
     income.category = createIncomeDto.category;
     income.user = userId as unknown as UserEntity;
     income.recurringIncome = createIncomeDto.recurringIncome;
@@ -75,8 +72,8 @@ export class IncomesService {
     if (updateIncomeDto.category !== undefined) {
       income.category = updateIncomeDto.category;
     }
-    if (updateIncomeDto.price !== undefined) {
-      income.price = updateIncomeDto.price;
+    if (updateIncomeDto.amount !== undefined) {
+      income.amount = updateIncomeDto.amount;
     }
 
     return this.incomesRepository.save(income);

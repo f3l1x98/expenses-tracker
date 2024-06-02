@@ -12,7 +12,6 @@ import { ExpenseCategory } from './expense-category';
 import { IExpense } from './expense';
 import { RecurringExpenseEntity } from '../../recurring-expenses/entities/recurring-expense.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { PriceEntity } from 'src/app/shared/prices/price.entity';
 
 @Entity()
 export class ExpenseEntity implements IExpense {
@@ -30,8 +29,8 @@ export class ExpenseEntity implements IExpense {
   @Column({ nullable: false })
   description: string;
 
-  @Column(() => PriceEntity)
-  price!: PriceEntity;
+  @Column({ nullable: false, type: 'decimal', scale: 2, precision: 12 })
+  amount!: number;
 
   @ApiProperty({
     description: 'The category of the expense',

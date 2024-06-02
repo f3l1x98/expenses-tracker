@@ -11,7 +11,6 @@ import { UserEntity } from 'src/app/users/entities/user.entity';
 import { IRecurringIncome } from './recurring-income';
 import { IncomeCategory } from 'src/app/incomes/entities/income-category';
 import { ApiProperty } from '@nestjs/swagger';
-import { PriceEntity } from 'src/app/shared/prices/price.entity';
 
 @Entity()
 export class RecurringIncomeEntity implements IRecurringIncome {
@@ -29,8 +28,8 @@ export class RecurringIncomeEntity implements IRecurringIncome {
   @Column({ nullable: false })
   description: string;
 
-  @Column(() => PriceEntity)
-  price!: PriceEntity;
+  @Column({ nullable: false, type: 'decimal', scale: 2, precision: 12 })
+  amount!: number;
 
   @ApiProperty({
     description: 'The category of the recurring income',
