@@ -1,5 +1,6 @@
 import { Price } from '../../../../shared/interfaces/price.interface';
 import { User } from '../../../../shared/interfaces/user.interface';
+import { RecurringExpense } from './recurring-expense.interface';
 
 export interface Expense {
   id: string;
@@ -9,5 +10,5 @@ export interface Expense {
   user: User;
   createdAt: Date;
   updatedAt: Date;
-  //recurringExpense?: IRecurringExpense;
+  recurringExpense?: RecurringExpense;
 }
