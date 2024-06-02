@@ -8,6 +8,8 @@ import { incomesFeature } from './store/features/incomes.feature';
 import { IncomesEffect } from './store/effects/incomes.effects';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { recurringIncomesFeature } from './store/features/recurring-incomes.feature';
+import { RecurringIncomesEffect } from './store/effects/recurring-incomes.effects';
 
 @NgModule({
   imports: [
@@ -15,6 +17,8 @@ import { StoreModule } from '@ngrx/store';
     AppContentWrapperComponent,
     StoreModule.forFeature(incomesFeature),
     EffectsModule.forFeature([IncomesEffect]),
+    StoreModule.forFeature(recurringIncomesFeature),
+    EffectsModule.forFeature([RecurringIncomesEffect]),
   ],
   exports: [],
   declarations: [IncomesComponent],
