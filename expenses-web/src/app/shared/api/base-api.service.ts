@@ -9,6 +9,16 @@ import { environment } from '../../../environments/environment';
 import { Observable, catchError, throwError } from 'rxjs';
 import { NotificationService } from '../../shell/notification/notification.service';
 
+type RequestParams =
+  | HttpParams
+  | {
+      [param: string]:
+        | string
+        | number
+        | boolean
+        | ReadonlyArray<string | number | boolean>;
+    };
+
 @Injectable({
   providedIn: 'root',
 })
@@ -23,8 +33,8 @@ export class BaseApiService {
     private notificationService: NotificationService
   ) {}
 
-  public get<T>(url: string): Observable<T> {
-    return this.request<T>('get', url);
+  public get<T>(url: string, params?: RequestParams): Observable<T> {
+    return this.request<T>('get', url, {}, undefined, params);
   }
 
   public request<T>(
@@ -36,15 +46,7 @@ export class BaseApiService {
       | {
           [header: string]: string | string[];
         },
-    params?:
-      | HttpParams
-      | {
-          [param: string]:
-            | string
-            | number
-            | boolean
-            | ReadonlyArray<string | number | boolean>;
-        }
+    params?: RequestParams
   ): Observable<T> {
     return this.httpClient
       .request<T>(method, url, {
