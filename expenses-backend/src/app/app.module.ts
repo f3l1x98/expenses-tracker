@@ -12,6 +12,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { DbConfigService } from './db-config.service';
 import { ScheduleModule } from '@nestjs/schedule';
+import { DasboardsModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     UsersModule,
     IncomesModule,
     ExpensesModule,
+    DasboardsModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
