@@ -1,6 +1,6 @@
 export interface CurrentMonthData {
-  totalExpenses: number;
-  totalIncomes: number;
+  totalExpense: number;
+  totalIncome: number;
   balance: number;
   currency: string;
 }

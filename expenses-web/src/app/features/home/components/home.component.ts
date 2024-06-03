@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { Observable, map, of } from 'rxjs';
 import { ExpensesPerCategoryResponse } from '../store/interfaces/api/expenses-per-catergory-response.interface';
-import { ExpensesPerMonth } from '../store/interfaces/expenses-per-month.interface';
+import { TotalExpenseOfMonth } from '../store/interfaces/total-expense-of-month.interface';
 
 @Component({
   selector: 'app-home',
@@ -125,7 +125,7 @@ export class HomeComponent implements OnInit {
         month: 'July',
         amount: 8,
       },
-    ] as ExpensesPerMonth[]);
+    ] as TotalExpenseOfMonth[]);
     this.expensesPerMonthData$ = expensesPerMonthDummyApiData.pipe(
       map((data) => ({
         labels: data.map((entry) => entry.month),

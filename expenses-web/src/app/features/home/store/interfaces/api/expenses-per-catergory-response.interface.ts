@@ -1,6 +1,6 @@
-import { ExpensesPerCategoryData } from '../expenses-per-category.interface';
+import { TotalExpenseOfCategory } from '../total-expense-of-category.interface';
 
 export interface ExpensesPerCategoryResponse {
-  data: ExpensesPerCategoryData[];
+  data: TotalExpenseOfCategory[];
   currency: string;
 }
