@@ -26,4 +26,9 @@ export class TotalExpenseOfMonth {
     required: true,
   })
   amount: number;
+
+  constructor(month: string, amount: number) {
+    this.month = month;
+    this.amount = amount;
+  }
 }

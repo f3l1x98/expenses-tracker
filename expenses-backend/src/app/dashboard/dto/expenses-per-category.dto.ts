@@ -32,4 +32,10 @@ export class TotalExpenseOfCategory {
     required: true,
   })
   color: string;
+
+  constructor(category: string, amount: number, color: string) {
+    this.category = category;
+    this.amount = amount;
+    this.color = color;
+  }
 }
