@@ -1,6 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsDate, IsNotEmpty, IsNumber, IsPositive } from 'class-validator';
+import {
+  IsDate,
+  IsNotEmpty,
+  IsNumber,
+  IsPositive,
+  IsString,
+} from 'class-validator';
 import { ExpenseCategory } from 'src/app/expenses/entities/expense-category';
 import { IsAfterDate } from 'src/app/utils/is-after-date';
 import { IsValidCron } from 'src/app/utils/is-valid-cron';
@@ -10,6 +16,8 @@ export class CreateRecurringExpenseDto {
     description: 'Description of the expense',
     required: true,
   })
+  @IsString()
+  @IsNotEmpty()
   description: string;
 
   @ApiProperty({
