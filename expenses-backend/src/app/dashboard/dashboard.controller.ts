@@ -15,12 +15,12 @@ import { DateRangeDto } from '../shared/date-range.dto';
 import { Request } from 'express';
 import { IUser } from '../users/entities/user';
 
-@ApiTags('dashbboards')
+@ApiTags('dashboards')
 @ApiBearerAuth()
 @ApiUnauthorizedResponse()
 @UseGuards(JwtAuthGuard)
 @Controller({
-  path: 'dashbboards',
+  path: 'dashboards',
   version: '1',
 })
 export class DashboardController {
@@ -28,7 +28,7 @@ export class DashboardController {
 
   @ApiOperation({ summary: 'Returns dashboard data for the current month.' })
   @Get('current-month')
-  getCurrentMonthData(@Req() req: Request): CurrentMonthData {
+  getCurrentMonthData(@Req() req: Request): Promise<CurrentMonthData> {
     return this.dashboardService.getCurrentMonthData((req.user as IUser).id);
   }
 
@@ -52,7 +52,7 @@ export class DashboardController {
   getExpensesPerCategory(
     @Req() req: Request,
     @Query() query: DateRangeDto,
-  ): ExpensesPerCategory {
+  ): Promise<ExpensesPerCategory> {
     return this.dashboardService.getExpensesPerCategory(
       (req.user as IUser).id,
       query,
@@ -79,7 +79,7 @@ export class DashboardController {
   getExpensesPerMonth(
     @Req() req: Request,
     @Query() query: DateRangeDto,
-  ): ExpensesPerMonth {
+  ): Promise<ExpensesPerMonth> {
     return this.dashboardService.getExpensesPerMonth(
       (req.user as IUser).id,
       query,
