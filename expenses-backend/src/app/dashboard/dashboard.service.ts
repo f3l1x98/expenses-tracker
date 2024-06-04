@@ -66,8 +66,6 @@ export class DashboardService {
       .andWhere('income.createdAt >= :startOfMonth', { startOfMonth })
       .getRawOne<CurrentMonthDataQueryResponse>();
 
-    console.log(incomesResult);
-
     const currentMonthData = new CurrentMonthData();
     currentMonthData.currency = userResult?.settings.currency ?? '';
     currentMonthData.totalExpense = parseFloat(
