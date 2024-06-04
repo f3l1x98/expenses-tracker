@@ -19,14 +19,18 @@ import {
 } from '../expenses/entities/expense-category';
 import { UserEntity } from '../users/entities/user.entity';
 
+interface CurrentMonthDataQueryResponse {
+  totalAmount: string;
+}
+
 interface ExpensesPerCategoryQueryResponse {
   category: ExpenseCategory;
-  totalAmount: number;
+  totalAmount: string;
 }
 
 interface ExpensesPerMonthQueryResponse {
   monthYear: string;
-  totalAmount: number;
+  totalAmount: string;
 }
 
 @Injectable()
@@ -49,23 +53,29 @@ export class DashboardService {
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     const expensesResult = await this.expensesRepository
       .createQueryBuilder('expense')
-      .addSelect('SUM(expense.amount)', 'totalAmount')
+      .select('SUM(expense.amount)', 'totalAmount')
       .innerJoin('expense.user', 'user')
       .where('user.id = :userId', { userId })
       .andWhere('expense.createdAt >= :startOfMonth', { startOfMonth })
-      .getRawOne<number>();
+      .getRawOne<CurrentMonthDataQueryResponse>();
     const incomesResult = await this.incomesRepository
       .createQueryBuilder('income')
-      .addSelect('SUM(income.amount)', 'totalAmount')
+      .select('SUM(income.amount)', 'totalAmount')
       .innerJoin('income.user', 'user')
       .where('user.id = :userId', { userId })
       .andWhere('income.createdAt >= :startOfMonth', { startOfMonth })
-      .getRawOne<number>();
+      .getRawOne<CurrentMonthDataQueryResponse>();
+
+    console.log(incomesResult);
 
     const currentMonthData = new CurrentMonthData();
     currentMonthData.currency = userResult?.settings.currency ?? '';
-    currentMonthData.totalExpense = expensesResult ?? 0;
-    currentMonthData.totalIncome = incomesResult ?? 0;
+    currentMonthData.totalExpense = parseFloat(
+      expensesResult?.totalAmount ?? '0',
+    );
+    currentMonthData.totalIncome = parseFloat(
+      incomesResult?.totalAmount ?? '0',
+    );
     currentMonthData.balance =
       currentMonthData.totalIncome - currentMonthData.totalExpense;
     return currentMonthData;
@@ -95,7 +105,7 @@ export class DashboardService {
       (item) =>
         new TotalExpenseOfCategory(
           item.category,
-          item.totalAmount,
+          parseFloat(item.totalAmount),
           getExpenseCategoryColor(item.category),
         ),
     );
@@ -124,7 +134,8 @@ export class DashboardService {
     const expensesPerMonth = new ExpensesPerMonth();
     expensesPerMonth.currency = userResult?.settings.currency ?? '';
     expensesPerMonth.data = result.map(
-      (item) => new TotalExpenseOfMonth(item.monthYear, item.totalAmount),
+      (item) =>
+        new TotalExpenseOfMonth(item.monthYear, parseFloat(item.totalAmount)),
     );
     return expensesPerMonth;
   }
