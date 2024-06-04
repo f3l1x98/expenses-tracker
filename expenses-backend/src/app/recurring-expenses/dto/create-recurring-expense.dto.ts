@@ -33,6 +33,7 @@ export class CreateRecurringExpenseDto {
     required: true,
     enum: ExpenseCategory,
   })
+  @IsNotEmpty()
   category: ExpenseCategory;
 
   @ApiProperty({

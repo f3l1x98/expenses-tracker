@@ -26,6 +26,7 @@ export class CreateExpenseDto {
     required: true,
     enum: ExpenseCategory,
   })
+  @IsNotEmpty()
   category: ExpenseCategory;
 
   @Exclude()

@@ -33,6 +33,7 @@ export class CreateRecurringIncomeDto {
     required: true,
     enum: IncomeCategory,
   })
+  @IsNotEmpty()
   category: IncomeCategory;
 
   @ApiProperty({
