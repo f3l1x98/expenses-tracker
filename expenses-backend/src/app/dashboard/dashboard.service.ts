@@ -88,7 +88,6 @@ export class DashboardService {
     const userResult = await this.usersRepository.findOne({
       where: { id: userId },
     });
-    console.dir(result, { depth: null });
 
     const expensesPerCategory = new ExpensesPerCategory();
     expensesPerCategory.currency = userResult?.settings.currency ?? '';
@@ -100,7 +99,6 @@ export class DashboardService {
           getExpenseCategoryColor(item.category),
         ),
     );
-    console.dir(expensesPerCategory.data, { depth: null });
     return expensesPerCategory;
   }
 
