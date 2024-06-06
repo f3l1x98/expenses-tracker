@@ -11,6 +11,10 @@ export class HomeService {
 
   constructor(private homeStoreService: HomeStoreService) {}
 
+  public enterPage() {
+    this.homeStoreService.enterPage();
+  }
+
   setDateRangeFilter(dateRange: DateRange) {
     this.homeStoreService.setDateRangeFilter(dateRange);
   }
