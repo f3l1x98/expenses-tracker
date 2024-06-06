@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { IncomesApiService } from '../services/api/incomes-api.service';
+import { IncomesApiService } from '../../api/incomes-api.service';
 import * as ApiActions from '../actions/incomes-api.actions';
 import { catchError, map, of, switchMap } from 'rxjs';
 

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseApiService } from '../../../../../shared/api/base-api.service';
-import { CreateRecurringIncomeRequest } from '../../interfaces/api/create-recurring-income-request.interface';
-import { UpdateRecurringIncomeRequest } from '../../interfaces/api/update-recurring-income-request.interface';
-import { RecurringIncome } from '../../interfaces/recurring-income.interface';
+import { BaseApiService } from '../../../shared/api/base-api.service';
+import { CreateRecurringIncomeRequest } from './interfaces/requests/create-recurring-income-request.interface';
+import { UpdateRecurringIncomeRequest } from './interfaces/requests/update-recurring-income-request.interface';
+import { RecurringIncome } from './interfaces/recurring-income.interface';
 
 @Injectable({ providedIn: 'root' })
 export class RecurringIncomesApiService {

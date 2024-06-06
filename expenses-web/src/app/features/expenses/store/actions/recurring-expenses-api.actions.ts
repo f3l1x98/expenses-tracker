@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { RecurringExpense } from '../interfaces/recurring-expense.interface';
+import { RecurringExpense } from '../../api/interfaces/recurring-expense.interface';
 
 export const loadStart = createAction(
   '[Recurring Expenses Actions] load start'

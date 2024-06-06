@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RecurringExpensesApiService } from '../services/api/recurring-expense-api.service';
+import { RecurringExpensesApiService } from '../../api/recurring-expense-api.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as ApiActions from '../actions/recurring-expenses-api.actions';
 import { catchError, map, of, switchMap } from 'rxjs';

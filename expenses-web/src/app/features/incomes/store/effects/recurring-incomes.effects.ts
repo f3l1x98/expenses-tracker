@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as ApiActions from '../actions/recurring-incomes-api.actions';
 import { catchError, map, of, switchMap } from 'rxjs';
-import { RecurringIncomesApiService } from '../services/api/recurring-incomes-api.service';
+import { RecurringIncomesApiService } from '../../api/recurring-incomes-api.service';
 
 @Injectable()
 export class RecurringIncomesEffect {

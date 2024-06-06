@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Income } from '../interfaces/income.interface';
+import { Income } from '../../api/interfaces/income.interface';
 
 export const loadStart = createAction('[Incomes Actions] load start');
 export const loadSuccess = createAction(
