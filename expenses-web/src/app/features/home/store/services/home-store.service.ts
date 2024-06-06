@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { homeFeature } from '../features/home.feature';
-import { DateRange } from '../interfaces/date-range.interface';
+import { DateRange } from '../../../../shared/interfaces/date-range.interface';
 import * as UserActions from '../actions/home-user.actions';
 
 @Injectable({ providedIn: 'root' })

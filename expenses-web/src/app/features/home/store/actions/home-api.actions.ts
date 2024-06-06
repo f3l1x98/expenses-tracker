@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { ExpensesPerCategoryResponse } from '../../api/interfaces/expenses-per-catergory-response.interface';
 import { CurrentMonthData } from '../../api/interfaces/current-month-data.interface';
 import { ExpensesPerMonthResponse } from '../../api/interfaces/expenses-per-month-response.interface';
-import { DateRange } from '../interfaces/date-range.interface';
+import { DateRange } from '../../../../shared/interfaces/date-range.interface';
 
 export interface HomeLoadSuccessResult {
   currentMonthData: CurrentMonthData;

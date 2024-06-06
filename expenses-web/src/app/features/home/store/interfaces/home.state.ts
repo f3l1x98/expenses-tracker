@@ -2,7 +2,7 @@ import { StoreStateStatus } from '../../../../shared/interfaces/store-state-stat
 import { ExpensesPerCategoryResponse } from '../../api/interfaces/expenses-per-catergory-response.interface';
 import { ExpensesPerMonthResponse } from '../../api/interfaces/expenses-per-month-response.interface';
 import { CurrentMonthData } from '../../api/interfaces/current-month-data.interface';
-import { DateRange } from './date-range.interface';
+import { DateRange } from '../../../../shared/interfaces/date-range.interface';
 
 export interface HomeState {
   filter: DateRange;

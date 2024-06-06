@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HomeStoreService } from './store/services/home-store.service';
-import { DateRange } from './store/interfaces/date-range.interface';
+import { DateRange } from '../../shared/interfaces/date-range.interface';
 
 @Injectable()
 export class HomeService {
