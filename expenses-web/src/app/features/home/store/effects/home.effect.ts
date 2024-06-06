@@ -4,7 +4,6 @@ import { HomeApiService } from '../../api/home-api.service';
 import * as ApiActions from '../actions/home-api.actions';
 import * as UserActions from '../actions/home-user.actions';
 import { catchError, combineLatest, map, of, switchMap } from 'rxjs';
-import { HomeLoadSuccessResult } from '../actions/home-api.actions';
 
 @Injectable()
 export class HomeEffect {
@@ -16,39 +15,62 @@ export class HomeEffect {
   setFilter$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserActions.setDateRangeFilter),
-      switchMap((action) => of(ApiActions.loadStart({ filter: action.filter })))
+      switchMap((action) =>
+        of(
+          ApiActions.expensesPerCategoryLoadStart({ filter: action.filter }),
+          ApiActions.expensesPerMonthLoadStart({ filter: action.filter })
+        )
+      )
     )
   );
 
-  load$ = createEffect(() =>
+  loadCurrentMonthData$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(ApiActions.loadStart),
+      ofType(ApiActions.currentMonthDataLoadStart),
       switchMap((action) =>
-        combineLatest(
-          [
-            this.homeApiService.getCurrentMonthData$(),
-            this.homeApiService.getExpensesPerCategory$(
-              action.filter.startDate,
-              action.filter.endDate
-            ),
-            this.homeApiService.getExpensesPerMonth$(
-              action.filter.startDate,
-              action.filter.endDate
-            ),
-          ],
-          (
-            currentMonthData,
-            expensesPerCategory,
-            expensesPerMonth
-          ): HomeLoadSuccessResult => ({
-            currentMonthData: currentMonthData,
-            expensesPerCategory: expensesPerCategory,
-            expensesPerMonth: expensesPerMonth,
-          })
-        ).pipe(
-          map((result) => ApiActions.loadSuccess({ result })),
-          catchError((error) => of(ApiActions.loadFailure(error)))
+        this.homeApiService.getCurrentMonthData$().pipe(
+          map((result) => ApiActions.currentMonthDataLoadSuccess({ result })),
+          catchError((error) =>
+            of(ApiActions.currentMonthDataLoadFailure(error))
+          )
         )
+      )
+    )
+  );
+
+  loadExpensesPerCategory$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ApiActions.expensesPerCategoryLoadStart),
+      switchMap((action) =>
+        this.homeApiService
+          .getExpensesPerCategory$(
+            action.filter.startDate,
+            action.filter.endDate
+          )
+          .pipe(
+            map((result) =>
+              ApiActions.expensesPerCategoryLoadSuccess({ result })
+            ),
+            catchError((error) =>
+              of(ApiActions.expensesPerCategoryLoadFailure(error))
+            )
+          )
+      )
+    )
+  );
+
+  loadExpensesPerMonth$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ApiActions.expensesPerMonthLoadStart),
+      switchMap((action) =>
+        this.homeApiService
+          .getExpensesPerMonth$(action.filter.startDate, action.filter.endDate)
+          .pipe(
+            map((result) => ApiActions.expensesPerMonthLoadSuccess({ result })),
+            catchError((error) =>
+              of(ApiActions.expensesPerMonthLoadFailure(error))
+            )
+          )
       )
     )
   );

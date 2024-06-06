@@ -6,13 +6,21 @@ import * as UserActions from '../actions/home-user.actions';
 
 @Injectable({ providedIn: 'root' })
 export class HomeStoreService {
-  status$ = this.store.select(homeFeature.selectStatus);
   filter$ = this.store.select(homeFeature.selectFilter);
-  expensesPerMonth$ = this.store.select(homeFeature.selectExpensesPerMonth);
-  expensesPerCategory$ = this.store.select(
-    homeFeature.selectExpensesPerCategory
+  currentMonthData$ = this.store.select(homeFeature.selectCurrentMonthDataData);
+  currentMonthDataStatus$ = this.store.select(
+    homeFeature.selectCurrentMonthDataStatus
   );
-  currentMonthData$ = this.store.select(homeFeature.selectCurrentMonthData);
+  expensesPerCategory$ = this.store.select(
+    homeFeature.selectExpensesPerCategoryData
+  );
+  expensesPerCategoryStatus$ = this.store.select(
+    homeFeature.selectExpensesPerCategoryStatus
+  );
+  expensesPerMonth$ = this.store.select(homeFeature.selectExpensesPerMonthData);
+  expensesPerMonthStatus$ = this.store.select(
+    homeFeature.selectExpensesPerMonthStatus
+  );
 
   constructor(private store: Store) {}
 

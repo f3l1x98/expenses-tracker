@@ -6,8 +6,16 @@ import { DateRange } from '../../../../shared/interfaces/date-range.interface';
 
 export interface HomeState {
   filter: DateRange;
-  currentMonthData: CurrentMonthData | undefined;
-  expensesPerCategory: ExpensesPerCategoryResponse | undefined;
-  expensesPerMonth: ExpensesPerMonthResponse | undefined;
-  status: StoreStateStatus;
+  currentMonthData: {
+    data: CurrentMonthData | undefined;
+    status: StoreStateStatus;
+  };
+  expensesPerCategory: {
+    data: ExpensesPerCategoryResponse | undefined;
+    status: StoreStateStatus;
+  };
+  expensesPerMonth: {
+    data: ExpensesPerMonthResponse | undefined;
+    status: StoreStateStatus;
+  };
 }

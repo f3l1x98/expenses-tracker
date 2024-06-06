@@ -4,22 +4,40 @@ import { CurrentMonthData } from '../../api/interfaces/current-month-data.interf
 import { ExpensesPerMonthResponse } from '../../api/interfaces/expenses-per-month-response.interface';
 import { DateRange } from '../../../../shared/interfaces/date-range.interface';
 
-export interface HomeLoadSuccessResult {
-  currentMonthData: CurrentMonthData;
-  expensesPerCategory: ExpensesPerCategoryResponse;
-  expensesPerMonth: ExpensesPerMonthResponse;
-}
+export const currentMonthDataLoadStart = createAction(
+  '[Home Actions] currentMonthDataLoadStart'
+);
+export const currentMonthDataLoadSuccess = createAction(
+  '[Home Actions] currentMonthDataLoadSuccess',
+  props<{ result: CurrentMonthData }>()
+);
+export const currentMonthDataLoadFailure = createAction(
+  '[Home Actions] currentMonthDataLoadFailure',
+  props<{ error: string }>()
+);
 
-export const loadStart = createAction(
-  '[Home Actions] load start',
+export const expensesPerCategoryLoadStart = createAction(
+  '[Home Actions] expensesPerCategoryLoadStart',
   props<{ filter: DateRange }>()
 );
-// TODO perhaps split into multiple load actions?!?!
-export const loadSuccess = createAction(
-  '[Home Actions] load success',
-  props<{ result: HomeLoadSuccessResult }>()
+export const expensesPerCategoryLoadSuccess = createAction(
+  '[Home Actions] expensesPerCategoryLoadSuccess',
+  props<{ result: ExpensesPerCategoryResponse }>()
 );
-export const loadFailure = createAction(
-  '[Home Actions] load failure',
+export const expensesPerCategoryLoadFailure = createAction(
+  '[Home Actions] expensesPerCategoryLoadFailure',
+  props<{ error: string }>()
+);
+
+export const expensesPerMonthLoadStart = createAction(
+  '[Home Actions] expensesPerMonthLoadStart',
+  props<{ filter: DateRange }>()
+);
+export const expensesPerMonthLoadSuccess = createAction(
+  '[Home Actions] expensesPerMonthLoadSuccess',
+  props<{ result: ExpensesPerMonthResponse }>()
+);
+export const expensesPerMonthLoadFailure = createAction(
+  '[Home Actions] expensesPerMonthLoadFailure',
   props<{ error: string }>()
 );

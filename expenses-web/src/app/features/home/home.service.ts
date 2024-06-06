@@ -4,7 +4,6 @@ import { DateRange } from '../../shared/interfaces/date-range.interface';
 
 @Injectable()
 export class HomeService {
-  status$ = this.homeStoreService.status$;
   filter$ = this.homeStoreService.filter$;
   expensesPerMonth$ = this.homeStoreService.expensesPerMonth$;
   expensesPerCategory$ = this.homeStoreService.expensesPerCategory$;
