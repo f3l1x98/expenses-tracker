@@ -12,6 +12,22 @@ export class HomeEffect {
     private homeApiService: HomeApiService
   ) {}
 
+  enterPage$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserActions.enterPage),
+      switchMap((action) => {
+        const now = new Date();
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+        return of(
+          UserActions.setDateRangeFilter({
+            filter: { startDate: startOfMonth, endDate: null },
+          }),
+          ApiActions.currentMonthDataLoadStart()
+        );
+      })
+    )
+  );
+
   setFilter$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserActions.setDateRangeFilter),

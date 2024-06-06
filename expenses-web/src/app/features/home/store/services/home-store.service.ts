@@ -24,6 +24,10 @@ export class HomeStoreService {
 
   constructor(private store: Store) {}
 
+  public enterPage() {
+    this.store.dispatch(UserActions.enterPage());
+  }
+
   public setDateRangeFilter(dateRange: DateRange) {
     this.store.dispatch(UserActions.setDateRangeFilter({ filter: dateRange }));
   }

@@ -5,3 +5,4 @@ export const setDateRangeFilter = createAction(
   '[Home User Actions] setDateRangeFilter',
   props<{ filter: DateRange }>()
 );
+export const enterPage = createAction('[Home User Actions] enterPage');
