@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
-import { Observable, map, of } from 'rxjs';
+import { Observable, Subject, map, of, takeUntil } from 'rxjs';
 import { DateRange } from '../../../shared/interfaces/date-range.interface';
 import { HomeService } from '../home.service';
 
@@ -9,7 +9,7 @@ import { HomeService } from '../home.service';
   templateUrl: 'home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   expensesPerCategoryData$!: Observable<ChartData>;
   expensesPerCategoryOptions$!: Observable<ChartOptions<'pie'>>;
 
@@ -18,7 +18,14 @@ export class HomeComponent implements OnInit {
 
   dateRangeFilter: DateRange | undefined;
 
+  private destory$ = new Subject<void>();
+
   constructor(private homeService: HomeService) {}
+
+  ngOnDestroy(): void {
+    this.destory$.next();
+    this.destory$.complete();
+  }
 
   ngOnInit() {
     const documentStyle = getComputedStyle(document.documentElement);
@@ -29,6 +36,7 @@ export class HomeComponent implements OnInit {
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
     this.expensesPerCategoryData$ = this.homeService.expensesPerCategory$.pipe(
+      takeUntil(this.destory$),
       map((event) => {
         if (event === undefined) {
           return {} as ChartData;
@@ -50,6 +58,7 @@ export class HomeComponent implements OnInit {
     );
     this.expensesPerCategoryOptions$ =
       this.homeService.expensesPerCategory$.pipe(
+        takeUntil(this.destory$),
         map((event) => {
           if (event === undefined) {
             return {};
@@ -90,6 +99,7 @@ export class HomeComponent implements OnInit {
       );
 
     this.expensesPerMonthData$ = this.homeService.expensesPerMonth$.pipe(
+      takeUntil(this.destory$),
       map((event) => {
         if (event === undefined) {
           return {} as ChartData;
