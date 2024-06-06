@@ -14,6 +14,8 @@ import { AppDateRangePickerComponent } from '../../shared/components/app-date-ra
 import { HomeService } from './home.service';
 import { EffectsModule } from '@ngrx/effects';
 import { HomeEffect } from './store/effects/home.effect';
+import { NoDataComponent } from './components/no-data/no-data.component';
+import { SharedModule } from '../../shared/shared.nodule';
 
 @NgModule({
   imports: [
@@ -25,11 +27,12 @@ import { HomeEffect } from './store/effects/home.effect';
     AppContentWrapperComponent,
     AppDateRangePickerComponent,
     FormsModule,
+    SharedModule,
     StoreModule.forFeature(homeFeature),
     EffectsModule.forFeature([HomeEffect]),
   ],
   exports: [],
-  declarations: [HomeComponent],
+  declarations: [HomeComponent, NoDataComponent],
   providers: [HomeService],
 })
 export class HomeModule {}
