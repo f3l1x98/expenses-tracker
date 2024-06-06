@@ -3,6 +3,7 @@ import { ChartData, ChartOptions } from 'chart.js';
 import { Observable, Subject, map, of, takeUntil } from 'rxjs';
 import { DateRange } from '../../../shared/interfaces/date-range.interface';
 import { HomeService } from '../home.service';
+import { CurrentMonthData } from '../api/interfaces/current-month-data.interface';
 
 @Component({
   selector: 'app-home',
@@ -10,6 +11,8 @@ import { HomeService } from '../home.service';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  currentMonthDataData$!: Observable<CurrentMonthData | undefined>;
+
   expensesPerCategoryData$!: Observable<ChartData>;
   expensesPerCategoryOptions$!: Observable<ChartOptions<'pie'>>;
 
@@ -34,6 +37,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       '--text-color-secondary'
     );
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+
+    this.currentMonthDataData$ = this.homeService.currentMonthData$.pipe(
+      takeUntil(this.destory$)
+    );
 
     this.expensesPerCategoryData$ = this.homeService.expensesPerCategory$.pipe(
       takeUntil(this.destory$),

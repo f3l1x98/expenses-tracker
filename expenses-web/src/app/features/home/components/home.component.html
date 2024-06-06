@@ -5,9 +5,24 @@
             (dateRangeChange)="onDateRangeChanged($event)"></app-date-range-picker>
     </div>
     <div class="grid">
-        <p-card class="col-3" header="This months expenses">TODO total expense this month</p-card>
-        <p-card class="col-3">TODO total income this month</p-card>
-        <p-card class="col-3">Balance (totalIncome - totalExpense)</p-card>
+        <p-card class="col-3" header="This months expense">
+            <div *ngIf="!!(currentMonthDataData$ | async)">
+                {{(currentMonthDataData$ | async)!.totalExpense | formatCurrency:(currentMonthDataData$ |
+                async)!.currency}}
+            </div>
+        </p-card>
+        <p-card class="col-3" header="This months income">
+            <div *ngIf="!!(currentMonthDataData$ | async)">
+                {{(currentMonthDataData$ | async)!.totalIncome | formatCurrency:(currentMonthDataData$ |
+                async)!.currency}}
+            </div>
+        </p-card>
+        <p-card class="col-3" header="Balance">
+            <div *ngIf="!!(currentMonthDataData$ | async)">
+                {{(currentMonthDataData$ | async)!.balance | formatCurrency:(currentMonthDataData$ |
+                async)!.currency}}
+            </div>
+        </p-card>
 
         <p-card class="col-4" header="Expenses per category" [style]="{ height: '100%' }">
             <p-chart *ngIf="(expensesPerCategoryData$ | async)?.datasets; else noData" type="pie"
