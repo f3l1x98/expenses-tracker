@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseApiService } from '../../../../../shared/api/base-api.service';
-import { CurrentMonthData } from '../../interfaces/current-month-data.interface';
-import { ExpensesPerCategoryResponse } from '../../interfaces/api/expenses-per-catergory-response.interface';
-import { ExpensesPerMonthResponse } from '../../interfaces/api/expenses-per-month-response.interface';
+import { BaseApiService } from '../../../shared/api/base-api.service';
+import { CurrentMonthData } from './interfaces/current-month-data.interface';
+import { ExpensesPerCategoryResponse } from './interfaces/expenses-per-catergory-response.interface';
+import { ExpensesPerMonthResponse } from './interfaces/expenses-per-month-response.interface';
 
 @Injectable({ providedIn: 'root' })
 export class HomeApiService {

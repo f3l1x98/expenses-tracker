@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { Observable, map, of } from 'rxjs';
-import { ExpensesPerCategoryResponse } from '../store/interfaces/api/expenses-per-catergory-response.interface';
-import { TotalExpenseOfMonth } from '../store/interfaces/total-expense-of-month.interface';
+import { ExpensesPerCategoryResponse } from '../api/interfaces/expenses-per-catergory-response.interface';
+import { TotalExpenseOfMonth } from '../api/interfaces/total-expense-of-month.interface';
 
 @Component({
   selector: 'app-home',
