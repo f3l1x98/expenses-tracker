@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { Observable, map, of } from 'rxjs';
-import { ExpensesPerCategoryResponse } from '../api/interfaces/expenses-per-catergory-response.interface';
-import { TotalExpenseOfMonth } from '../api/interfaces/total-expense-of-month.interface';
+import { DateRange } from '../../../shared/interfaces/date-range.interface';
+import { HomeService } from '../home.service';
 
 @Component({
   selector: 'app-home',
@@ -16,9 +16,9 @@ export class HomeComponent implements OnInit {
   expensesPerMonthData$!: Observable<ChartData>;
   expensesPerMonthOptions$!: Observable<ChartOptions<'line'>>;
 
-  dateRangeFilter: Date[] | undefined;
+  dateRangeFilter: DateRange | undefined;
 
-  constructor() {}
+  constructor(private homeService: HomeService) {}
 
   ngOnInit() {
     const documentStyle = getComputedStyle(document.documentElement);
@@ -28,116 +28,86 @@ export class HomeComponent implements OnInit {
     );
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
-    const expensesPerCategoryDummyApiData = of({
-      data: [
-        {
-          category: 'test1',
-          amount: 1,
-          color: '--blue-500',
-        },
-        {
-          category: 'test2',
-          amount: 10,
-          color: '--yellow-500',
-        },
-        {
-          category: 'test3',
-          amount: 3,
-          color: '--green-500',
-        },
-      ],
-      currency: 'EUR',
-    } as ExpensesPerCategoryResponse);
-    this.expensesPerCategoryData$ = expensesPerCategoryDummyApiData.pipe(
-      map(({ data }) => ({
-        labels: data.map((entries) => entries.category),
-        datasets: [
-          {
-            data: data.map((entries) => entries.amount),
-            backgroundColor: data.map((entries) =>
-              documentStyle.getPropertyValue(entries.color)
-            ),
-          },
-        ],
-      }))
-    );
-    this.expensesPerCategoryOptions$ = expensesPerCategoryDummyApiData.pipe(
-      map(({ currency }) => ({
-        aspectRatio: 1.4,
-        borderColor: textColorSecondary,
-        plugins: {
-          tooltip: {
-            callbacks: {
-              label: (context) => {
-                console.dir(context, { depth: null });
-                let label = context.dataset.label || '';
-
-                if (label) {
-                  label += '';
-                }
-                if (context.parsed !== null) {
-                  label += new Intl.NumberFormat('en-US', {
-                    style: 'currency',
-                    currency: currency,
-                  }).format(context.parsed);
-                }
-                return label;
+    this.expensesPerCategoryData$ = this.homeService.expensesPerCategory$.pipe(
+      map((event) => {
+        if (event === undefined) {
+          return {} as ChartData;
+        } else {
+          const data = event.data;
+          return {
+            labels: data.map((entries) => entries.category),
+            datasets: [
+              {
+                data: data.map((entries) => entries.amount),
+                backgroundColor: data.map((entries) =>
+                  documentStyle.getPropertyValue(entries.color)
+                ),
               },
-            },
-          },
-          legend: {
-            position: 'right',
-            labels: {
-              usePointStyle: true,
-              color: textColor,
-            },
-          },
-        },
-      }))
+            ],
+          };
+        }
+      })
     );
+    this.expensesPerCategoryOptions$ =
+      this.homeService.expensesPerCategory$.pipe(
+        map((event) => {
+          if (event === undefined) {
+            return {};
+          } else {
+            return {
+              aspectRatio: 1.4,
+              borderColor: textColorSecondary,
+              plugins: {
+                tooltip: {
+                  callbacks: {
+                    label: (context) => {
+                      let label = context.dataset.label || '';
 
-    const expensesPerMonthDummyApiData = of([
-      {
-        month: 'January',
-        amount: 10,
-      },
-      {
-        month: 'February',
-        amount: 12,
-      },
-      {
-        month: 'March',
-        amount: 3,
-      },
-      {
-        month: 'April',
-        amount: 2,
-      },
-      {
-        month: 'May',
-        amount: 45,
-      },
-      {
-        month: 'June',
-        amount: 13,
-      },
-      {
-        month: 'July',
-        amount: 8,
-      },
-    ] as TotalExpenseOfMonth[]);
-    this.expensesPerMonthData$ = expensesPerMonthDummyApiData.pipe(
-      map((data) => ({
-        labels: data.map((entry) => entry.month),
-        datasets: [
-          {
-            data: data.map((entry) => entry.amount),
-            fill: false,
-            borderColor: documentStyle.getPropertyValue('--blue-500'),
-            tension: 0.4,
-          },
-        ],
-      }))
+                      if (label) {
+                        label += '';
+                      }
+                      if (context.parsed !== null) {
+                        label += new Intl.NumberFormat('en-US', {
+                          style: 'currency',
+                          currency: event.currency,
+                        }).format(context.parsed);
+                      }
+                      return label;
+                    },
+                  },
+                },
+                legend: {
+                  position: 'right',
+                  labels: {
+                    usePointStyle: true,
+                    color: textColor,
+                  },
+                },
+              },
+            };
+          }
+        })
+      );
+
+    this.expensesPerMonthData$ = this.homeService.expensesPerMonth$.pipe(
+      map((event) => {
+        if (event === undefined) {
+          return {} as ChartData;
+        } else {
+          const data = event.data;
+          return {
+            labels: data.map((entry) => entry.month),
+            datasets: [
+              {
+                data: data.map((entry) => entry.amount),
+                fill: false,
+                borderColor: documentStyle.getPropertyValue('--blue-500'),
+                tension: 0.4,
+              },
+            ],
+          };
+        }
+      })
     );
     this.expensesPerMonthOptions$ = of({
       maintainAspectRatio: false,
@@ -169,5 +139,9 @@ export class HomeComponent implements OnInit {
         },
       },
     });
+  }
+
+  onDateRangeChanged(dateRange: DateRange) {
+    this.homeService.setDateRangeFilter(dateRange);
   }
 }

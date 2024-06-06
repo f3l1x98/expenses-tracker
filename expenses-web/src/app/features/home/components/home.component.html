@@ -1,8 +1,8 @@
 <app-content-wrapper>
     <div slot="header" class="flex justify-content-between">
         <span>Home</span>
-        <p-calendar [(ngModel)]="dateRangeFilter" selectionMode="range" dateFormat="dd/mm/yy"
-            placeholder="Filter date range" />
+        <app-date-range-picker [dateRange]="dateRangeFilter"
+            (dateRangeChange)="onDateRangeChanged($event)"></app-date-range-picker>
     </div>
     <div class="grid">
         <p-card class="col-3" header="This months expenses">TODO total expense this month</p-card>
