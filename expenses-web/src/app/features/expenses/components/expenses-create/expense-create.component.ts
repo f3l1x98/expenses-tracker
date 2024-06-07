@@ -97,11 +97,31 @@ export class ExpenseCreateComponent implements OnInit, OnDestroy {
 
     const isRecurringCreation: boolean =
       this.formGroup.get('recurringExpense')!.value;
-    /*if (isRecurringCreation) {
-      recurringExpensesService.create();
+    const description = this.formGroup.get('description')?.value as string;
+    const amount = this.formGroup.get('amount')?.value as number;
+    const category = this.formGroup.get('category')?.value as ExpenseCategory;
+    if (isRecurringCreation) {
+      const recurringCycle = this.formGroup.get('recurringCycle')
+        ?.value as RecurringCycle;
+      const startDate = this.formGroup.get('startDate')?.value as Date;
+      const endDate = this.formGroup.get('endDate')?.value as Date | undefined;
+      this.recurringExpensesService.create({
+        description: description,
+        category: category,
+        amount: amount,
+        cron: this.constructCron(recurringCycle, startDate),
+        startDate: startDate,
+        endDate: endDate,
+      });
     } else {
-      expensesService.create();
-    }*/
+      this.expensesService.create({
+        description: description,
+        category: category,
+        amount: amount,
+      });
+    }
+    // TODO this also clears the radioBtns
+    this.formGroup.reset();
   }
 
   private constructCron(cycle: RecurringCycle, startDate: Date): string {
