@@ -1,4 +1,4 @@
-import { User } from '../../../shared/interfaces/user.interface';
+import { User } from '../../../../shared/interfaces/user.interface';
 
 export interface AuthState {
   user: User | undefined;

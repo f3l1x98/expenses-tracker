@@ -1,8 +1,8 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
-import { AuthState, AuthStatus } from './auth.state';
+import { AuthState, AuthStatus } from '../interfaces/auth.state';
 
-import * as AuthActions from './auth.actions';
-import * as UserActions from './user.actions';
+import * as AuthActions from '../actions/auth.actions';
+import * as UserActions from '../actions/user.actions';
 
 export const initialState: AuthState = {
   user: undefined,

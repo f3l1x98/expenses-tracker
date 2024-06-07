@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { UserLoginRequest } from './api/user-login-request.interface';
-import { UserLoginResponse } from './api/user-login-response.interface';
+import { UserLoginRequest } from '../../api/interfaces/user-login-request.interface';
+import { UserLoginResponse } from '../../api/interfaces/user-login-response.interface';
 
 export const loginStart = createAction(
   '[Auth Service] login start',

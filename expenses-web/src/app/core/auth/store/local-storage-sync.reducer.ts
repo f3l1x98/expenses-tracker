@@ -1,6 +1,6 @@
 import { ActionReducer } from '@ngrx/store';
 import { LocalStorageConfig, localStorageSync } from 'ngrx-store-localstorage';
-import { AuthState } from './auth.state';
+import { AuthState } from './interfaces/auth.state';
 
 export function localStorageSyncReducer(
   reducer: ActionReducer<AuthState>

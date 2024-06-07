@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BaseApiService } from '../../../../shared/api/base-api.service';
-import { UserLoginRequest } from './user-login-request.interface';
+import { BaseApiService } from '../../../shared/api/base-api.service';
+import { UserLoginRequest } from './interfaces/user-login-request.interface';
 import { Observable } from 'rxjs';
-import { UserLoginResponse } from './user-login-response.interface';
+import { UserLoginResponse } from './interfaces/user-login-response.interface';
 
 @Injectable({
   providedIn: 'root',

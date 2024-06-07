@@ -1,8 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { authFeature } from './auth.feature';
+import { authFeature } from './feature/auth.feature';
 import { Subject } from 'rxjs';
-import * as UserActions from './user.actions';
+import * as UserActions from './actions/user.actions';
 
 @Injectable({
   providedIn: 'root',
