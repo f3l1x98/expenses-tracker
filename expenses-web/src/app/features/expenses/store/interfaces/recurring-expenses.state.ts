@@ -3,5 +3,6 @@ import { RecurringExpense } from '../../api/interfaces/recurring-expense.interfa
 
 export interface RecurringExpensesState {
   recurringExpenses: Array<RecurringExpense>;
-  status: StoreStateStatus;
+  loadStatus: StoreStateStatus;
+  createStatus: StoreStateStatus;
 }
