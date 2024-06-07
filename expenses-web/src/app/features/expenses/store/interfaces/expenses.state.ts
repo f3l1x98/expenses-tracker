@@ -3,5 +3,6 @@ import { Expense } from '../../api/interfaces/expense.interface';
 
 export interface ExpensesState {
   expenses: Array<Expense>;
-  status: StoreStateStatus;
+  loadStatus: StoreStateStatus;
+  createStatus: StoreStateStatus;
 }

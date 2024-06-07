@@ -1,14 +1,20 @@
 import { Injectable } from '@angular/core';
 import { ExpensesStoreService } from './store/services/expenses-store.service';
+import { CreateExpenseRequest } from './api/interfaces/requests/create-expense-request.interface';
 
 @Injectable()
 export class ExpensesService {
-  status$ = this.store.status$;
+  loadStatus$ = this.store.loadStatus$;
   expenses$ = this.store.expenses$;
+  createStatus$ = this.store.createStatus$;
 
   constructor(private store: ExpensesStoreService) {}
 
   load() {
     this.store.load();
+  }
+
+  create(request: CreateExpenseRequest) {
+    this.store.create(request);
   }
 }
