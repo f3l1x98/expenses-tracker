@@ -5,7 +5,7 @@ import {
   HttpHandler,
   HttpRequest,
 } from '@angular/common/http';
-import { Observable, switchMap } from 'rxjs';
+import { Observable, switchMap, take } from 'rxjs';
 import { AuthStoreService } from './store/auth-store.service';
 
 @Injectable()
@@ -17,6 +17,7 @@ export class AuthInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     return this.auth.token$.pipe(
+      take(1),
       switchMap((token) => {
         const authReq = req.clone({
           headers: req.headers.set('Authorization', `Bearer ${token}`),
