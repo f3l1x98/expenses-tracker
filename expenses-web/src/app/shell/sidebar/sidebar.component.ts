@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { AuthService } from '../../core/auth/auth.service';
-import { NotificationService } from '../notification/notification.service';
 import { AppHeaderComponent } from '../../shared/components/app-header/app-header.component';
 
 @Component({
@@ -12,15 +11,12 @@ import { AppHeaderComponent } from '../../shared/components/app-header/app-heade
   imports: [RouterModule, ButtonModule, AppHeaderComponent],
 })
 export class SidebarComponent implements OnInit {
-  constructor(
-    private authService: AuthService,
-    private notificationService: NotificationService
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {}
 
   logout() {
-    this.notificationService.success('test');
-    //this.authService.logout();
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }
