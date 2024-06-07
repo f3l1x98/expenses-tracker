@@ -3,15 +3,15 @@
     <div class="flex justify-content-center px-4 pt-3 pb-5">
       <app-header></app-header>
     </div>
-    <form [formGroup]="formGroup" (keydown.enter)="submit()">
-      <div class="mb-5">
+    <form class="formgrid grid" [formGroup]="formGroup" (keydown.enter)="submit()">
+      <div class="mb-5 field col-12">
         <p-floatLabel>
           <input pInputText class="w-full" id="username" formControlName="username" type="text">
           <label for="username">Username</label>
         </p-floatLabel>
       </div>
 
-      <div class="mb-5">
+      <div class="mb-5 field col-12">
         <p-floatLabel>
           <p-password inputStyleClass="w-full" styleClass="w-full" inputId="password" formControlName="password"
             [feedback]="false" />
