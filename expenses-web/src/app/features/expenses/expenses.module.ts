@@ -20,6 +20,14 @@ import { AppContentWrapperComponent } from '../../shared/components/app-content-
 import { recurringExpensesFeature } from './store/features/recurring-expenses.feature';
 import { RecurringExpensesEffect } from './store/effects/recurring-expenses.effects';
 import { RecurringExpensesService } from './recurring-expenses.service';
+import { ExpenseCreateComponent } from './components/expenses-create/expense-create.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { CalendarModule } from 'primeng/calendar';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
   imports: [
@@ -36,12 +44,20 @@ import { RecurringExpensesService } from './recurring-expenses.service';
     ButtonModule,
     MenuModule,
     AppContentWrapperComponent,
+    ReactiveFormsModule,
+    FloatLabelModule,
+    RadioButtonModule,
+    DropdownModule,
+    InputNumberModule,
+    CalendarModule,
+    InputTextModule,
   ],
   exports: [],
   declarations: [
     ExpensesComponent,
     ExpensesListComponent,
     RecurringExpensesListComponent,
+    ExpenseCreateComponent,
   ],
   providers: [ExpensesService, RecurringExpensesService],
 })
