@@ -12,7 +12,6 @@ import { localStorageSyncReducer } from './store/local-storage-sync.reducer';
     AuthRoutingModule,
     LoginComponent,
     StoreModule.forFeature(authFeature.name, authFeature.reducer, {
-      initialState,
       metaReducers: [localStorageSyncReducer],
     }),
     EffectsModule.forFeature([AuthEffects]),
