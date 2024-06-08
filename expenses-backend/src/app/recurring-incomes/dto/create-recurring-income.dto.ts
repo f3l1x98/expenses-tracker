@@ -4,6 +4,7 @@ import {
   IsDate,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsPositive,
   IsString,
 } from 'class-validator';
@@ -49,6 +50,7 @@ export class CreateRecurringIncomeDto {
       'The start date for the first execution of this recurring income',
     required: false,
   })
+  @IsOptional()
   @Type(() => Date)
   @IsDate()
   startDate?: Date;
@@ -57,6 +59,7 @@ export class CreateRecurringIncomeDto {
     description: 'The end date for the last execution of this recurring income',
     required: false,
   })
+  @IsOptional()
   @Type(() => Date)
   @IsDate()
   @IsAfterDate('startDate')
