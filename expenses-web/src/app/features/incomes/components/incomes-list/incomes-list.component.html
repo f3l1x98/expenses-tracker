@@ -29,7 +29,8 @@
                                 </span>
                             </div>
                             <div>
-                                <p-menu #menu [model]="actionMenuItems" [popup]="true" appendTo="body" />
+                                <p-menu #menu [model]="(actionMenuItems$ | async)!" [popup]="true" appendTo="body"
+                                    (onShow)="onMenuShow(income.id)" />
                                 <p-button [text]="true" (click)="menu.toggle($event)" icon="pi pi-ellipsis-v" />
                             </div>
                         </div>
@@ -39,3 +40,4 @@
         </div>
     </ng-template>
 </p-dataView>
+<p-confirmDialog />

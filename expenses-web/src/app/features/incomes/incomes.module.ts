@@ -28,6 +28,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { IncomeCreateComponent } from './components/income-create/income-create.component';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @NgModule({
   exports: [],
@@ -37,7 +39,7 @@ import { IncomeCreateComponent } from './components/income-create/income-create.
     RecurringIncomesListComponent,
     IncomeCreateComponent,
   ],
-  providers: [IncomesService, RecurringIncomesService],
+  providers: [IncomesService, RecurringIncomesService, ConfirmationService],
   imports: [
     CommonModule,
     IncomesRoutingModule,
@@ -59,6 +61,7 @@ import { IncomeCreateComponent } from './components/income-create/income-create.
     InputNumberModule,
     CalendarModule,
     InputTextModule,
+    ConfirmDialogModule,
   ],
 })
 export class IncomesModule {}
