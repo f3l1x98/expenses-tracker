@@ -12,6 +12,27 @@ export class ExpensesEffect {
     private apiService: ExpensesApiService
   ) {}
 
+  deleteUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserActions.deleteRequest),
+      switchMap((action) => of(ApiActions.deleteStart({ id: action.id })))
+    )
+  );
+
+  delete$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ApiActions.deleteStart),
+      switchMap((action) =>
+        this.apiService.delete$(action.id).pipe(
+          switchMap((result) =>
+            of(ApiActions.deleteSuccess(), ApiActions.loadStart())
+          ),
+          catchError((error) => of(ApiActions.deleteFailure(error)))
+        )
+      )
+    )
+  );
+
   createUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserActions.createRequest),

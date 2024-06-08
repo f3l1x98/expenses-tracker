@@ -5,4 +5,5 @@ export interface ExpensesState {
   expenses: Array<Expense>;
   loadStatus: StoreStateStatus;
   createStatus: StoreStateStatus;
+  deleteStatus: StoreStateStatus;
 }
