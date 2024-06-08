@@ -18,7 +18,7 @@ export class RecurringIncomesListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.service.status$
+    this.service.loadStatus$
       .pipe(takeUntil(this.destory$))
       .subscribe((status) =>
         this.spinnerService.setState({ active: status.status === 'pending' })

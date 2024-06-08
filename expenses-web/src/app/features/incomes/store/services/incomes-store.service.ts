@@ -5,8 +5,9 @@ import * as ApiActions from '../actions/incomes-api.actions';
 
 @Injectable({ providedIn: 'root' })
 export class IncomesStoreService {
-  status$ = this.store.select(incomesFeature.selectStatus);
+  loadStatus$ = this.store.select(incomesFeature.selectLoadStatus);
   incomes$ = this.store.select(incomesFeature.selectIncomes);
+  createStatus$ = this.store.select(incomesFeature.selectCreateStatus);
 
   constructor(private store: Store) {}
 

@@ -3,5 +3,6 @@ import { RecurringIncome } from '../../api/interfaces/recurring-income.interface
 
 export interface RecurringIncomesState {
   recurringIncomes: RecurringIncome[];
-  status: StoreStateStatus;
+  loadStatus: StoreStateStatus;
+  createStatus: StoreStateStatus;
 }

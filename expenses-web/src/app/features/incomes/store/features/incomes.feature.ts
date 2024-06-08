@@ -5,7 +5,11 @@ import { StoreStateStatus } from '../../../../shared/interfaces/store-state-stat
 
 export const initialState: IncomesState = {
   incomes: [],
-  status: {
+  loadStatus: {
+    error: undefined,
+    status: 'initial',
+  },
+  createStatus: {
     error: undefined,
     status: 'initial',
   },
@@ -17,16 +21,29 @@ export const incomesFeature = createFeature({
     initialState,
     on(ApiActions.loadStart, (state) => ({
       ...state,
-      status: { status: 'pending' } as StoreStateStatus,
+      loadStatus: { status: 'pending' } as StoreStateStatus,
     })),
     on(ApiActions.loadSuccess, (state, { result }) => ({
       ...state,
       incomes: result,
-      status: { status: 'success' } as StoreStateStatus,
+      loadStatus: { status: 'success' } as StoreStateStatus,
     })),
     on(ApiActions.loadFailure, (state, { error }) => ({
       ...state,
-      status: { status: 'error', error } as StoreStateStatus,
+      loadStatus: { status: 'error', error } as StoreStateStatus,
+    })),
+
+    on(ApiActions.createStart, (state) => ({
+      ...state,
+      createStatus: { status: 'pending' } as StoreStateStatus,
+    })),
+    on(ApiActions.createSuccess, (state) => ({
+      ...state,
+      createStatus: { status: 'success' } as StoreStateStatus,
+    })),
+    on(ApiActions.createFailure, (state, { error }) => ({
+      ...state,
+      createStatus: { status: 'error', error } as StoreStateStatus,
     }))
   ),
 });

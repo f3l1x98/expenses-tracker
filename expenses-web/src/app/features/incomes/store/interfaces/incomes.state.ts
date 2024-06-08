@@ -3,5 +3,6 @@ import { Income } from '../../api/interfaces/income.interface';
 
 export interface IncomesState {
   incomes: Income[];
-  status: StoreStateStatus;
+  loadStatus: StoreStateStatus;
+  createStatus: StoreStateStatus;
 }

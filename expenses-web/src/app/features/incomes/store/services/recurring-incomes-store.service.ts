@@ -5,10 +5,11 @@ import { recurringIncomesFeature } from '../features/recurring-incomes.feature';
 
 @Injectable({ providedIn: 'root' })
 export class RecurringIncomesStoreService {
-  status$ = this.store.select(recurringIncomesFeature.selectStatus);
+  loadStatus$ = this.store.select(recurringIncomesFeature.selectLoadStatus);
   recurringIncomes$ = this.store.select(
     recurringIncomesFeature.selectRecurringIncomes
   );
+  createStatus$ = this.store.select(recurringIncomesFeature.selectCreateStatus);
 
   constructor(private store: Store) {}
 

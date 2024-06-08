@@ -3,8 +3,9 @@ import { IncomesStoreService } from './store/services/incomes-store.service';
 
 @Injectable()
 export class IncomesService {
-  status$ = this.store.status$;
+  loadStatus$ = this.store.loadStatus$;
   incomes$ = this.store.incomes$;
+  createStatus$ = this.store.createStatus$;
 
   constructor(private store: IncomesStoreService) {}
 
