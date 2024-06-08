@@ -24,3 +24,15 @@ export const createFailure = createAction(
   '[Recurring Incomes Actions] create failure',
   props<{ error: string }>()
 );
+
+export const deleteStart = createAction(
+  '[Recurring Incomes Actions] delete start',
+  props<{ id: string }>()
+);
+export const deleteSuccess = createAction(
+  '[Recurring Incomes Actions] delete success'
+);
+export const deleteFailure = createAction(
+  '[Recurring Incomes Actions] delete failure',
+  props<{ error: string }>()
+);

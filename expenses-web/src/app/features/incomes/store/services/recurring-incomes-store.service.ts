@@ -22,4 +22,8 @@ export class RecurringIncomesStoreService {
   create(request: CreateRecurringIncomeRequest) {
     this.store.dispatch(UserActions.createRequest({ request }));
   }
+
+  delete(id: string) {
+    this.store.dispatch(UserActions.deleteRequest({ id }));
+  }
 }

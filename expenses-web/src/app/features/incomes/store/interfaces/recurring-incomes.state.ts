@@ -5,4 +5,5 @@ export interface RecurringIncomesState {
   recurringIncomes: RecurringIncome[];
   loadStatus: StoreStateStatus;
   createStatus: StoreStateStatus;
+  deleteStatus: StoreStateStatus;
 }

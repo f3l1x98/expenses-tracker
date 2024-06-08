@@ -13,6 +13,10 @@ export const initialState: RecurringIncomesState = {
     error: undefined,
     status: 'initial',
   },
+  deleteStatus: {
+    error: undefined,
+    status: 'initial',
+  },
 };
 
 export const recurringIncomesFeature = createFeature({
@@ -42,6 +46,19 @@ export const recurringIncomesFeature = createFeature({
       createStatus: { status: 'success' } as StoreStateStatus,
     })),
     on(ApiActions.createFailure, (state, { error }) => ({
+      ...state,
+      createStatus: { status: 'error', error } as StoreStateStatus,
+    })),
+
+    on(ApiActions.deleteStart, (state) => ({
+      ...state,
+      createStatus: { status: 'pending' } as StoreStateStatus,
+    })),
+    on(ApiActions.deleteSuccess, (state) => ({
+      ...state,
+      createStatus: { status: 'success' } as StoreStateStatus,
+    })),
+    on(ApiActions.deleteFailure, (state, { error }) => ({
       ...state,
       createStatus: { status: 'error', error } as StoreStateStatus,
     }))
