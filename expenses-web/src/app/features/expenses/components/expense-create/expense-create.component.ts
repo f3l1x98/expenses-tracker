@@ -42,22 +42,34 @@ export class ExpenseCreateComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const now = new Date();
     this.formGroup = this.formBuilder.group({
-      description: new FormControl('', [Validators.required]),
-      category: new FormControl<ExpenseCategory>(ExpenseCategory.MISC, [
-        Validators.required,
-      ]),
-      isRecurring: new FormControl<boolean>(false, [Validators.required]),
-      amount: new FormControl(0, [Validators.required, Validators.min(0)]),
-      recurringCycle: new FormControl<RecurringCycle>(RecurringCycle.MONTHLY, [
-        Validators.required,
-      ]),
-      startDate: new FormControl<Date>(now, [
-        Validators.required,
-        validateDateAfter({ value: now }),
-      ]),
-      endDate: new FormControl<Date | undefined>(undefined, [
-        validateDateAfter({ formControlName: 'startDate' }),
-      ]),
+      description: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
+      category: new FormControl<ExpenseCategory>(ExpenseCategory.MISC, {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
+      isRecurring: new FormControl<boolean>(false, {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
+      amount: new FormControl(0, {
+        nonNullable: true,
+        validators: [Validators.required, Validators.min(0)],
+      }),
+      recurringCycle: new FormControl<RecurringCycle>(RecurringCycle.MONTHLY, {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
+      startDate: new FormControl<Date>(now, {
+        nonNullable: true,
+        validators: [Validators.required, validateDateAfter({ value: now })],
+      }),
+      endDate: new FormControl<Date | undefined>(undefined, {
+        nonNullable: true,
+        validators: [validateDateAfter({ formControlName: 'startDate' })],
+      }),
     });
   }
 
@@ -89,7 +101,6 @@ export class ExpenseCreateComponent implements OnInit, OnDestroy {
         amount: amount,
       });
     }
-    // TODO this also clears the radioBtns
     this.formGroup.reset();
   }
 }
