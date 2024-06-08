@@ -24,16 +24,16 @@
 
     <div class="field col-12 flex justify-content-center gap-3">
         <div class="field-checkbox">
-            <p-radioButton inputId="onetime" [value]="false" formControlName="recurringExpense" />
+            <p-radioButton inputId="onetime" [value]="false" formControlName="isRecurring" />
             <label for="onetime">Onetime</label>
         </div>
         <div class="field-checkbox">
-            <p-radioButton inputId="recurring" [value]="true" formControlName="recurringExpense" />
+            <p-radioButton inputId="recurring" [value]="true" formControlName="isRecurring" />
             <label for="recurring">Recurring</label>
         </div>
     </div>
 
-    <ng-container *ngIf="formGroup.controls['recurringExpense'].value">
+    <ng-container *ngIf="formGroup.controls['isRecurring'].value">
         <div class="field col-12 lg:col-4">
             <p-floatLabel>
                 <p-dropdown formControlName="recurringCycle" styleClass="w-full" class="w-full" inputId="recurringCycle"

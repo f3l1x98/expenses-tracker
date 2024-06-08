@@ -46,7 +46,7 @@ export class ExpenseCreateComponent implements OnInit, OnDestroy {
       category: new FormControl<ExpenseCategory>(ExpenseCategory.MISC, [
         Validators.required,
       ]),
-      recurringExpense: new FormControl<boolean>(false, [Validators.required]),
+      isRecurring: new FormControl<boolean>(false, [Validators.required]),
       amount: new FormControl(0, [Validators.required, Validators.min(0)]),
       recurringCycle: new FormControl<RecurringCycle>(RecurringCycle.MONTHLY, [
         Validators.required,
@@ -65,7 +65,7 @@ export class ExpenseCreateComponent implements OnInit, OnDestroy {
     if (!this.formGroup.valid) return;
 
     const isRecurringCreation: boolean =
-      this.formGroup.get('recurringExpense')!.value;
+      this.formGroup.get('isRecurring')!.value;
     const description = this.formGroup.get('description')?.value as string;
     const amount = this.formGroup.get('amount')?.value as number;
     const category = this.formGroup.get('category')?.value as ExpenseCategory;
