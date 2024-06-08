@@ -13,6 +13,10 @@ export const initialState: RecurringExpensesState = {
     error: undefined,
     status: 'initial',
   },
+  deleteStatus: {
+    error: undefined,
+    status: 'initial',
+  },
 };
 
 export const recurringExpensesFeature = createFeature({
@@ -44,6 +48,19 @@ export const recurringExpensesFeature = createFeature({
     on(ApiActions.createFailure, (state, { error }) => ({
       ...state,
       createStatus: { status: 'error', error } as StoreStateStatus,
+    })),
+
+    on(ApiActions.deleteStart, (state) => ({
+      ...state,
+      deleteStatus: { status: 'pending' } as StoreStateStatus,
+    })),
+    on(ApiActions.deleteSuccess, (state) => ({
+      ...state,
+      deleteStatus: { status: 'success' } as StoreStateStatus,
+    })),
+    on(ApiActions.deleteFailure, (state, { error }) => ({
+      ...state,
+      deleteStatus: { status: 'error', error: error } as StoreStateStatus,
     }))
   ),
 });

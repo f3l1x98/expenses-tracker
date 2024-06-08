@@ -26,3 +26,15 @@ export const createFailure = createAction(
   '[Recurring Expenses Actions] create failure',
   props<{ error: string }>()
 );
+
+export const deleteStart = createAction(
+  '[Recurring Expenses Actions] delete start',
+  props<{ id: string }>()
+);
+export const deleteSuccess = createAction(
+  '[Recurring Expenses Actions] delete success'
+);
+export const deleteFailure = createAction(
+  '[Recurring Expenses Actions] delete failure',
+  props<{ error: string }>()
+);

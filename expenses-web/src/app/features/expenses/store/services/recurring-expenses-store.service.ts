@@ -24,4 +24,8 @@ export class RecurringExpensesStoreService {
   create(request: CreateRecurringExpenseRequest) {
     this.store.dispatch(UserActions.createRequest({ request }));
   }
+
+  delete(id: string) {
+    this.store.dispatch(UserActions.deleteRequest({ id }));
+  }
 }

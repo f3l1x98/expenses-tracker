@@ -17,4 +17,8 @@ export class RecurringExpensesService {
   create(request: CreateRecurringExpenseRequest) {
     this.store.create(request);
   }
+
+  delete(id: string) {
+    this.store.delete(id);
+  }
 }

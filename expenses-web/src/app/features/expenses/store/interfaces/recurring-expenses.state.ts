@@ -5,4 +5,5 @@ export interface RecurringExpensesState {
   recurringExpenses: Array<RecurringExpense>;
   loadStatus: StoreStateStatus;
   createStatus: StoreStateStatus;
+  deleteStatus: StoreStateStatus;
 }
