@@ -26,7 +26,7 @@ export class RecurringExpensesEffect {
       ofType(ApiActions.createStart),
       switchMap((action) =>
         this.apiService.create$(action.request).pipe(
-          map((result) => ApiActions.createSuccess()),
+          map((result) => ApiActions.createSuccess({ result })),
           catchError((error) => of(ApiActions.createFailure(error)))
         )
       )

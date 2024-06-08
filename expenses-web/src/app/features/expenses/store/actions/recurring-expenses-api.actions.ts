@@ -19,7 +19,8 @@ export const createStart = createAction(
   props<{ request: CreateRecurringExpenseRequest }>()
 );
 export const createSuccess = createAction(
-  '[Recurring Expenses Actions] create success'
+  '[Recurring Expenses Actions] create success',
+  props<{ result: RecurringExpense }>()
 );
 export const createFailure = createAction(
   '[Recurring Expenses Actions] create failure',

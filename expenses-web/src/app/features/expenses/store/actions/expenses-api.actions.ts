@@ -16,7 +16,10 @@ export const createStart = createAction(
   '[Expenses Actions] create start',
   props<{ request: CreateExpenseRequest }>()
 );
-export const createSuccess = createAction('[Expenses Actions] create success');
+export const createSuccess = createAction(
+  '[Expenses Actions] create success',
+  props<{ result: Expense }>()
+);
 export const createFailure = createAction(
   '[Expenses Actions] create failure',
   props<{ error: string }>()
