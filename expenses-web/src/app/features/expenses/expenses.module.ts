@@ -20,7 +20,7 @@ import { AppContentWrapperComponent } from '../../shared/components/app-content-
 import { recurringExpensesFeature } from './store/features/recurring-expenses.feature';
 import { RecurringExpensesEffect } from './store/effects/recurring-expenses.effects';
 import { RecurringExpensesService } from './recurring-expenses.service';
-import { ExpenseCreateComponent } from './components/expenses-create/expense-create.component';
+import { ExpenseCreateComponent } from './components/expense-create/expense-create.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { RadioButtonModule } from 'primeng/radiobutton';
