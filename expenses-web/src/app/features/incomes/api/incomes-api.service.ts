@@ -25,4 +25,8 @@ export class IncomesApiService {
   getAll$(): Observable<Income[]> {
     return this.apiService.get(this.getAllUrl);
   }
+
+  delete$(id: string): Observable<void> {
+    return this.apiService.delete(`${this.baseUrl}/${id}`);
+  }
 }
