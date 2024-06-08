@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RecurringIncomesStoreService } from './store/services/recurring-incomes-store.service';
+import { CreateRecurringIncomeRequest } from './api/interfaces/requests/create-recurring-income-request.interface';
 
 @Injectable()
 export class RecurringIncomesService {
@@ -11,5 +12,9 @@ export class RecurringIncomesService {
 
   load() {
     this.store.load();
+  }
+
+  create(request: CreateRecurringIncomeRequest) {
+    this.store.create(request);
   }
 }

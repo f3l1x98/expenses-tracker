@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as ApiActions from '../actions/recurring-incomes-api.actions';
+import * as UserActions from '../actions/recurring-incomes-user.actions';
 import { recurringIncomesFeature } from '../features/recurring-incomes.feature';
+import { CreateRecurringIncomeRequest } from '../../api/interfaces/requests/create-recurring-income-request.interface';
 
 @Injectable({ providedIn: 'root' })
 export class RecurringIncomesStoreService {
@@ -15,5 +17,9 @@ export class RecurringIncomesStoreService {
 
   load() {
     this.store.dispatch(ApiActions.loadStart());
+  }
+
+  create(request: CreateRecurringIncomeRequest) {
+    this.store.dispatch(UserActions.createRequest({ request }));
   }
 }

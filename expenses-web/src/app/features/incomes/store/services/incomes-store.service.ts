@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { incomesFeature } from '../features/incomes.feature';
 import * as ApiActions from '../actions/incomes-api.actions';
+import * as UserActions from '../actions/incomes-user.actions';
+import { CreateIncomeRequest } from '../../api/interfaces/requests/create-income-request.interface';
 
 @Injectable({ providedIn: 'root' })
 export class IncomesStoreService {
@@ -13,5 +15,9 @@ export class IncomesStoreService {
 
   load() {
     this.store.dispatch(ApiActions.loadStart());
+  }
+
+  create(request: CreateIncomeRequest) {
+    this.store.dispatch(UserActions.createRequest({ request }));
   }
 }
