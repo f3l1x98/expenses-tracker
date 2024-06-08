@@ -28,6 +28,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CalendarModule } from 'primeng/calendar';
 import { InputTextModule } from 'primeng/inputtext';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 
 @NgModule({
   imports: [
@@ -51,6 +53,7 @@ import { InputTextModule } from 'primeng/inputtext';
     InputNumberModule,
     CalendarModule,
     InputTextModule,
+    ConfirmDialogModule,
   ],
   exports: [],
   declarations: [
@@ -59,6 +62,6 @@ import { InputTextModule } from 'primeng/inputtext';
     RecurringExpensesListComponent,
     ExpenseCreateComponent,
   ],
-  providers: [ExpensesService, RecurringExpensesService],
+  providers: [ExpensesService, RecurringExpensesService, ConfirmationService],
 })
 export class ExpensesModule {}

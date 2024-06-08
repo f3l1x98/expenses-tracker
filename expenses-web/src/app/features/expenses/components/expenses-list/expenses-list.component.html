@@ -1,7 +1,7 @@
 <p-dataView [value]="(expenses$ | async) ?? undefined" [rows]="12" [paginator]="true">
     <ng-template pTemplate="header">
         <div class="flex flex-column md:flex-row md:justify-content-between">
-            TODO sorting, search, filter, ...
+            TODO sorting, search, filter, ... (look at PrimeNG IconField)
         </div>
     </ng-template>
     <ng-template pTemplate="list" let-expenses>
@@ -29,7 +29,8 @@
                                 </span>
                             </div>
                             <div>
-                                <p-menu #menu [model]="actionMenuItems" [popup]="true" appendTo="body" />
+                                <p-menu #menu [model]="(actionMenuItems$ | async)!" [popup]="true" appendTo="body"
+                                    (onShow)="onMenuShow(expense.id)" />
                                 <p-button [text]="true" (click)="menu.toggle($event)" icon="pi pi-ellipsis-v" />
                             </div>
                         </div>
@@ -39,3 +40,4 @@
         </div>
     </ng-template>
 </p-dataView>
+<p-confirmDialog />
