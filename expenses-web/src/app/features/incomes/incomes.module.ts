@@ -20,6 +20,14 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.nodule';
 import { RecurringIncomesListComponent } from './components/recurring-incomes-list/recurring-incomes-list.component';
 import { RecurringIncomesService } from './recurring-incomes.service';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputTextModule } from 'primeng/inputtext';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { IncomeCreateComponent } from './components/income-create/income-create.component';
 
 @NgModule({
   exports: [],
@@ -27,6 +35,7 @@ import { RecurringIncomesService } from './recurring-incomes.service';
     IncomesComponent,
     IncomesListComponent,
     RecurringIncomesListComponent,
+    IncomeCreateComponent,
   ],
   providers: [IncomesService, RecurringIncomesService],
   imports: [
@@ -43,6 +52,13 @@ import { RecurringIncomesService } from './recurring-incomes.service';
     SharedModule,
     ButtonModule,
     MenuModule,
+    ReactiveFormsModule,
+    FloatLabelModule,
+    RadioButtonModule,
+    DropdownModule,
+    InputNumberModule,
+    CalendarModule,
+    InputTextModule,
   ],
 })
 export class IncomesModule {}
