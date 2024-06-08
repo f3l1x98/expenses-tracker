@@ -5,4 +5,5 @@ export interface IncomesState {
   incomes: Income[];
   loadStatus: StoreStateStatus;
   createStatus: StoreStateStatus;
+  deleteStatus: StoreStateStatus;
 }

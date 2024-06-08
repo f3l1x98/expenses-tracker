@@ -17,4 +17,8 @@ export class IncomesService {
   create(request: CreateIncomeRequest) {
     this.store.create(request);
   }
+
+  delete(id: string) {
+    this.store.delete(id);
+  }
 }

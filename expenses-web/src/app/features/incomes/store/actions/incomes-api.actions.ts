@@ -24,3 +24,13 @@ export const createFailure = createAction(
   '[Incomes Actions] create failure',
   props<{ error: string }>()
 );
+
+export const deleteStart = createAction(
+  '[Incomes Actions] delete start',
+  props<{ id: string }>()
+);
+export const deleteSuccess = createAction('[Incomes Actions] delete success');
+export const deleteFailure = createAction(
+  '[Incomes Actions] delete failure',
+  props<{ error: string }>()
+);
