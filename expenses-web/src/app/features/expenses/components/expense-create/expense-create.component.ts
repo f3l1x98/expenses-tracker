@@ -1,24 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
-  AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
-  ValidationErrors,
-  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { ExpenseCategory } from '../../api/interfaces/expense-category';
 import { AuthService } from '../../../../core/auth/auth.service';
-import { Subject, min } from 'rxjs';
+import { Subject } from 'rxjs';
 import { ExpensesService } from '../../expenses.service';
 import { RecurringExpensesService } from '../../recurring-expenses.service';
-
-enum RecurringCycle {
-  YEARLY = 'yearly',
-  MONTHLY = 'monthly',
-  WEEKLY = 'weekly',
-}
+import { RecurringCycle } from '../../../../shared/interfaces/recurring-cycle.enum';
+import { constructCron } from '../../../../shared/utils/cron-utils';
+import { validateDateAfter } from '../../../../shared/validators/validate-date-after';
 
 @Component({
   selector: 'app-expense-create',
@@ -59,37 +53,12 @@ export class ExpenseCreateComponent implements OnInit, OnDestroy {
       ]),
       startDate: new FormControl<Date>(now, [
         Validators.required,
-        this.validateDateAfter({ value: now }),
+        validateDateAfter({ value: now }),
       ]),
       endDate: new FormControl<Date | undefined>(undefined, [
-        this.validateDateAfter({ formControlName: 'startDate' }),
+        validateDateAfter({ formControlName: 'startDate' }),
       ]),
     });
-  }
-
-  private validateDateAfter(options: ValidateDateAfterOptions): ValidatorFn {
-    return (
-      control: AbstractControl<Date | undefined>
-    ): ValidationErrors | null => {
-      const value = control.value;
-      if (!value) return null;
-      let beforeValue: Date;
-      if (options.value !== undefined) {
-        beforeValue = options.value;
-      } else {
-        beforeValue = this.formGroup.controls[options.formControlName!].value;
-        if (!(beforeValue instanceof Date)) {
-          console.error(
-            `The control of ${options.formControlName} is not a valid date.`
-          );
-          return null;
-        }
-      }
-
-      const isAfter = value.getTime() >= beforeValue.getTime();
-
-      return isAfter ? null : { isAfter: false };
-    };
   }
 
   submit() {
@@ -109,7 +78,7 @@ export class ExpenseCreateComponent implements OnInit, OnDestroy {
         description: description,
         category: category,
         amount: amount,
-        cron: this.constructCron(recurringCycle, startDate),
+        cron: constructCron(recurringCycle, startDate),
         startDate: startDate,
         endDate: endDate,
       });
@@ -123,40 +92,4 @@ export class ExpenseCreateComponent implements OnInit, OnDestroy {
     // TODO this also clears the radioBtns
     this.formGroup.reset();
   }
-
-  private constructCron(cycle: RecurringCycle, startDate: Date): string {
-    let dayOfWeek: string = '*';
-    let month: string = '*';
-    let dayOfMonth: string = '*';
-    let hour: string = '2';
-    let minute: string = '0';
-    switch (cycle) {
-      case RecurringCycle.YEARLY:
-        month = `${startDate.getMonth()}`;
-        dayOfMonth = `${startDate.getDay()}`;
-        break;
-      case RecurringCycle.MONTHLY:
-        // TODO no support for 'last day of month' -> 31. -> skip all months without a 31st
-        dayOfMonth = `${startDate.getDate()}`;
-        break;
-      case RecurringCycle.WEEKLY:
-        dayOfWeek = `${startDate.getDay()}`;
-        break;
-    }
-    return `${minute} ${hour} ${dayOfMonth} ${month} ${dayOfWeek}`;
-  }
-}
-
-type ValidateDateAfterOptions =
-  | ValidateDateAfterWithValue
-  | ValidateDateAfterWithFormControl;
-
-interface ValidateDateAfterWithValue {
-  value: Date;
-  formControlName?: string;
-}
-
-interface ValidateDateAfterWithFormControl {
-  value?: Date;
-  formControlName: string;
 }
