@@ -20,7 +20,9 @@
       </div>
     </form>
 
-    <p-button label="Login" icon="pi pi-user" clas="w-full" (onClick)="submit()" [loading]="(loading$ | async)"
+    <p-button label="Login" icon="pi pi-user" class="w-full" (onClick)="submit()" [loading]="(loading$ | async)"
       [disabled]="!formGroup.valid"></p-button>
+
+    <p-button label="Register" [link]="true" routerLink="/auth/register" />
   </p-card>
 </div>
