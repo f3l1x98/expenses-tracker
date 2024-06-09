@@ -7,7 +7,10 @@ import {
   Body,
   Controller,
   Logger,
+  NotFoundException,
   Post,
+  Put,
+  Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -16,9 +19,14 @@ import { IUser } from './entities/user';
 import {
   ApiBadRequestResponse,
   ApiBody,
+  ApiNotFoundResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { UserSettingsDto } from './dto/user-settings.dto';
+import { UpdateUserSettingsDto } from './dto/update-user-settings.dto';
+import { Request } from 'express';
+import { UserNotFoundException } from './exceptions/user-not-found';
 
 @ApiTags('users')
 @Controller({
@@ -48,6 +56,32 @@ export class UsersController {
     } catch (e) {
       if (e instanceof UserAlreadyExistsError) {
         throw new BadRequestException(e.message);
+      }
+      throw e;
+    }
+  }
+
+  @ApiOperation({ summary: 'Updates a users settings' })
+  @ApiNotFoundResponse({ description: 'User not found' })
+  @ApiBody({
+    type: UserSettingsDto,
+    required: true,
+    description: 'User settings',
+  })
+  @Put('settings')
+  async updateSettings(
+    @Req() req: Request,
+    @Body() userSettingsDto: UpdateUserSettingsDto,
+  ): Promise<IUser> {
+    try {
+      const user = await this.usersService.updateSettings(
+        (req.user as IUser).id,
+        userSettingsDto,
+      );
+      return { id: user.id, username: user.username, settings: user.settings };
+    } catch (e) {
+      if (e instanceof UserNotFoundException) {
+        throw new NotFoundException(e.message);
       }
       throw e;
     }

@@ -8,6 +8,8 @@ import { QueryFailedError, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserAlreadyExistsError } from './exceptions/user-already-exists-error';
+import { UserNotFoundException } from './exceptions/user-not-found';
+import { UpdateUserSettingsDto } from './dto/update-user-settings.dto';
 
 @Injectable()
 export class UsersService {
@@ -43,6 +45,24 @@ export class UsersService {
     }
 
     return userEntity;
+  }
+
+  async updateSettings(
+    userId: string,
+    userSettingsDto: UpdateUserSettingsDto,
+  ): Promise<UserEntity> {
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+    });
+    if (user === null) {
+      throw new UserNotFoundException(userId);
+    }
+
+    if (userSettingsDto.currency !== undefined) {
+      user.settings.currency = userSettingsDto.currency;
+    }
+
+    return this.usersRepository.save(user);
   }
 
   async validate(username: string, password: string): Promise<boolean> {
