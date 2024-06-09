@@ -1,7 +1,7 @@
-import { User } from '../../../../shared/interfaces/user.interface';
+import { AuthUser } from './auth-user.interface';
 
 export interface AuthState {
-  user: User | undefined;
+  user: AuthUser | undefined;
   status: AuthStatus;
   token: string | undefined;
 }

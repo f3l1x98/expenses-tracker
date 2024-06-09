@@ -1,4 +1,4 @@
-import { User } from '../../../../shared/interfaces/user.interface';
+import { User } from '../../../../shell/user/store/interfaces/user.interface';
 import { IncomeCategory } from './income-category';
 import { RecurringIncome } from './recurring-income.interface';
 
