@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import * as UserActions from '../actions/user.actions';
-import * as AuthActions from '../actions/auth.actions';
+import * as PageActions from '../actions/auth-page.actions';
+import * as ApiActions from '../actions/auth-api.actions';
 import { catchError, map, of, switchMap, take } from 'rxjs';
 import { AuthApiService } from '../../api/auth-api.service';
 
@@ -14,20 +14,20 @@ export class AuthEffects {
 
   loginStart$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UserActions.login),
+      ofType(PageActions.login),
       switchMap((action) =>
-        of(AuthActions.loginStart({ request: action.request }))
+        of(ApiActions.loginStart({ request: action.request }))
       )
     )
   );
   login$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.loginStart),
+      ofType(ApiActions.loginStart),
       switchMap((action) =>
         this.authApiService.login$(action.request).pipe(
           take(1),
-          map((result) => AuthActions.loginSuccess({ result })),
-          catchError((error) => of(AuthActions.loginFailure({ error })))
+          map((result) => ApiActions.loginSuccess({ result })),
+          catchError((error) => of(ApiActions.loginFailure({ error })))
         )
       )
     )

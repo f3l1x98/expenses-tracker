@@ -5,39 +5,39 @@ import { ExpensesPerMonthResponse } from '../../api/interfaces/expenses-per-mont
 import { DateRange } from '../../../../shared/interfaces/date-range.interface';
 
 export const currentMonthDataLoadStart = createAction(
-  '[Home Actions] currentMonthDataLoadStart'
+  '[Home Api Actions] currentMonthDataLoadStart'
 );
 export const currentMonthDataLoadSuccess = createAction(
-  '[Home Actions] currentMonthDataLoadSuccess',
+  '[Home Api Actions] currentMonthDataLoadSuccess',
   props<{ result: CurrentMonthData }>()
 );
 export const currentMonthDataLoadFailure = createAction(
-  '[Home Actions] currentMonthDataLoadFailure',
+  '[Home Api Actions] currentMonthDataLoadFailure',
   props<{ error: string }>()
 );
 
 export const expensesPerCategoryLoadStart = createAction(
-  '[Home Actions] expensesPerCategoryLoadStart',
+  '[Home Api Actions] expensesPerCategoryLoadStart',
   props<{ filter: DateRange }>()
 );
 export const expensesPerCategoryLoadSuccess = createAction(
-  '[Home Actions] expensesPerCategoryLoadSuccess',
+  '[Home Api Actions] expensesPerCategoryLoadSuccess',
   props<{ result: ExpensesPerCategoryResponse }>()
 );
 export const expensesPerCategoryLoadFailure = createAction(
-  '[Home Actions] expensesPerCategoryLoadFailure',
+  '[Home Api Actions] expensesPerCategoryLoadFailure',
   props<{ error: string }>()
 );
 
 export const expensesPerMonthLoadStart = createAction(
-  '[Home Actions] expensesPerMonthLoadStart',
+  '[Home Api Actions] expensesPerMonthLoadStart',
   props<{ filter: DateRange }>()
 );
 export const expensesPerMonthLoadSuccess = createAction(
-  '[Home Actions] expensesPerMonthLoadSuccess',
+  '[Home Api Actions] expensesPerMonthLoadSuccess',
   props<{ result: ExpensesPerMonthResponse }>()
 );
 export const expensesPerMonthLoadFailure = createAction(
-  '[Home Actions] expensesPerMonthLoadFailure',
+  '[Home Api Actions] expensesPerMonthLoadFailure',
   props<{ error: string }>()
 );

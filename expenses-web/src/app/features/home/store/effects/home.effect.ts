@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { HomeApiService } from '../../api/home-api.service';
 import * as ApiActions from '../actions/home-api.actions';
-import * as UserActions from '../actions/home-user.actions';
-import { catchError, combineLatest, map, of, switchMap } from 'rxjs';
+import * as PageActions from '../actions/home-page.actions';
+import { catchError, map, of, switchMap } from 'rxjs';
 
 @Injectable()
 export class HomeEffect {
@@ -14,12 +14,12 @@ export class HomeEffect {
 
   enterPage$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UserActions.enterPage),
+      ofType(PageActions.enterPage),
       switchMap((action) => {
         const now = new Date();
         const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
         return of(
-          UserActions.setDateRangeFilter({
+          PageActions.setDateRangeFilter({
             filter: { startDate: startOfMonth, endDate: null },
           }),
           ApiActions.currentMonthDataLoadStart()
@@ -30,7 +30,7 @@ export class HomeEffect {
 
   setFilter$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UserActions.setDateRangeFilter),
+      ofType(PageActions.setDateRangeFilter),
       switchMap((action) =>
         of(
           ApiActions.expensesPerCategoryLoadStart({ filter: action.filter }),

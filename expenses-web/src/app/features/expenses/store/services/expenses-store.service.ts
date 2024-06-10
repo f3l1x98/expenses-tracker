@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { expensesFeature } from '../features/expenses.feature';
 import * as ApiActions from '../actions/expenses-api.actions';
-import * as UserActions from '../actions/expenses-user.actions';
+import * as PageActions from '../actions/expenses-page.actions';
 import { CreateExpenseRequest } from '../../api/interfaces/requests/create-expense-request.interface';
 
 @Injectable({ providedIn: 'root' })
@@ -18,10 +18,10 @@ export class ExpensesStoreService {
   }
 
   create(request: CreateExpenseRequest) {
-    this.store.dispatch(UserActions.createRequest({ request }));
+    this.store.dispatch(PageActions.createRequest({ request }));
   }
 
   delete(id: string) {
-    this.store.dispatch(UserActions.deleteRequest({ id }));
+    this.store.dispatch(PageActions.deleteRequest({ id }));
   }
 }

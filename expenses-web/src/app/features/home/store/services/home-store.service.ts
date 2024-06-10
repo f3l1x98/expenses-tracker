@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { homeFeature } from '../features/home.feature';
 import { DateRange } from '../../../../shared/interfaces/date-range.interface';
-import * as UserActions from '../actions/home-user.actions';
+import * as PageActions from '../actions/home-page.actions';
 
 @Injectable({ providedIn: 'root' })
 export class HomeStoreService {
@@ -25,10 +25,10 @@ export class HomeStoreService {
   constructor(private store: Store) {}
 
   public enterPage() {
-    this.store.dispatch(UserActions.enterPage());
+    this.store.dispatch(PageActions.enterPage());
   }
 
   public setDateRangeFilter(dateRange: DateRange) {
-    this.store.dispatch(UserActions.setDateRangeFilter({ filter: dateRange }));
+    this.store.dispatch(PageActions.setDateRangeFilter({ filter: dateRange }));
   }
 }

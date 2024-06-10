@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as UsersActions from '../actions/user-user.actions';
+import * as PageActions from '../actions/user-page.actions';
 import { usersFeature } from '../features/users.feature';
 
 @Injectable({ providedIn: 'root' })
@@ -11,6 +11,6 @@ export class UsersStoreService {
   constructor(private store: Store) {}
 
   loadOwn() {
-    this.store.dispatch(UsersActions.loadOwn());
+    this.store.dispatch(PageActions.loadOwn());
   }
 }

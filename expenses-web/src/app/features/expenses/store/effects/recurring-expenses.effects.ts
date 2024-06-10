@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { RecurringExpensesApiService } from '../../api/recurring-expense-api.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as ApiActions from '../actions/recurring-expenses-api.actions';
-import * as UserActions from '../actions/recurring-expenses-user.actions';
+import * as PageActions from '../actions/recurring-expenses-page.actions';
 import { catchError, map, of, switchMap } from 'rxjs';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class RecurringExpensesEffect {
 
   deleteUser$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UserActions.deleteRequest),
+      ofType(PageActions.deleteRequest),
       switchMap((action) => of(ApiActions.deleteStart({ id: action.id })))
     )
   );
@@ -35,7 +35,7 @@ export class RecurringExpensesEffect {
 
   createUser$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UserActions.createRequest),
+      ofType(PageActions.createRequest),
       switchMap((action) =>
         of(ApiActions.createStart({ request: action.request }))
       )

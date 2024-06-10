@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as ApiActions from '../actions/recurring-incomes-api.actions';
-import * as UserActions from '../actions/recurring-incomes-user.actions';
+import * as PageActions from '../actions/recurring-incomes-page.actions';
 import { recurringIncomesFeature } from '../features/recurring-incomes.feature';
 import { CreateRecurringIncomeRequest } from '../../api/interfaces/requests/create-recurring-income-request.interface';
 
@@ -20,10 +20,10 @@ export class RecurringIncomesStoreService {
   }
 
   create(request: CreateRecurringIncomeRequest) {
-    this.store.dispatch(UserActions.createRequest({ request }));
+    this.store.dispatch(PageActions.createRequest({ request }));
   }
 
   delete(id: string) {
-    this.store.dispatch(UserActions.deleteRequest({ id }));
+    this.store.dispatch(PageActions.deleteRequest({ id }));
   }
 }

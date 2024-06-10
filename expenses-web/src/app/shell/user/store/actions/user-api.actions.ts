@@ -3,10 +3,10 @@ import { User } from '../interfaces/user.interface';
 
 export const loadOwnStart = createAction('[Users Actions] loadOwnStart');
 export const loadOwnSuccess = createAction(
-  '[Users Actions] loadOwnSuccess',
+  '[Users Api Actions] loadOwnSuccess',
   props<{ result: User }>()
 );
 export const loadOwnFailure = createAction(
-  '[Users Actions] loadOwnFailure',
+  '[Users Api Actions] loadOwnFailure',
   props<{ error: string }>()
 );

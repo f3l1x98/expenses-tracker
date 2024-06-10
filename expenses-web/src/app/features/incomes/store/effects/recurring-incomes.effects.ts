@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as ApiActions from '../actions/recurring-incomes-api.actions';
-import * as UserActions from '../actions/recurring-incomes-user.actions';
+import * as PageActions from '../actions/recurring-incomes-page.actions';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { RecurringIncomesApiService } from '../../api/recurring-incomes-api.service';
 
@@ -14,7 +14,7 @@ export class RecurringIncomesEffect {
 
   deleteUser$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UserActions.deleteRequest),
+      ofType(PageActions.deleteRequest),
       switchMap((action) => of(ApiActions.deleteStart({ id: action.id })))
     )
   );
@@ -35,7 +35,7 @@ export class RecurringIncomesEffect {
 
   createUser$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UserActions.createRequest),
+      ofType(PageActions.createRequest),
       switchMap((action) =>
         of(ApiActions.createStart({ request: action.request }))
       )

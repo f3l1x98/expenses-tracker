@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { IncomesApiService } from '../../api/incomes-api.service';
 import * as ApiActions from '../actions/incomes-api.actions';
-import * as UserActions from '../actions/incomes-user.actions';
+import * as PageActions from '../actions/incomes-page.actions';
 import { catchError, map, of, switchMap } from 'rxjs';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class IncomesEffect {
 
   deleteUser$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UserActions.deleteRequest),
+      ofType(PageActions.deleteRequest),
       switchMap((action) => of(ApiActions.deleteStart({ id: action.id })))
     )
   );
@@ -35,7 +35,7 @@ export class IncomesEffect {
 
   createUser$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UserActions.createRequest),
+      ofType(PageActions.createRequest),
       switchMap((action) =>
         of(ApiActions.createStart({ request: action.request }))
       )

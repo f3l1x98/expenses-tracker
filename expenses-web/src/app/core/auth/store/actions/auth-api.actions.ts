@@ -3,16 +3,16 @@ import { UserLoginRequest } from '../../api/interfaces/user-login-request.interf
 import { UserLoginResponse } from '../../api/interfaces/user-login-response.interface';
 
 export const loginStart = createAction(
-  '[Auth Service] login start',
+  '[Auth Api Actions] login start',
   props<{ request: UserLoginRequest }>()
 );
 
 export const loginSuccess = createAction(
-  '[Auth Service] login success',
+  '[Auth Api Actions] login success',
   props<{ result: UserLoginResponse }>()
 );
 
 export const loginFailure = createAction(
-  '[Auth Service] login failure',
+  '[Auth Api Actions] login failure',
   props<{ error: string }>()
 );

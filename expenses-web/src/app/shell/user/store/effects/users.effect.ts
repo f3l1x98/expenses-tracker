@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { UsersApiService } from '../../api/users-api.service';
 import * as ApiActions from '../actions/user-api.actions';
-import * as UsersActions from '../actions/user-user.actions';
+import * as PageActions from '../actions/user-page.actions';
 import { catchError, map, of, switchMap } from 'rxjs';
 
 @Injectable()
@@ -11,7 +11,7 @@ export class UsersEffect {
 
   loadUser$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UsersActions.loadOwn),
+      ofType(PageActions.loadOwn),
       switchMap((action) => of(ApiActions.loadOwnStart()))
     )
   );
