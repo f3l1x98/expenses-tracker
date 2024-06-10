@@ -9,6 +9,7 @@ export class AuthService implements OnDestroy {
   private destroy$ = new Subject<void>();
 
   status$ = this.authStore.status$;
+  currentUser$ = this.authStore.currentUser$;
 
   constructor(private authStore: AuthStoreService) {}
 
