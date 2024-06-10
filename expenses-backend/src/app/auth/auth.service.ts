@@ -22,7 +22,7 @@ export class AuthService {
     name: string,
     password: string,
   ): Promise<User | undefined> {
-    const user = await this.usersService.findOne(name);
+    const user = await this.usersService.findByUsername(name);
     const isValid = await this.usersService.validate(name, password);
 
     if (user && isValid) {

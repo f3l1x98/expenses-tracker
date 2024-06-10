@@ -18,8 +18,12 @@ export class UsersService {
     private usersRepository: Repository<UserEntity>,
   ) {}
 
-  async findOne(username: string): Promise<UserEntity | null> {
+  async findByUsername(username: string): Promise<UserEntity | null> {
     return this.usersRepository.findOne({ where: { username: username } });
+  }
+
+  async findById(id: string): Promise<UserEntity | null> {
+    return this.usersRepository.findOne({ where: { id: id } });
   }
 
   async create(username: string, password: string): Promise<UserEntity> {
