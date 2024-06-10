@@ -11,6 +11,7 @@ import { AuthInterceptor } from './core/auth/auth.interceptor';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { SpinnerComponent } from './shell/spinner/spinner.component';
 import { NotificationComponent } from './shell/notification/notification.component';
+import { UsersModule } from './shell/user/user.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,6 +23,7 @@ import { NotificationComponent } from './shell/notification/notification.compone
   imports: [
     AppRoutingModule,
     AuthModule,
+    UsersModule,
     CommonModule,
     BrowserModule,
     HttpClientModule,
