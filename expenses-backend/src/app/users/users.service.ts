@@ -22,8 +22,13 @@ export class UsersService {
     return this.usersRepository.findOne({ where: { username: username } });
   }
 
-  async findById(id: string): Promise<UserEntity | null> {
-    return this.usersRepository.findOne({ where: { id: id } });
+  async findById(id: string): Promise<UserEntity> {
+    const user = await this.usersRepository.findOne({ where: { id: id } });
+    if (user === null) {
+      throw new UserNotFoundException(id);
+    }
+
+    return user;
   }
 
   async create(username: string, password: string): Promise<UserEntity> {
