@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { User } from '../store/interfaces/user.interface';
 
 @Injectable({ providedIn: 'root' })
-export class UsersApiService {
+export class UserApiService {
   constructor(private apiService: BaseApiService) {}
 
   private readonly baseUrl: string = `${this.apiService.apiRoot}/users`;

@@ -1,9 +1,9 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { UsersState } from '../interfaces/users.state';
+import { UserState } from '../interfaces/user.state';
 import * as ApiActions from '../actions/user-api.actions';
 import { StoreStateStatus } from '../../../../shared/interfaces/store-state-status.interface';
 
-const initialState: UsersState = {
+const initialState: UserState = {
   own: undefined,
   loadStatus: {
     error: undefined,
@@ -11,8 +11,8 @@ const initialState: UsersState = {
   },
 };
 
-export const usersFeature = createFeature({
-  name: 'users',
+export const userFeature = createFeature({
+  name: 'user',
   reducer: createReducer(
     initialState,
     on(ApiActions.loadOwnStart, (state) => ({

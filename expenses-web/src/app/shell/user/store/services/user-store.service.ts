@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as PageActions from '../actions/user-page.actions';
-import { usersFeature } from '../features/users.feature';
+import { userFeature } from '../features/user.feature';
 
 @Injectable({ providedIn: 'root' })
-export class UsersStoreService {
-  loadStatus$ = this.store.select(usersFeature.selectLoadStatus);
-  own$ = this.store.select(usersFeature.selectOwn);
+export class UserStoreService {
+  loadStatus$ = this.store.select(userFeature.selectLoadStatus);
+  own$ = this.store.select(userFeature.selectOwn);
 
   constructor(private store: Store) {}
 
