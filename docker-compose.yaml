@@ -1,0 +1,27 @@
+services:
+  postgres-db:
+    image: postgres:14.2
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+
+  backend:
+    image: expenses-backend
+    build:
+      context: ./expenses-backend
+      dockerfile: Dockerfile
+    env_file:
+      - ./expenses-backend/.env.docker
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgres-db
+
+  web:
+    image: expenses-web
+    build:
+      context: ./expenses-web
+      dockerfile: Dockerfile
