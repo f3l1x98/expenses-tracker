@@ -6,6 +6,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Get,
   Logger,
   NotFoundException,
   Post,
@@ -78,6 +79,21 @@ export class UsersController {
         (req.user as IUser).id,
         userSettingsDto,
       );
+      return { id: user.id, username: user.username, settings: user.settings };
+    } catch (e) {
+      if (e instanceof UserNotFoundException) {
+        throw new NotFoundException(e.message);
+      }
+      throw e;
+    }
+  }
+
+  @ApiOperation({ summary: 'Get own user' })
+  @ApiNotFoundResponse({ description: 'User not found' })
+  @Get('me')
+  async getOwnUser(@Req() req: Request): Promise<IUser> {
+    try {
+      const user = await this.usersService.findById((req.user as IUser).id);
       return { id: user.id, username: user.username, settings: user.settings };
     } catch (e) {
       if (e instanceof UserNotFoundException) {
