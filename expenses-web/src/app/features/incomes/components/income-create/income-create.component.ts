@@ -9,10 +9,10 @@ import { IncomeCategory } from '../../api/interfaces/income-category';
 import { Subject } from 'rxjs';
 import { IncomesService } from '../../incomes.service';
 import { RecurringIncomesService } from '../../recurring-incomes.service';
-import { AuthService } from '../../../../core/auth/auth.service';
 import { RecurringCycle } from '../../../../shared/interfaces/recurring-cycle.enum';
 import { validateDateAfter } from '../../../../shared/validators/validate-date-after';
 import { constructCron } from '../../../../shared/utils/cron-utils';
+import { UserService } from '../../../../shell/user/user.service';
 
 @Component({
   selector: 'app-income-create',
@@ -23,7 +23,7 @@ export class IncomeCreateComponent implements OnInit, OnDestroy {
   categoryOptions = Object.values(IncomeCategory);
   recurringCycleOptions = Object.values(RecurringCycle);
 
-  user$ = this.authService.currentUser$;
+  user$ = this.userService.own$;
 
   private destory$ = new Subject<void>();
 
@@ -31,7 +31,7 @@ export class IncomeCreateComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private incomesService: IncomesService,
     private recurringIncomesService: RecurringIncomesService,
-    private authService: AuthService
+    private userService: UserService
   ) {}
 
   ngOnDestroy(): void {

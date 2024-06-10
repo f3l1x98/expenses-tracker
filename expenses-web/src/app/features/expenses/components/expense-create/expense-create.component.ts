@@ -6,13 +6,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { ExpenseCategory } from '../../api/interfaces/expense-category';
-import { AuthService } from '../../../../core/auth/auth.service';
 import { Subject } from 'rxjs';
 import { ExpensesService } from '../../expenses.service';
 import { RecurringExpensesService } from '../../recurring-expenses.service';
 import { RecurringCycle } from '../../../../shared/interfaces/recurring-cycle.enum';
 import { constructCron } from '../../../../shared/utils/cron-utils';
 import { validateDateAfter } from '../../../../shared/validators/validate-date-after';
+import { UserService } from '../../../../shell/user/user.service';
 
 @Component({
   selector: 'app-expense-create',
@@ -23,7 +23,7 @@ export class ExpenseCreateComponent implements OnInit, OnDestroy {
   categoryOptions = Object.values(ExpenseCategory);
   recurringCycleOptions = Object.values(RecurringCycle);
 
-  user$ = this.authService.currentUser$;
+  user$ = this.userService.own$;
 
   private destory$ = new Subject<void>();
 
@@ -31,7 +31,7 @@ export class ExpenseCreateComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private expensesService: ExpensesService,
     private recurringExpensesService: RecurringExpensesService,
-    private authService: AuthService
+    private userService: UserService
   ) {}
 
   ngOnDestroy(): void {
