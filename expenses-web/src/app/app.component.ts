@@ -27,6 +27,8 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe((user) => {
         if (!!user && !!user.id) {
           this.userService.loadOwn();
+        } else {
+          this.userService.clearOwn();
         }
       });
   }
