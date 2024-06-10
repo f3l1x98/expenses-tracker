@@ -12,6 +12,7 @@ import {
   Post,
   Put,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -19,15 +20,18 @@ import { UserAlreadyExistsError } from './exceptions/user-already-exists-error';
 import { IUser } from './entities/user';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiNotFoundResponse,
   ApiOperation,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { UserSettingsDto } from './dto/user-settings.dto';
 import { UpdateUserSettingsDto } from './dto/update-user-settings.dto';
 import { Request } from 'express';
 import { UserNotFoundException } from './exceptions/user-not-found';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @ApiTags('users')
 @Controller({
@@ -69,6 +73,9 @@ export class UsersController {
     required: true,
     description: 'User settings',
   })
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse()
+  @UseGuards(JwtAuthGuard)
   @Put('settings')
   async updateSettings(
     @Req() req: Request,
@@ -90,6 +97,9 @@ export class UsersController {
 
   @ApiOperation({ summary: 'Get own user' })
   @ApiNotFoundResponse({ description: 'User not found' })
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse()
+  @UseGuards(JwtAuthGuard)
   @Get('me')
   async getOwnUser(@Req() req: Request): Promise<IUser> {
     try {
