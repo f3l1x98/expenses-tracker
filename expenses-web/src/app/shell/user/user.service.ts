@@ -11,4 +11,8 @@ export class UserService {
   loadOwn() {
     this.storeService.loadOwn();
   }
+
+  clearOwn() {
+    this.storeService.clearOwn();
+  }
 }

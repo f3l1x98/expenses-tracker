@@ -13,4 +13,8 @@ export class UserStoreService {
   loadOwn() {
     this.store.dispatch(PageActions.loadOwn());
   }
+
+  clearOwn() {
+    this.store.dispatch(PageActions.clear());
+  }
 }

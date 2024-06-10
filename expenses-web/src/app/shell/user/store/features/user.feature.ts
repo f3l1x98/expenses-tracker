@@ -1,6 +1,7 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { UserState } from '../interfaces/user.state';
 import * as ApiActions from '../actions/user-api.actions';
+import * as PageActions from '../actions/user-page.actions';
 import { StoreStateStatus } from '../../../../shared/interfaces/store-state-status.interface';
 
 const initialState: UserState = {
@@ -27,6 +28,12 @@ export const userFeature = createFeature({
     on(ApiActions.loadOwnFailure, (state, { error }) => ({
       ...state,
       loadStatus: { error: error, status: 'pending' } as StoreStateStatus,
+    })),
+
+    on(PageActions.clear, (state) => ({
+      ...state,
+      own: undefined,
+      loadStatus: { error: undefined, status: 'initial' } as StoreStateStatus,
     }))
   ),
 });
