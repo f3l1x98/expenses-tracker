@@ -9,6 +9,27 @@ import { catchError, map, of, switchMap } from 'rxjs';
 export class UserEffect {
   constructor(private actions$: Actions, private apiService: UserApiService) {}
 
+  createUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PageActions.register),
+      switchMap((action) =>
+        of(ApiActions.createStart({ request: action.request }))
+      )
+    )
+  );
+
+  create$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ApiActions.createStart),
+      switchMap((action) =>
+        this.apiService.create$(action.request).pipe(
+          map((result) => ApiActions.createSuccess({ result })),
+          catchError((error) => of(ApiActions.createFailure({ error })))
+        )
+      )
+    )
+  );
+
   loadUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PageActions.loadOwn),
