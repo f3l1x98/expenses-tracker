@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { User } from '../interfaces/user.interface';
+import { User } from '../../api/interfaces/user.interface';
 
 export const loadOwnStart = createAction('[User Actions] load own start');
 export const loadOwnSuccess = createAction(
