@@ -23,11 +23,11 @@ export const userFeature = createFeature({
     on(ApiActions.loadOwnSuccess, (state, { result }) => ({
       ...state,
       own: result,
-      loadStatus: { status: 'pending' } as StoreStateStatus,
+      loadStatus: { status: 'success' } as StoreStateStatus,
     })),
     on(ApiActions.loadOwnFailure, (state, { error }) => ({
       ...state,
-      loadStatus: { error: error, status: 'pending' } as StoreStateStatus,
+      loadStatus: { error: error, status: 'error' } as StoreStateStatus,
     })),
 
     on(PageActions.clear, (state) => ({
