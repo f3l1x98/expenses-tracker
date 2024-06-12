@@ -1,11 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
-  FormsModule,
   ReactiveFormsModule,
   ValidationErrors,
   ValidatorFn,
@@ -17,12 +16,16 @@ import { PasswordModule } from 'primeng/password';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { UserService } from '../../user.service';
+import { Subject, takeUntil } from 'rxjs';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-register',
   templateUrl: 'register.component.html',
   standalone: true,
   imports: [
+    RouterModule,
     CommonModule,
     CardModule,
     StepperModule,
@@ -33,11 +36,23 @@ import { ButtonModule } from 'primeng/button';
     ButtonModule,
   ],
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
   credentialsFormGroup!: FormGroup;
   settingsFormGroup!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {}
+  registerStatus$ = this.userService.registerStatus$;
+
+  private destroy$ = new Subject<void>();
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private userService: UserService
+  ) {}
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   ngOnInit() {
     this.credentialsFormGroup = this.formBuilder.group({
@@ -51,6 +66,14 @@ export class RegisterComponent implements OnInit {
     this.settingsFormGroup = this.formBuilder.group({
       currency: new FormControl('', [Validators.required]),
     });
+    this.userService.registerStatus$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((status) => {
+        if (status.status == 'success') {
+          this.credentialsFormGroup.reset();
+          this.settingsFormGroup.reset();
+        }
+      });
   }
 
   private validateConfirmPassword(): ValidatorFn {
@@ -70,8 +93,12 @@ export class RegisterComponent implements OnInit {
   register() {
     if (!this.credentialsFormGroup.valid || !this.settingsFormGroup.valid)
       return;
-    console.log('TODO');
-    this.credentialsFormGroup.reset();
-    this.settingsFormGroup.reset();
+    this.userService.register({
+      password: this.credentialsFormGroup.get('password')?.value,
+      username: this.credentialsFormGroup.get('username')?.value,
+      settings: {
+        currency: this.settingsFormGroup.get('currency')?.value,
+      },
+    });
   }
 }

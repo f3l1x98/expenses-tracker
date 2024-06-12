@@ -10,6 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserAlreadyExistsError } from './exceptions/user-already-exists-error';
 import { UserNotFoundException } from './exceptions/user-not-found';
 import { UpdateUserSettingsDto } from './dto/update-user-settings.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -31,12 +32,13 @@ export class UsersService {
     return user;
   }
 
-  async create(username: string, password: string): Promise<UserEntity> {
+  async create(createUserDto: CreateUserDto): Promise<UserEntity> {
     const salt = await bcrypt.genSalt();
-    const hash = await bcrypt.hash(password, salt);
+    const hash = await bcrypt.hash(createUserDto.password, salt);
 
     const user = new UserEntity();
-    user.username = username;
+    user.username = createUserDto.username;
+    user.settings = createUserDto.settings;
     user.password = hash;
     user.salt = salt;
 
@@ -48,7 +50,9 @@ export class UsersService {
         e instanceof QueryFailedError &&
         e.message.includes('unique constraint')
       ) {
-        throw new UserAlreadyExistsError(`User ${username} already exists`);
+        throw new UserAlreadyExistsError(
+          `User ${createUserDto.username} already exists`,
+        );
       }
       throw e;
     }

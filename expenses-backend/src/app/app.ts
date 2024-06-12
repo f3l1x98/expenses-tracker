@@ -10,6 +10,12 @@ import { AppModule } from './app.module';
 export async function initApp(): Promise<INestApplication> {
   const app = await NestFactory.create(AppModule);
 
+  setupApp(app);
+
+  return app;
+}
+
+export function setupApp(app: INestApplication): void {
   app.enableCors();
 
   app.useGlobalPipes(
@@ -22,6 +28,4 @@ export async function initApp(): Promise<INestApplication> {
   app.enableVersioning({
     type: VersioningType.URI,
   });
-
-  return app;
 }

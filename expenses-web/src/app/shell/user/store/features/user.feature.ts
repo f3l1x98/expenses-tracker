@@ -10,6 +10,10 @@ const initialState: UserState = {
     error: undefined,
     status: 'initial',
   },
+  createStatus: {
+    error: undefined,
+    status: 'initial',
+  },
 };
 
 export const userFeature = createFeature({
@@ -23,11 +27,24 @@ export const userFeature = createFeature({
     on(ApiActions.loadOwnSuccess, (state, { result }) => ({
       ...state,
       own: result,
-      loadStatus: { status: 'pending' } as StoreStateStatus,
+      loadStatus: { status: 'success' } as StoreStateStatus,
     })),
     on(ApiActions.loadOwnFailure, (state, { error }) => ({
       ...state,
-      loadStatus: { error: error, status: 'pending' } as StoreStateStatus,
+      loadStatus: { error: error, status: 'error' } as StoreStateStatus,
+    })),
+
+    on(ApiActions.createStart, (state) => ({
+      ...state,
+      createStatus: { status: 'pending' } as StoreStateStatus,
+    })),
+    on(ApiActions.createSuccess, (state, { result }) => ({
+      ...state,
+      createStatus: { status: 'success' } as StoreStateStatus,
+    })),
+    on(ApiActions.createFailure, (state, { error }) => ({
+      ...state,
+      createStatus: { error: error, status: 'error' } as StoreStateStatus,
     })),
 
     on(PageActions.clear, (state) => ({
