@@ -53,10 +53,7 @@ export class UsersController {
   @Post()
   async create(@Body() createUserDto: CreateUserDto): Promise<IUser> {
     try {
-      const user = await this.usersService.create(
-        createUserDto.username,
-        createUserDto.password,
-      );
+      const user = await this.usersService.create(createUserDto);
       return { id: user.id, username: user.username, settings: user.settings };
     } catch (e) {
       if (e instanceof UserAlreadyExistsError) {
