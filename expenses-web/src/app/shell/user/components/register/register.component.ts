@@ -18,12 +18,14 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { UserService } from '../../user.service';
 import { Subject, takeUntil } from 'rxjs';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-register',
   templateUrl: 'register.component.html',
   standalone: true,
   imports: [
+    RouterModule,
     CommonModule,
     CardModule,
     StepperModule,
