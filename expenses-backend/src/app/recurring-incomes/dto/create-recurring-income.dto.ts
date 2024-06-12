@@ -2,38 +2,40 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsDate,
-  IsDefined,
-  IsNotEmptyObject,
-  ValidateNested,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
 } from 'class-validator';
 import { IncomeCategory } from 'src/app/incomes/entities/income-category';
-import { PriceDto } from 'src/app/shared/prices/price.dto';
 import { IsAfterDate } from 'src/app/utils/is-after-date';
 import { IsValidCron } from 'src/app/utils/is-valid-cron';
 
 export class CreateRecurringIncomeDto {
   @ApiProperty({
-    description: 'Price of the recurring income',
+    description: 'Description of the recurring income',
     required: true,
   })
-  @IsDefined()
-  @IsNotEmptyObject()
-  @ValidateNested()
-  @Type(() => PriceDto)
-  price: PriceDto;
+  @IsString()
+  @IsNotEmpty()
+  description: string;
+
+  @ApiProperty({
+    description: 'Amount of the recurring income',
+    required: true,
+  })
+  @IsNumber({ maxDecimalPlaces: 2, allowInfinity: false, allowNaN: false })
+  @IsPositive()
+  amount!: number;
 
   @ApiProperty({
     description: 'The category of each income of this recurring income',
     required: true,
     enum: IncomeCategory,
   })
+  @IsNotEmpty()
   category: IncomeCategory;
-
-  @ApiProperty({
-    description: 'Additional information about this recurring income',
-    required: false,
-  })
-  notes?: string;
 
   @ApiProperty({
     description: 'The cron expression for this recurring income',
@@ -48,6 +50,7 @@ export class CreateRecurringIncomeDto {
       'The start date for the first execution of this recurring income',
     required: false,
   })
+  @IsOptional()
   @Type(() => Date)
   @IsDate()
   startDate?: Date;
@@ -56,6 +59,7 @@ export class CreateRecurringIncomeDto {
     description: 'The end date for the last execution of this recurring income',
     required: false,
   })
+  @IsOptional()
   @Type(() => Date)
   @IsDate()
   @IsAfterDate('startDate')

@@ -1,33 +1,33 @@
 import { ExpenseCategory } from '../entities/expense-category';
 import { ApiProperty } from '@nestjs/swagger';
-import { Exclude, Type } from 'class-transformer';
-import { IsDefined, IsNotEmptyObject, ValidateNested } from 'class-validator';
+import { Exclude } from 'class-transformer';
+import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
 import { RecurringExpenseEntity } from 'src/app/recurring-expenses/entities/recurring-expense.entity';
-import { PriceDto } from 'src/app/shared/prices/price.dto';
 
 export class CreateExpenseDto {
   @ApiProperty({
-    description: 'Price of the expense',
+    description: 'Description of the expense',
     required: true,
   })
-  @IsDefined()
-  @IsNotEmptyObject()
-  @ValidateNested()
-  @Type(() => PriceDto)
-  price: PriceDto;
+  @IsString()
+  @IsNotEmpty()
+  description: string;
+
+  @ApiProperty({
+    description: 'Amount of the expense',
+    required: true,
+  })
+  @IsNumber({ maxDecimalPlaces: 2, allowInfinity: false, allowNaN: false })
+  @IsPositive()
+  amount!: number;
 
   @ApiProperty({
     description: 'The category of the expense',
     required: true,
     enum: ExpenseCategory,
   })
+  @IsNotEmpty()
   category: ExpenseCategory;
-
-  @ApiProperty({
-    description: 'Additional information about the expense',
-    required: false,
-  })
-  notes?: string;
 
   @Exclude()
   recurringExpense?: RecurringExpenseEntity;

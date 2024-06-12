@@ -9,7 +9,6 @@ import { Repository } from 'typeorm';
 import { CreateRecurringExpenseDto } from './dto/create-recurring-expense.dto';
 import { UserEntity } from '../users/entities/user.entity';
 import { RecurringExpenseNotFoundException } from './exceptions/recurring-expense-not-found';
-import { PriceEntity } from '../shared/prices/price.entity';
 import { SchedulerRegistry, Cron } from '@nestjs/schedule';
 import { CronJob, CronTime } from 'cron';
 import { ExpensesService } from '../expenses/expenses.service';
@@ -54,9 +53,9 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
       }
 
       const expenseDto = new CreateExpenseDto();
+      expenseDto.description = recurringExpenseEntity.description;
       expenseDto.category = recurringExpenseEntity.category;
-      expenseDto.notes = recurringExpenseEntity.notes;
-      expenseDto.price = recurringExpenseEntity.price;
+      expenseDto.amount = recurringExpenseEntity.amount;
       expenseDto.recurringExpense = recurringExpenseEntity;
 
       await this.expensesService.create(
@@ -115,11 +114,9 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
   ): Promise<RecurringExpenseEntity> {
     const recurringExpense = new RecurringExpenseEntity();
 
-    recurringExpense.price = new PriceEntity();
-    recurringExpense.price.amount = createRecurringExpenseDto.price.amount;
-    recurringExpense.price.currency = createRecurringExpenseDto.price.currency;
+    recurringExpense.description = createRecurringExpenseDto.description;
+    recurringExpense.amount = createRecurringExpenseDto.amount;
     recurringExpense.category = createRecurringExpenseDto.category;
-    recurringExpense.notes = createRecurringExpenseDto.notes;
     recurringExpense.user = userId as unknown as UserEntity;
     recurringExpense.cron = createRecurringExpenseDto.cron;
     recurringExpense.startDate = createRecurringExpenseDto.startDate;
@@ -136,6 +133,9 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
   async findAllForUser(userId: string): Promise<RecurringExpenseEntity[]> {
     return this.recurringExpensesRepository.find({
       where: { user: { id: userId } },
+      order: {
+        createdAt: 'DESC',
+      },
     });
   }
 
@@ -165,14 +165,14 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
       throw new RecurringExpenseNotFoundException(id);
     }
 
+    if (updateRecurringExpenseDto.description !== undefined) {
+      recurringExpense.description = updateRecurringExpenseDto.description;
+    }
     if (updateRecurringExpenseDto.category !== undefined) {
       recurringExpense.category = updateRecurringExpenseDto.category;
     }
-    if (updateRecurringExpenseDto.notes !== undefined) {
-      recurringExpense.notes = updateRecurringExpenseDto.notes;
-    }
-    if (updateRecurringExpenseDto.price !== undefined) {
-      recurringExpense.price = updateRecurringExpenseDto.price;
+    if (updateRecurringExpenseDto.amount !== undefined) {
+      recurringExpense.amount = updateRecurringExpenseDto.amount;
     }
     if (updateRecurringExpenseDto.cron !== undefined) {
       recurringExpense.cron = updateRecurringExpenseDto.cron;

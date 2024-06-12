@@ -9,7 +9,6 @@ import { Repository } from 'typeorm';
 import { CreateIncomeDto } from './dto/create-income.dto';
 import { UserEntity } from '../users/entities/user.entity';
 import { IncomeNotFoundException } from './exceptions/income-not-found';
-import { PriceEntity } from '../shared/prices/price.entity';
 import { UpdateIncomeDto } from './dto/update-income.dto';
 
 @Injectable()
@@ -25,11 +24,9 @@ export class IncomesService {
   ): Promise<IncomeEntity> {
     const income = new IncomeEntity();
 
-    income.price = new PriceEntity();
-    income.price.amount = createIncomeDto.price.amount;
-    income.price.currency = createIncomeDto.price.currency;
+    income.description = createIncomeDto.description;
+    income.amount = createIncomeDto.amount;
     income.category = createIncomeDto.category;
-    income.notes = createIncomeDto.notes;
     income.user = userId as unknown as UserEntity;
     income.recurringIncome = createIncomeDto.recurringIncome;
 
@@ -39,6 +36,9 @@ export class IncomesService {
   async findAllForUser(userId: string): Promise<IncomeEntity[]> {
     return this.incomesRepository.find({
       where: { user: { id: userId } },
+      order: {
+        createdAt: 'DESC',
+      },
     });
   }
 
@@ -66,14 +66,14 @@ export class IncomesService {
       throw new IncomeNotFoundException(id);
     }
 
+    if (updateIncomeDto.description !== undefined) {
+      income.description = updateIncomeDto.description;
+    }
     if (updateIncomeDto.category !== undefined) {
       income.category = updateIncomeDto.category;
     }
-    if (updateIncomeDto.notes !== undefined) {
-      income.notes = updateIncomeDto.notes;
-    }
-    if (updateIncomeDto.price !== undefined) {
-      income.price = updateIncomeDto.price;
+    if (updateIncomeDto.amount !== undefined) {
+      income.amount = updateIncomeDto.amount;
     }
 
     return this.incomesRepository.save(income);

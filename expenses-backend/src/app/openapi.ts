@@ -4,7 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 export function initOpenApi(app: INestApplication) {
   const config = new DocumentBuilder()
     .setTitle('Expenses API')
-    .setDescription('The API for the Expenses Calculator')
+    .setDescription('The API for the Expenses Tracker')
     .addBearerAuth()
     .setVersion('1')
     .build();

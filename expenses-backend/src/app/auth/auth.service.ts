@@ -5,10 +5,10 @@ https://docs.nestjs.com/providers#services
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
-import { IUser } from '../users/entities/user';
 
-export interface JwtResponse {
-  access_token: string;
+export interface User {
+  id: string;
+  username: string;
 }
 
 @Injectable()
@@ -21,8 +21,8 @@ export class AuthService {
   async validateUser(
     name: string,
     password: string,
-  ): Promise<IUser | undefined> {
-    const user = await this.usersService.findOne(name);
+  ): Promise<User | undefined> {
+    const user = await this.usersService.findByUsername(name);
     const isValid = await this.usersService.validate(name, password);
 
     if (user && isValid) {
@@ -32,20 +32,13 @@ export class AuthService {
     return undefined;
   }
 
-  async generateJwt(
-    user: IUser,
-    expiresIn?: number | string,
-  ): Promise<JwtResponse> {
+  async generateJwt(user: User, expiresIn?: number | string): Promise<string> {
     const payload = { username: user.username, sub: user.id };
 
     if (expiresIn !== undefined) {
-      return Promise.resolve({
-        access_token: this.jwtService.sign(payload, { expiresIn }),
-      });
+      return Promise.resolve(this.jwtService.sign(payload, { expiresIn }));
     }
 
-    return Promise.resolve({
-      access_token: this.jwtService.sign(payload),
-    });
+    return Promise.resolve(this.jwtService.sign(payload));
   }
 }

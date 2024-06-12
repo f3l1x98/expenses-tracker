@@ -8,6 +8,8 @@ import { QueryFailedError, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserAlreadyExistsError } from './exceptions/user-already-exists-error';
+import { UserNotFoundException } from './exceptions/user-not-found';
+import { UpdateUserSettingsDto } from './dto/update-user-settings.dto';
 
 @Injectable()
 export class UsersService {
@@ -16,8 +18,17 @@ export class UsersService {
     private usersRepository: Repository<UserEntity>,
   ) {}
 
-  async findOne(username: string): Promise<UserEntity | null> {
+  async findByUsername(username: string): Promise<UserEntity | null> {
     return this.usersRepository.findOne({ where: { username: username } });
+  }
+
+  async findById(id: string): Promise<UserEntity> {
+    const user = await this.usersRepository.findOne({ where: { id: id } });
+    if (user === null) {
+      throw new UserNotFoundException(id);
+    }
+
+    return user;
   }
 
   async create(username: string, password: string): Promise<UserEntity> {
@@ -43,6 +54,24 @@ export class UsersService {
     }
 
     return userEntity;
+  }
+
+  async updateSettings(
+    userId: string,
+    userSettingsDto: UpdateUserSettingsDto,
+  ): Promise<UserEntity> {
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+    });
+    if (user === null) {
+      throw new UserNotFoundException(userId);
+    }
+
+    if (userSettingsDto.currency !== undefined) {
+      user.settings.currency = userSettingsDto.currency;
+    }
+
+    return this.usersRepository.save(user);
   }
 
   async validate(username: string, password: string): Promise<boolean> {

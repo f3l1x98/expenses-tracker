@@ -1,5 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsAlphanumeric, IsNotEmpty } from 'class-validator';
+import {
+  IsAlphanumeric,
+  IsNotEmpty,
+  IsNotEmptyObject,
+  IsOptional,
+  ValidateNested,
+} from 'class-validator';
+import { UserSettingsDto } from './user-settings.dto';
+import { Type } from 'class-transformer';
+import { defaultSettings } from '../entities/user-settings';
 
 export abstract class CreateUserDto {
   @ApiProperty({
@@ -17,4 +26,15 @@ export abstract class CreateUserDto {
   })
   @IsNotEmpty()
   password!: string;
+
+  @ApiProperty({
+    description: 'Settings of new user',
+    required: false,
+    default: defaultSettings,
+  })
+  @IsOptional()
+  @IsNotEmptyObject()
+  @ValidateNested()
+  @Type(() => UserSettingsDto)
+  settings: UserSettingsDto = defaultSettings;
 }

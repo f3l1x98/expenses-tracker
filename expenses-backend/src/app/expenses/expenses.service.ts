@@ -9,7 +9,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UserEntity } from '../users/entities/user.entity';
 import { ExpenseNotFoundException } from './exceptions/expense-not-found';
-import { PriceEntity } from '../shared/prices/price.entity';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
 
 @Injectable()
@@ -25,11 +24,9 @@ export class ExpensesService {
   ): Promise<ExpenseEntity> {
     const expense = new ExpenseEntity();
 
-    expense.price = new PriceEntity();
-    expense.price.amount = createExpenseDto.price.amount;
-    expense.price.currency = createExpenseDto.price.currency;
+    expense.description = createExpenseDto.description;
+    expense.amount = createExpenseDto.amount;
     expense.category = createExpenseDto.category;
-    expense.notes = createExpenseDto.notes;
     expense.user = userId as unknown as UserEntity;
     expense.recurringExpense = createExpenseDto.recurringExpense;
 
@@ -39,6 +36,9 @@ export class ExpensesService {
   async findAllForUser(userId: string): Promise<ExpenseEntity[]> {
     return this.expensesRepository.find({
       where: { user: { id: userId } },
+      order: {
+        createdAt: 'DESC',
+      },
     });
   }
 
@@ -66,14 +66,14 @@ export class ExpensesService {
       throw new ExpenseNotFoundException(id);
     }
 
+    if (updateExpenseDto.description !== undefined) {
+      expense.description = updateExpenseDto.description;
+    }
     if (updateExpenseDto.category !== undefined) {
       expense.category = updateExpenseDto.category;
     }
-    if (updateExpenseDto.notes !== undefined) {
-      expense.notes = updateExpenseDto.notes;
-    }
-    if (updateExpenseDto.price !== undefined) {
-      expense.price = updateExpenseDto.price;
+    if (updateExpenseDto.amount !== undefined) {
+      expense.amount = updateExpenseDto.amount;
     }
 
     return this.expensesRepository.save(expense);

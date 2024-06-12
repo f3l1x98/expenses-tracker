@@ -12,7 +12,6 @@ import { ExpenseCategory } from './expense-category';
 import { IExpense } from './expense';
 import { RecurringExpenseEntity } from '../../recurring-expenses/entities/recurring-expense.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { PriceEntity } from 'src/app/shared/prices/price.entity';
 
 @Entity()
 export class ExpenseEntity implements IExpense {
@@ -23,14 +22,15 @@ export class ExpenseEntity implements IExpense {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  /*@ApiProperty({
-    description: 'Monetary amount of the expense',
+  @ApiProperty({
+    description: 'Description the expense',
     required: true,
   })
+  @Column({ nullable: false })
+  description: string;
+
   @Column({ nullable: false, type: 'decimal', scale: 2, precision: 12 })
-  amount!: number;*/
-  @Column(() => PriceEntity)
-  price!: PriceEntity;
+  amount!: number;
 
   @ApiProperty({
     description: 'The category of the expense',
@@ -52,13 +52,6 @@ export class ExpenseEntity implements IExpense {
   @ManyToOne(() => UserEntity, { eager: true })
   @JoinColumn()
   user!: UserEntity;
-
-  @ApiProperty({
-    description: 'Additional information about the expense',
-    required: false,
-  })
-  @Column({ nullable: true })
-  notes?: string;
 
   @ApiProperty({
     description: 'The recurring expense that created this expense',

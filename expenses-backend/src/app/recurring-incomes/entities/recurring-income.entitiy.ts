@@ -11,7 +11,6 @@ import { UserEntity } from 'src/app/users/entities/user.entity';
 import { IRecurringIncome } from './recurring-income';
 import { IncomeCategory } from 'src/app/incomes/entities/income-category';
 import { ApiProperty } from '@nestjs/swagger';
-import { PriceEntity } from 'src/app/shared/prices/price.entity';
 
 @Entity()
 export class RecurringIncomeEntity implements IRecurringIncome {
@@ -22,8 +21,15 @@ export class RecurringIncomeEntity implements IRecurringIncome {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column(() => PriceEntity)
-  price!: PriceEntity;
+  @ApiProperty({
+    description: 'Description the recurring income',
+    required: true,
+  })
+  @Column({ nullable: false })
+  description: string;
+
+  @Column({ nullable: false, type: 'decimal', scale: 2, precision: 12 })
+  amount!: number;
 
   @ApiProperty({
     description: 'The category of the recurring income',
@@ -45,13 +51,6 @@ export class RecurringIncomeEntity implements IRecurringIncome {
   @ManyToOne(() => UserEntity, { eager: true })
   @JoinColumn()
   user!: UserEntity;
-
-  @ApiProperty({
-    description: 'Additional information about the recurring income',
-    required: false,
-  })
-  @Column({ nullable: true })
-  notes?: string;
 
   @ApiProperty({
     description: 'The cron expression for this recurring income',
