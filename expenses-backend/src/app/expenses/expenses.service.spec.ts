@@ -31,6 +31,10 @@ describe('ExpensesService', () => {
           provide: getRepositoryToken(ExpenseEntity),
           useFactory: repositoryMockFactory,
         },
+        {
+          provide: getRepositoryToken(UserEntity),
+          useFactory: repositoryMockFactory,
+        },
       ],
     }).compile();
     service = module.get<ExpensesService>(ExpensesService);
@@ -50,9 +54,11 @@ describe('ExpensesService', () => {
       const result = await service.findAllForUser(user.id);
 
       expect(result).toEqual([expense]);
-      expect(repositoryMock.find).toHaveBeenCalledWith({
-        where: { user: { id: user.id } },
-      });
+      expect(repositoryMock.find).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { user: { id: user.id } },
+        }),
+      );
     });
   });
 });

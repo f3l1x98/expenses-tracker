@@ -9,9 +9,9 @@ import { createTestingModuleWithDefaultMocks } from './mock';
 import * as request from 'supertest';
 import { CreateExpenseDto } from 'src/app/expenses/dto/create-expense.dto';
 import { ExpenseCategory } from 'src/app/expenses/entities/expense-category';
-import { UserEntity } from 'src/app/users/entities/user.entity';
 import { IUser } from 'src/app/users/entities/user';
-import { PriceDto } from 'src/app/shared/prices/price.dto';
+import { defaultSettings } from 'src/app/users/entities/user-settings';
+import { UserEntity } from 'src/app/users/entities/user.entity';
 
 describe('Expenses', () => {
   let app: INestApplication;
@@ -22,6 +22,7 @@ describe('Expenses', () => {
   const user: IUser = {
     id: '784f94c2-1909-423c-9cec-41eed35ef013',
     username: 'TestUser',
+    settings: defaultSettings,
   };
 
   beforeAll(async () => {
@@ -68,10 +69,8 @@ describe('Expenses', () => {
       it('should return 201 Created', () => {
         const dto = {
           category: ExpenseCategory.MISC,
-          price: {
-            amount: 20.14,
-            currency: 'EUR',
-          } as PriceDto,
+          amount: 20.14,
+          description: 'Test',
         } as CreateExpenseDto;
 
         return request(app.getHttpServer())
@@ -100,10 +99,7 @@ describe('Expenses', () => {
           it('should return 400 Bad Request', () => {
             const dto = {
               category: ExpenseCategory.MISC,
-              price: {
-                amount: -1,
-                currency: 'EUR',
-              } as PriceDto,
+              amount: -1,
             } as CreateExpenseDto;
 
             return request(app.getHttpServer())
@@ -116,45 +112,7 @@ describe('Expenses', () => {
           it('should return 400 Bad Request', () => {
             const dto = {
               category: ExpenseCategory.MISC,
-              price: {
-                amount: 0,
-                currency: 'EUR',
-              } as PriceDto,
-            } as CreateExpenseDto;
-
-            return request(app.getHttpServer())
-              .post('/v1/expenses')
-              .send(dto)
-              .expect(400);
-          });
-        });
-      });
-
-      describe('currency', () => {
-        describe('empty', () => {
-          it('should return 400 Bad Request', () => {
-            const dto = {
-              category: ExpenseCategory.MISC,
-              price: {
-                amount: 20.14,
-                currency: '',
-              } as PriceDto,
-            } as CreateExpenseDto;
-
-            return request(app.getHttpServer())
-              .post('/v1/expenses')
-              .send(dto)
-              .expect(400);
-          });
-        });
-        describe('not a valid ISO currencyCode', () => {
-          it('should return 400 Bad Request', () => {
-            const dto = {
-              category: ExpenseCategory.MISC,
-              price: {
-                amount: 20.14,
-                currency: 'EU',
-              } as PriceDto,
+              amount: 0,
             } as CreateExpenseDto;
 
             return request(app.getHttpServer())
@@ -180,10 +138,8 @@ describe('Expenses', () => {
           {
             id: 'ab1f810c-676f-2aa3-8e23-3dba8d0f393e',
             category: ExpenseCategory.MISC,
-            price: {
-              amount: 20.0,
-              currency: 'EUR',
-            },
+            description: 'Test',
+            amount: 20.0,
             user: user as UserEntity,
             createdAt: new Date(),
             updatedAt: new Date(),
@@ -201,10 +157,12 @@ describe('Expenses', () => {
         expect.objectContaining({
           category: 'misc',
           id: 'ab1f810c-676f-2aa3-8e23-3dba8d0f393e',
-          price: { amount: 20, currency: 'EUR' },
+          description: 'Test',
+          amount: 20,
           user: {
             id: '784f94c2-1909-423c-9cec-41eed35ef013',
             username: 'TestUser',
+            settings: defaultSettings,
           },
         }),
       ]);
