@@ -14,13 +14,14 @@ export const AuthGuard: CanActivateFn = (
 ) => {
   const authService = inject(AuthService);
   const router = inject(Router);
-  return authService.status$.pipe(
-    map((status) => {
-      if (status.value == 'success') {
-        return true;
-      } else {
+  return authService.currentUser$.pipe(
+    map((user) => {
+      if (!user) {
         router.navigate(['/auth/login']);
         return false;
+      } else {
+        // TODO check if jwt token expired
+        return true;
       }
     })
   );
