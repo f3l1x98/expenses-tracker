@@ -29,7 +29,8 @@
                             </p-floatLabel>
                         </div>
                     </form>
-                    <div class="flex pt-4 justify-content-end">
+                    <div class="flex pt-4 justify-content-between">
+                        <p-button label="Cancel" [link]="true" routerLink="/auth/login" />
                         <p-button (onClick)="nextCallback.emit()" label="Next" icon="pi pi-arrow-right" iconPos="right"
                             [disabled]="!credentialsFormGroup.valid" />
                     </div>
