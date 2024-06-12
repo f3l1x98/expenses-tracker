@@ -80,6 +80,51 @@ describe('Expenses', () => {
       });
     });
 
+    describe('with description', () => {
+      describe('being missing', () => {
+        it('should return 400 Bad Request', async () => {
+          const dto = {
+            category: ExpenseCategory.MISC,
+            amount: 20.14,
+          } as CreateExpenseDto;
+
+          const response = await request(app.getHttpServer())
+            .post('/v1/expenses')
+            .send(dto)
+            .expect(400);
+
+          expect(response.body).toEqual(
+            expect.objectContaining({
+              message: [
+                'description should not be empty',
+                'description must be a string',
+              ],
+            }),
+          );
+        });
+      });
+      describe('being empty', () => {
+        it('should return 400 Bad Request', async () => {
+          const dto = {
+            category: ExpenseCategory.MISC,
+            amount: 20.14,
+            description: '',
+          } as CreateExpenseDto;
+
+          const response = await request(app.getHttpServer())
+            .post('/v1/expenses')
+            .send(dto)
+            .expect(400);
+
+          expect(response.body).toEqual(
+            expect.objectContaining({
+              message: ['description should not be empty'],
+            }),
+          );
+        });
+      });
+    });
+
     describe('with price', () => {
       describe('being empty', () => {
         it('should return 400 Bad Request', () => {
