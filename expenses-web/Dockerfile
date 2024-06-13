@@ -10,5 +10,5 @@ COPY ./src ./src
 RUN npm run build --omit=dev
 
 FROM nginx:stable
-COPY ./nginx.conf /etc/nginx/conf.d
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /usr/src/app/dist/expenses-web/browser/ /usr/share/nginx/html
