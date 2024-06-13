@@ -8,3 +8,9 @@ This is an expenses tracker that allows you to track your expenses and income. I
 |--------------------------------------------------------------|-----------------------------------------------------------------------------|:---------------------------------------------------------:|
 | [`expenses-web`](./expenses-web/README.md)                   | Web frontend of the project                                                 |                 <http://localhost:4200/>                  |
 | [`expenses-backend`](./expenses-backend/README.md)           | Backend of the project                                                      |                 <http://localhost:3000/>                  |
+
+# Startup
+The expenses tracker can be started using Docker-compose:
+```bash
+docker-compose up
+```
