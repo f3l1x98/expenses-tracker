@@ -4,9 +4,10 @@ WORKDIR /usr/src/app
 
 COPY package.json package-lock.json ./
 RUN npm ci
-COPY tsconfig.json src ./
+COPY tsconfig.json tsconfig.app.json angular.json ./
+COPY ./src ./src
 
-RUN npm run build --prod
+RUN npm run build --omit=dev
 
 FROM nginx:stable
 COPY ./nginx.conf /etc/nginx/conf.d

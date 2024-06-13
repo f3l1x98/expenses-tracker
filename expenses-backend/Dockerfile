@@ -7,7 +7,8 @@ WORKDIR /usr/src/app
 
 COPY package.json package-lock.json ./
 RUN npm ci
-COPY tsconfig.json .eslintrc.js .prettierrc src ./
+COPY tsconfig.json .eslintrc.js .prettierrc ./
+COPY ./src ./src
 
 RUN npm run build
 
