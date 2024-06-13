@@ -1,0 +1,15 @@
+<p-confirmDialog #cd>
+    <ng-template pTemplate="headless" let-message>
+        <div class="flex flex-column align-items-center p-5 surface-overlay border-round">
+            <i class="pi pi-exclamation-triangle text-7xl"></i>
+            <span class="font-bold text-2xl block mb-2 mt-4">
+                {{ message.header }}
+            </span>
+            <p class="mb-0">{{ message.message }}</p>
+            <div class="flex align-items-center justify-content-between gap-4 mt-4">
+                <p-button label="Cancel" outlined="true" (click)="cd.reject()" />
+                <p-button label="Leave" (click)="cd.accept()" />
+            </div>
+        </div>
+    </ng-template>
+</p-confirmDialog>

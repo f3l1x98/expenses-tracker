@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -17,8 +17,11 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { UserService } from '../../user.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { RouterModule } from '@angular/router';
+import { ComponentCanDeactivate } from '../../../../shared/guards/pending-changes.guard';
+import { ConfirmationService } from 'primeng/api';
+import { PendingChangesDialogComponent } from '../../../../shared/components/pending-changes-dialog/pending-changes-dialog.component';
 
 @Component({
   selector: 'app-register',
@@ -34,9 +37,13 @@ import { RouterModule } from '@angular/router';
     FloatLabelModule,
     InputTextModule,
     ButtonModule,
+    PendingChangesDialogComponent,
   ],
+  providers: [ConfirmationService],
 })
-export class RegisterComponent implements OnInit, OnDestroy {
+export class RegisterComponent
+  implements OnInit, OnDestroy, ComponentCanDeactivate
+{
   credentialsFormGroup!: FormGroup;
   settingsFormGroup!: FormGroup;
 
@@ -46,8 +53,32 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    private confirmationService: ConfirmationService
   ) {}
+
+  @HostListener('window:beforeunload')
+  canDeactivate(): boolean | Observable<boolean> {
+    if (this.credentialsFormGroup.pristine) {
+      return true;
+    }
+    const canDeactiveSubject$ = new Subject<boolean>();
+    this.confirmationService.confirm({
+      message: 'You have unsafed data. Are you sure that you want to proceed?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+      rejectButtonStyleClass: 'p-button-text',
+      accept: () => {
+        canDeactiveSubject$.next(true);
+      },
+      reject: () => {
+        canDeactiveSubject$.next(false);
+      },
+    });
+    return canDeactiveSubject$;
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();

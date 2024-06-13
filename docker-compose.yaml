@@ -1,0 +1,32 @@
+services:
+  postgres-db:
+    image: postgres:14.2
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+
+  backend:
+    image: expenses-backend
+    restart: always
+    build:
+      context: ./expenses-backend
+      dockerfile: Dockerfile
+    extra_hosts:
+      # enables locally running services to be called via "host.docker.internal" as hostname
+      - 'host.docker.internal:host-gateway'
+    env_file:
+      - ./expenses-backend/.env.docker
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgres-db
+
+  web:
+    image: expenses-web
+    restart: always
+    build:
+      context: ./expenses-web
+      dockerfile: Dockerfile
