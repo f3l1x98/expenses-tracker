@@ -30,3 +30,5 @@ services:
     build:
       context: ./expenses-web
       dockerfile: Dockerfile
+    ports:
+      - "80:80"
