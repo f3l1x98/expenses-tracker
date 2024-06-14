@@ -1,0 +1,65 @@
+{
+  "name": "expenses-backend",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/expenses-backend/src",
+  "projectType": "application",
+  "tags": [],
+  "implicitDependencies": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/expenses-backend",
+        "main": "apps/expenses-backend/src/main.ts",
+        "tsConfig": "apps/expenses-backend/tsconfig.app.json",
+        "assets": ["apps/expenses-backend/src/assets"],
+        "webpackConfig": "apps/expenses-backend/webpack.config.js"
+      },
+      "configurations": {
+        "production": {
+          "extractLicenses": true,
+          "inspect": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "expenses-backend:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "expenses-backend:build:development"
+        },
+        "production": {
+          "buildTarget": "expenses-backend:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/apps/expenses-backend"],
+      "options": {
+        "jestConfig": "apps/expenses-backend/jest.config.ts"
+      }
+    },
+    "migrations": {
+      "executor": "nx:run-commands",
+      "configurations": {
+        "run": {
+          "command": "ts-node -r tsconfig-paths/register --project apps/expenses-backend/tsconfig.typeorm.json node_modules/typeorm/cli.js -d apps/expenses-backend/src/migrations.main.ts migration:run"
+        },
+        "generate": {
+          "command": "ts-node -r tsconfig-paths/register --project apps/expenses-backend/tsconfig.typeorm.json node_modules/typeorm/cli.js -d apps/expenses-backend/src/migrations.main.ts migration:generate apps/expenses-backend/src/app/migrations/{args.name}"
+        },
+        "revert": {
+          "command": "ts-node -r tsconfig-paths/register --project apps/expenses-backend/tsconfig.typeorm.json node_modules/typeorm/cli.js -d apps/expenses-backend/src/migrations.main.ts migration:revert"
+        }
+      }
+    }
+  }
+}
