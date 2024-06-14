@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import dayjs from 'dayjs';
+import * as dayjs from 'dayjs';
 
 @Pipe({
   name: 'formatDate',
@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 export class FormatDatePipe implements PipeTransform {
   transform(
     value: string,
-    format: string = 'ddd, DD. MMM YYYY, HH:mm'
+    format: string = 'ddd, DD. MMM YYYY, HH:mm',
   ): string {
     return dayjs(value).format(format);
   }
