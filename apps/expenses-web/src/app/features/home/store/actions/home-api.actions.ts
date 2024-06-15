@@ -1,15 +1,17 @@
 import { createAction, props } from '@ngrx/store';
-import { ExpensesPerCategoryResponse } from '../../api/interfaces/expenses-per-catergory-response.interface';
-import { CurrentMonthData } from '../../api/interfaces/current-month-data.interface';
-import { ExpensesPerMonthResponse } from '../../api/interfaces/expenses-per-month-response.interface';
 import { DateRange } from '../../../../shared/interfaces/date-range.interface';
+import {
+  CurrentMonthDataDto,
+  ExpensesPerCategoryResponse,
+  ExpensesPerMonthResponse,
+} from 'expenses-shared';
 
 export const currentMonthDataLoadStart = createAction(
   '[Home Api Actions] currentMonthData load start',
 );
 export const currentMonthDataLoadSuccess = createAction(
   '[Home Api Actions] currentMonthData load success',
-  props<{ result: CurrentMonthData }>(),
+  props<{ result: CurrentMonthDataDto }>(),
 );
 export const currentMonthDataLoadFailure = createAction(
   '[Home Api Actions] currentMonthData load failure',

@@ -1,6 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
+import {
+  ExpensesPerCategoryResponse,
+  TotalExpenseOfCategoryDto,
+} from 'expenses-shared';
 
-export class ExpensesPerCategory {
+export class ExpensesPerCategory implements ExpensesPerCategoryResponse {
   @ApiProperty({
     description: 'List of total expenses for each month request',
     required: true,
@@ -14,7 +18,7 @@ export class ExpensesPerCategory {
   currency: string;
 }
 
-export class TotalExpenseOfCategory {
+export class TotalExpenseOfCategory implements TotalExpenseOfCategoryDto {
   @ApiProperty({
     description: 'Category of provided data',
     required: true,

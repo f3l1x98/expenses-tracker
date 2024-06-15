@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BaseApiService } from '../../../shared/api/base-api.service';
-import { CurrentMonthData } from './interfaces/current-month-data.interface';
-import { ExpensesPerCategoryResponse } from './interfaces/expenses-per-catergory-response.interface';
-import { ExpensesPerMonthResponse } from './interfaces/expenses-per-month-response.interface';
+import {
+  CurrentMonthDataDto,
+  ExpensesPerCategoryResponse,
+  ExpensesPerMonthResponse,
+} from 'expenses-shared';
 
 @Injectable({ providedIn: 'root' })
 export class HomeApiService {
@@ -14,7 +16,7 @@ export class HomeApiService {
   private readonly getExpensesPerCategoryUrl: string = `${this.baseUrl}/expenses-per-category`;
   private readonly getExpensesPerMonthUrl: string = `${this.baseUrl}/expenses-per-month`;
 
-  getCurrentMonthData$(): Observable<CurrentMonthData> {
+  getCurrentMonthData$(): Observable<CurrentMonthDataDto> {
     return this.apiService.get(this.getCurrentMonthDataUrl);
   }
 

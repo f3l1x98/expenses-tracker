@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { CurrentMonthDataDto } from 'expenses-shared';
 
-export class CurrentMonthData {
+export class CurrentMonthData implements CurrentMonthDataDto {
   @ApiProperty({
     description: 'Total expense of the current month',
     required: true,
