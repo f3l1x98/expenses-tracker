@@ -61,6 +61,6 @@ export const expensesFeature = createFeature({
     on(ApiActions.deleteFailure, (state, { error }) => ({
       ...state,
       deleteStatus: { status: 'error', error: error } as StoreStateStatus,
-    }))
+    })),
   ),
 });

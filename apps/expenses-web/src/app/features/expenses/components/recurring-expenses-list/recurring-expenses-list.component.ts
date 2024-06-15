@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { SpinnerService } from '../../../../shell/spinner/spinner.service';
 import { RecurringExpensesService } from '../../recurring-expenses.service';
@@ -7,21 +7,21 @@ import { RecurringExpensesService } from '../../recurring-expenses.service';
   selector: 'app-recurring-expenses-list',
   templateUrl: 'recurring-expenses-list.component.html',
 })
-export class RecurringExpensesListComponent implements OnInit {
+export class RecurringExpensesListComponent implements OnInit, OnDestroy {
   recurringExpenses$ = this.service.recurringExpenses$;
 
   private destory$ = new Subject<void>();
 
   constructor(
     private service: RecurringExpensesService,
-    private spinnerService: SpinnerService
+    private spinnerService: SpinnerService,
   ) {}
 
   ngOnInit() {
     this.service.loadStatus$
       .pipe(takeUntil(this.destory$))
       .subscribe((status) =>
-        this.spinnerService.setState({ active: status.status === 'pending' })
+        this.spinnerService.setState({ active: status.status === 'pending' }),
       );
     this.load();
   }

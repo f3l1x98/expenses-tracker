@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
-import { Observable, Subject, filter, map, of, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, map, of, takeUntil } from 'rxjs';
 import { DateRange } from '../../../shared/interfaces/date-range.interface';
 import { HomeService } from '../home.service';
 import { CurrentMonthData } from '../api/interfaces/current-month-data.interface';
@@ -34,12 +34,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
     const textColorSecondary = documentStyle.getPropertyValue(
-      '--text-color-secondary'
+      '--text-color-secondary',
     );
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
     this.currentMonthDataData$ = this.homeService.currentMonthData$.pipe(
-      takeUntil(this.destory$)
+      takeUntil(this.destory$),
     );
 
     this.expensesPerCategoryData$ = this.homeService.expensesPerCategory$.pipe(
@@ -55,13 +55,13 @@ export class HomeComponent implements OnInit, OnDestroy {
               {
                 data: data.map((entries) => entries.amount),
                 backgroundColor: data.map((entries) =>
-                  documentStyle.getPropertyValue(entries.color)
+                  documentStyle.getPropertyValue(entries.color),
                 ),
               },
             ],
           };
         }
-      })
+      }),
     );
     this.expensesPerCategoryOptions$ =
       this.homeService.expensesPerCategory$.pipe(
@@ -102,7 +102,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               },
             };
           }
-        })
+        }),
       );
 
     this.expensesPerMonthData$ = this.homeService.expensesPerMonth$.pipe(
@@ -124,7 +124,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             ],
           };
         }
-      })
+      }),
     );
     this.expensesPerMonthOptions$ = of({
       maintainAspectRatio: false,

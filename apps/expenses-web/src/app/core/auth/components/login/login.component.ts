@@ -39,13 +39,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<boolean>();
   formGroup!: FormGroup;
   loading$ = this.authService.status$.pipe(
-    map((status) => status.value == 'running')
+    map((status) => status.value == 'running'),
   );
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnDestroy(): void {
@@ -72,8 +72,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (!this.formGroup.valid) return;
 
     this.authService.login(
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this.formGroup.get('username')!.value,
-      this.formGroup.get('password')!.value
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.formGroup.get('password')!.value,
     );
   }
 }

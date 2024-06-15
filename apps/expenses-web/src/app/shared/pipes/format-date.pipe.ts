@@ -6,10 +6,7 @@ import * as dayjs from 'dayjs';
   pure: true,
 })
 export class FormatDatePipe implements PipeTransform {
-  transform(
-    value: string,
-    format: string = 'ddd, DD. MMM YYYY, HH:mm',
-  ): string {
+  transform(value: string, format = 'ddd, DD. MMM YYYY, HH:mm'): string {
     return dayjs(value).format(format);
   }
 }

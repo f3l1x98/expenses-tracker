@@ -13,9 +13,9 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private auth: AuthStoreService) {}
 
   intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+    req: HttpRequest<unknown>,
+    next: HttpHandler,
+  ): Observable<HttpEvent<unknown>> {
     return this.auth.token$.pipe(
       take(1),
       switchMap((token) => {
@@ -24,7 +24,7 @@ export class AuthInterceptor implements HttpInterceptor {
         });
 
         return next.handle(authReq);
-      })
+      }),
     );
   }
 }

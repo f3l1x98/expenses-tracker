@@ -30,7 +30,7 @@ export class BaseApiService {
 
   constructor(
     private httpClient: HttpClient,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
   ) {}
 
   public get<T>(url: string, params?: RequestParams): Observable<T> {
@@ -40,13 +40,13 @@ export class BaseApiService {
   public request<T>(
     method: string,
     url: string,
-    body?: {},
+    body?: object,
     headers?:
       | HttpHeaders
       | {
           [header: string]: string | string[];
         },
-    params?: RequestParams
+    params?: RequestParams,
   ): Observable<T> {
     return this.httpClient
       .request<T>(method, url, {
@@ -56,21 +56,21 @@ export class BaseApiService {
       })
       .pipe(
         catchError((err) => {
-          let errorMsg: string = 'Unexpected error';
+          let errorMsg = 'Unexpected error';
           if (err instanceof HttpErrorResponse) {
             errorMsg = err.message;
           }
           this.notificationService.error(errorMsg);
           return throwError(() => err);
-        })
+        }),
       );
   }
 
-  public post<T>(url: string, body: {}): Observable<T> {
+  public post<T>(url: string, body: object): Observable<T> {
     return this.request<T>('post', url, body, this.defaultHttpHeaders);
   }
 
-  public put<T>(url: string, body: {}): Observable<T> {
+  public put<T>(url: string, body: object): Observable<T> {
     return this.request<T>('put', url, body, this.defaultHttpHeaders);
   }
 

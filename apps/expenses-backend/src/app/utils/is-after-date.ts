@@ -18,9 +18,9 @@ export function IsAfterDate(
       validator: {
         validate(value, validationArguments: ValidationArguments) {
           const [relatedPropertyName] = validationArguments.constraints;
-          const relatedValue = (validationArguments.object as any)[
-            relatedPropertyName
-          ];
+          const relatedValue = (
+            validationArguments.object as Record<string, unknown>
+          )[relatedPropertyName];
           if (value === undefined || relatedValue === undefined) {
             return true;
           }

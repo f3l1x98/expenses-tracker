@@ -38,7 +38,7 @@ export const userFeature = createFeature({
       ...state,
       createStatus: { status: 'pending' } as StoreStateStatus,
     })),
-    on(ApiActions.createSuccess, (state, { result }) => ({
+    on(ApiActions.createSuccess, (state) => ({
       ...state,
       createStatus: { status: 'success' } as StoreStateStatus,
     })),
@@ -51,6 +51,6 @@ export const userFeature = createFeature({
       ...state,
       own: undefined,
       loadStatus: { error: undefined, status: 'initial' } as StoreStateStatus,
-    }))
+    })),
   ),
 });

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { AuthService } from '../../core/auth/auth.service';
@@ -10,10 +10,11 @@ import { AppHeaderComponent } from '../../shared/components/app-header/app-heade
   standalone: true,
   imports: [RouterModule, ButtonModule, AppHeaderComponent],
 })
-export class SidebarComponent implements OnInit {
-  constructor(private authService: AuthService, private router: Router) {}
-
-  ngOnInit() {}
+export class SidebarComponent {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
   logout() {
     this.authService.logout();

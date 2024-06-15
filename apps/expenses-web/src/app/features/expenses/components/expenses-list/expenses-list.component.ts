@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, of, takeUntil } from 'rxjs';
+import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { SpinnerService } from '../../../../shell/spinner/spinner.service';
 import { ExpensesService } from '../../expenses.service';
 import { ConfirmationService, MenuItem } from 'primeng/api';
@@ -10,7 +10,7 @@ import { ConfirmationService, MenuItem } from 'primeng/api';
 })
 export class ExpensesListComponent implements OnInit, OnDestroy {
   actionMenuItems$: BehaviorSubject<MenuItem[]> = new BehaviorSubject(
-    [] as MenuItem[]
+    [] as MenuItem[],
   );
   expenses$ = this.service.expenses$;
 
@@ -19,14 +19,14 @@ export class ExpensesListComponent implements OnInit, OnDestroy {
   constructor(
     private service: ExpensesService,
     private spinnerService: SpinnerService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
   ) {}
 
   ngOnInit() {
     this.service.loadStatus$
       .pipe(takeUntil(this.destory$))
       .subscribe((status) =>
-        this.spinnerService.setState({ active: status.status === 'pending' })
+        this.spinnerService.setState({ active: status.status === 'pending' }),
       );
     this.load();
   }
