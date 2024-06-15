@@ -33,9 +33,11 @@ export class AppDateRangePickerComponent {
   onDateChange() {
     if (
       this.dateArray !== undefined &&
-      (!this.requireEnd || !this.dateArray?.some((element) => element === null))
+      this.dateArray[0] !== null &&
+      (!this.requireEnd || this.dateArray[1] !== null)
     ) {
       this._dateRange = {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         startDate: this.dateArray[0]!,
         endDate: this.dateArray[1],
       };
