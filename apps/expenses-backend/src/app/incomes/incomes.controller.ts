@@ -1,7 +1,3 @@
-/*
-https://docs.nestjs.com/controllers#controllers
-*/
-
 import {
   Body,
   Controller,
@@ -17,7 +13,6 @@ import {
 import { IncomesService } from './incomes.service';
 import { CreateIncomeDto } from './dto/create-income.dto';
 import { IncomeEntity } from './entities/income.entity';
-import { IUser } from '../users/entities/user';
 import { Request } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
@@ -30,6 +25,7 @@ import {
 } from '@nestjs/swagger';
 import { IncomeNotFoundException } from './exceptions/income-not-found';
 import { UpdateIncomeDto } from './dto/update-income.dto';
+import { IUser } from 'expenses-shared';
 
 @ApiTags('incomes')
 @ApiBearerAuth()

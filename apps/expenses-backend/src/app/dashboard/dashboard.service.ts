@@ -13,11 +13,8 @@ import {
   TotalExpenseOfMonth,
 } from './dto/expenses-per-month.dto';
 import { IncomeEntity } from '../incomes/entities/income.entity';
-import {
-  ExpenseCategory,
-  getExpenseCategoryColor,
-} from '../expenses/entities/expense-category';
 import { UserEntity } from '../users/entities/user.entity';
+import { ExpenseCategory, getExpenseCategoryColor } from 'expenses-shared';
 
 interface CurrentMonthDataQueryResponse {
   totalAmount: string;

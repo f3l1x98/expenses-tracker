@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsISO4217CurrencyCode } from 'class-validator';
-import { IUserSettings } from '../entities/user-settings';
+import { IUserSettings } from 'expenses-shared';
 
 export class UserSettingsDto implements IUserSettings {
   @ApiProperty({

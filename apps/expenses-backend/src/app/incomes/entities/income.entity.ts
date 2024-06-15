@@ -7,11 +7,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { IncomeCategory } from './income-category';
-import { IIncome } from './income';
 import { ApiProperty } from '@nestjs/swagger';
 import { RecurringIncomeEntity } from '../../recurring-incomes/entities/recurring-income.entitiy';
 import { UserEntity } from '../../users/entities/user.entity';
+import { IIncome, IncomeCategory } from 'expenses-shared';
 
 @Entity()
 export class IncomeEntity implements IIncome {

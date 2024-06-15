@@ -1,3 +1,4 @@
+import { IUser, IUserSettings, defaultSettings } from 'expenses-shared';
 import {
   Column,
   CreateDateColumn,
@@ -6,8 +7,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { IUser } from './user';
-import { IUserSettings, defaultSettings } from './user-settings';
 
 @Entity()
 export class UserEntity implements IUser {
