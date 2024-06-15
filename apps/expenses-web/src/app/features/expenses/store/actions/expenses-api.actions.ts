@@ -5,34 +5,34 @@ import { CreateExpenseRequest } from '../../api/interfaces/requests/create-expen
 export const loadStart = createAction('[Expenses Api Actions] load start');
 export const loadSuccess = createAction(
   '[Expenses Api Actions] load success',
-  props<{ result: Expense[] }>()
+  props<{ result: Expense[] }>(),
 );
 export const loadFailure = createAction(
   '[Expenses Api Actions] load failure',
-  props<{ error: string }>()
+  props<{ error: string }>(),
 );
 
 export const createStart = createAction(
   '[Expenses Api Actions] create start',
-  props<{ request: CreateExpenseRequest }>()
+  props<{ request: CreateExpenseRequest }>(),
 );
 export const createSuccess = createAction(
   '[Expenses Api Actions] create success',
-  props<{ result: Expense }>()
+  props<{ result: Expense }>(),
 );
 export const createFailure = createAction(
   '[Expenses Api Actions] create failure',
-  props<{ error: string }>()
+  props<{ error: string }>(),
 );
 
 export const deleteStart = createAction(
   '[Expenses Api Actions] delete start',
-  props<{ id: string }>()
+  props<{ id: string }>(),
 );
 export const deleteSuccess = createAction(
-  '[Expenses Api Actions] delete success'
+  '[Expenses Api Actions] delete success',
 );
 export const deleteFailure = createAction(
   '[Expenses Api Actions] delete failure',
-  props<{ error: string }>()
+  props<{ error: string }>(),
 );

@@ -10,7 +10,7 @@ import { ConfirmationService, MenuItem } from 'primeng/api';
 })
 export class ExpensesListComponent implements OnInit, OnDestroy {
   actionMenuItems$: BehaviorSubject<MenuItem[]> = new BehaviorSubject(
-    [] as MenuItem[]
+    [] as MenuItem[],
   );
   expenses$ = this.service.expenses$;
 
@@ -19,14 +19,14 @@ export class ExpensesListComponent implements OnInit, OnDestroy {
   constructor(
     private service: ExpensesService,
     private spinnerService: SpinnerService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
   ) {}
 
   ngOnInit() {
     this.service.loadStatus$
       .pipe(takeUntil(this.destory$))
       .subscribe((status) =>
-        this.spinnerService.setState({ active: status.status === 'pending' })
+        this.spinnerService.setState({ active: status.status === 'pending' }),
       );
     this.load();
   }

@@ -31,12 +31,12 @@ export const authFeature = createFeature({
       ...state,
       status: { value: 'failure', error: error } as AuthStatus,
     })),
-    on(PageActions.logout, (state) => initialState)
+    on(PageActions.logout, (state) => initialState),
   ),
   extraSelectors({ selectStatus }) {
     const selectErrorMessage = createSelector(
       selectStatus,
-      (status) => status.error
+      (status) => status.error,
     );
 
     return { selectErrorMessage };

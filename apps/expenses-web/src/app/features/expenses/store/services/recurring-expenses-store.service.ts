@@ -9,10 +9,10 @@ import { CreateRecurringExpenseRequest } from '../../api/interfaces/requests/cre
 export class RecurringExpensesStoreService {
   loadStatus$ = this.store.select(recurringExpensesFeature.selectLoadStatus);
   recurringExpenses$ = this.store.select(
-    recurringExpensesFeature.selectRecurringExpenses
+    recurringExpensesFeature.selectRecurringExpenses,
   );
   createStatus$ = this.store.select(
-    recurringExpensesFeature.selectCreateStatus
+    recurringExpensesFeature.selectCreateStatus,
   );
 
   constructor(private store: Store) {}

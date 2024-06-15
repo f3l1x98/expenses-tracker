@@ -10,7 +10,7 @@ import { AuthService } from './auth.service';
 
 export const AuthGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot,
-  state: RouterStateSnapshot
+  state: RouterStateSnapshot,
 ) => {
   const authService = inject(AuthService);
   const router = inject(Router);
@@ -23,6 +23,6 @@ export const AuthGuard: CanActivateFn = (
         // TODO check if jwt token expired
         return true;
       }
-    })
+    }),
   );
 };

@@ -31,7 +31,7 @@ export class ExpenseCreateComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private expensesService: ExpensesService,
     private recurringExpensesService: RecurringExpensesService,
-    private userService: UserService
+    private userService: UserService,
   ) {}
 
   ngOnDestroy(): void {

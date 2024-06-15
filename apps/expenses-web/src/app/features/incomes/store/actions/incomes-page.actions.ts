@@ -3,9 +3,9 @@ import { CreateIncomeRequest } from '../../api/interfaces/requests/create-income
 
 export const createRequest = createAction(
   '[Income Page Actions] create request',
-  props<{ request: CreateIncomeRequest }>()
+  props<{ request: CreateIncomeRequest }>(),
 );
 export const deleteRequest = createAction(
   '[Income Page Actions] delete request',
-  props<{ id: string }>()
+  props<{ id: string }>(),
 );

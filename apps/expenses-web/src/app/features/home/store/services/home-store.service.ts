@@ -9,17 +9,17 @@ export class HomeStoreService {
   filter$ = this.store.select(homeFeature.selectFilter);
   currentMonthData$ = this.store.select(homeFeature.selectCurrentMonthDataData);
   currentMonthDataStatus$ = this.store.select(
-    homeFeature.selectCurrentMonthDataStatus
+    homeFeature.selectCurrentMonthDataStatus,
   );
   expensesPerCategory$ = this.store.select(
-    homeFeature.selectExpensesPerCategoryData
+    homeFeature.selectExpensesPerCategoryData,
   );
   expensesPerCategoryStatus$ = this.store.select(
-    homeFeature.selectExpensesPerCategoryStatus
+    homeFeature.selectExpensesPerCategoryStatus,
   );
   expensesPerMonth$ = this.store.select(homeFeature.selectExpensesPerMonthData);
   expensesPerMonthStatus$ = this.store.select(
-    homeFeature.selectExpensesPerMonthStatus
+    homeFeature.selectExpensesPerMonthStatus,
   );
 
   constructor(private store: Store) {}

@@ -31,7 +31,7 @@ export class IncomeCreateComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private incomesService: IncomesService,
     private recurringIncomesService: RecurringIncomesService,
-    private userService: UserService
+    private userService: UserService,
   ) {}
 
   ngOnDestroy(): void {

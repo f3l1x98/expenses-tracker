@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IncomesService } from '../../incomes.service';
 import { SpinnerService } from '../../../../shell/spinner/spinner.service';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
@@ -8,9 +8,9 @@ import { ConfirmationService, MenuItem } from 'primeng/api';
   selector: 'app-incomes-list',
   templateUrl: 'incomes-list.component.html',
 })
-export class IncomesListComponent implements OnInit {
+export class IncomesListComponent implements OnInit, OnDestroy {
   actionMenuItems$: BehaviorSubject<MenuItem[]> = new BehaviorSubject(
-    [] as MenuItem[]
+    [] as MenuItem[],
   );
   incomes$ = this.service.incomes$;
 
@@ -19,14 +19,14 @@ export class IncomesListComponent implements OnInit {
   constructor(
     private service: IncomesService,
     private spinnerService: SpinnerService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
   ) {}
 
   ngOnInit() {
     this.service.loadStatus$
       .pipe(takeUntil(this.destory$))
       .subscribe((status) =>
-        this.spinnerService.setState({ active: status.status === 'pending' })
+        this.spinnerService.setState({ active: status.status === 'pending' }),
       );
     this.load();
   }

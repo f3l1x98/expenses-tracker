@@ -3,7 +3,7 @@ import { UserLoginRequest } from '../../api/interfaces/user-login-request.interf
 
 export const login = createAction(
   '[Auth Page Actions] login',
-  props<{ request: UserLoginRequest }>()
+  props<{ request: UserLoginRequest }>(),
 );
 
 export const logout = createAction('[Auth Page Actions] logout');

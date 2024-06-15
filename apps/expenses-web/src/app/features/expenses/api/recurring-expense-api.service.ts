@@ -15,13 +15,13 @@ export class RecurringExpensesApiService {
   private readonly getAllUrl: string = `${this.baseUrl}/`;
 
   create$(
-    request: CreateRecurringExpenseRequest
+    request: CreateRecurringExpenseRequest,
   ): Observable<RecurringExpense> {
     return this.apiService.post(this.createUrl, request);
   }
 
   update$(
-    request: UpdateRecurringExpenseRequest
+    request: UpdateRecurringExpenseRequest,
   ): Observable<RecurringExpense> {
     return this.apiService.put(this.updateUrl, request);
   }

@@ -120,7 +120,7 @@ export const homeFeature = createFeature({
           status: 'error',
         } as StoreStateStatus,
       },
-    }))
+    })),
   ),
   extraSelectors({
     selectCurrentMonthData,
@@ -129,29 +129,29 @@ export const homeFeature = createFeature({
   }) {
     const selectCurrentMonthDataData = createSelector(
       selectCurrentMonthData,
-      (data) => data.data
+      (data) => data.data,
     );
     const selectCurrentMonthDataStatus = createSelector(
       selectCurrentMonthData,
-      (data) => data.status
+      (data) => data.status,
     );
 
     const selectExpensesPerCategoryData = createSelector(
       selectExpensesPerCategory,
-      (data) => data.data
+      (data) => data.data,
     );
     const selectExpensesPerCategoryStatus = createSelector(
       selectExpensesPerCategory,
-      (data) => data.status
+      (data) => data.status,
     );
 
     const selectExpensesPerMonthData = createSelector(
       selectExpensesPerMonth,
-      (data) => data.data
+      (data) => data.data,
     );
     const selectExpensesPerMonthStatus = createSelector(
       selectExpensesPerMonth,
-      (data) => data.status
+      (data) => data.status,
     );
 
     return {

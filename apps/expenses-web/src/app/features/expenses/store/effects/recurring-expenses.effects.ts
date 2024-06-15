@@ -9,14 +9,14 @@ import { catchError, map, of, switchMap } from 'rxjs';
 export class RecurringExpensesEffect {
   constructor(
     private actions$: Actions,
-    private apiService: RecurringExpensesApiService
+    private apiService: RecurringExpensesApiService,
   ) {}
 
   deleteUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PageActions.deleteRequest),
-      switchMap((action) => of(ApiActions.deleteStart({ id: action.id })))
-    )
+      switchMap((action) => of(ApiActions.deleteStart({ id: action.id }))),
+    ),
   );
 
   delete$ = createEffect(() =>
@@ -25,21 +25,21 @@ export class RecurringExpensesEffect {
       switchMap((action) =>
         this.apiService.delete$(action.id).pipe(
           switchMap((result) =>
-            of(ApiActions.deleteSuccess(), ApiActions.loadStart())
+            of(ApiActions.deleteSuccess(), ApiActions.loadStart()),
           ),
-          catchError((error) => of(ApiActions.deleteFailure(error)))
-        )
-      )
-    )
+          catchError((error) => of(ApiActions.deleteFailure(error))),
+        ),
+      ),
+    ),
   );
 
   createUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PageActions.createRequest),
       switchMap((action) =>
-        of(ApiActions.createStart({ request: action.request }))
-      )
-    )
+        of(ApiActions.createStart({ request: action.request })),
+      ),
+    ),
   );
 
   create$ = createEffect(() =>
@@ -48,12 +48,12 @@ export class RecurringExpensesEffect {
       switchMap((action) =>
         this.apiService.create$(action.request).pipe(
           switchMap((result) =>
-            of(ApiActions.createSuccess({ result }), ApiActions.loadStart())
+            of(ApiActions.createSuccess({ result }), ApiActions.loadStart()),
           ),
-          catchError((error) => of(ApiActions.createFailure(error)))
-        )
-      )
-    )
+          catchError((error) => of(ApiActions.createFailure(error))),
+        ),
+      ),
+    ),
   );
 
   load$ = createEffect(() =>
@@ -62,9 +62,9 @@ export class RecurringExpensesEffect {
       switchMap((action) =>
         this.apiService.getAll$().pipe(
           map((result) => ApiActions.loadSuccess({ result })),
-          catchError((error) => of(ApiActions.loadFailure({ error })))
-        )
-      )
-    )
+          catchError((error) => of(ApiActions.loadFailure({ error }))),
+        ),
+      ),
+    ),
   );
 }

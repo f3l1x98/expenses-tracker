@@ -14,7 +14,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(
     req: HttpRequest<any>,
-    next: HttpHandler
+    next: HttpHandler,
   ): Observable<HttpEvent<any>> {
     return this.auth.token$.pipe(
       take(1),
@@ -24,7 +24,7 @@ export class AuthInterceptor implements HttpInterceptor {
         });
 
         return next.handle(authReq);
-      })
+      }),
     );
   }
 }

@@ -51,6 +51,6 @@ export const userFeature = createFeature({
       ...state,
       own: undefined,
       loadStatus: { error: undefined, status: 'initial' } as StoreStateStatus,
-    }))
+    })),
   ),
 });

@@ -11,7 +11,10 @@ import { AppHeaderComponent } from '../../shared/components/app-header/app-heade
   imports: [RouterModule, ButtonModule, AppHeaderComponent],
 })
 export class SidebarComponent implements OnInit {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
   ngOnInit() {}
 

@@ -39,13 +39,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<boolean>();
   formGroup!: FormGroup;
   loading$ = this.authService.status$.pipe(
-    map((status) => status.value == 'running')
+    map((status) => status.value == 'running'),
   );
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnDestroy(): void {
@@ -73,7 +73,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.authService.login(
       this.formGroup.get('username')!.value,
-      this.formGroup.get('password')!.value
+      this.formGroup.get('password')!.value,
     );
   }
 }

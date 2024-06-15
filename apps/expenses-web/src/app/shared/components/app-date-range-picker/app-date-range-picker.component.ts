@@ -21,7 +21,7 @@ export class AppDateRangePickerComponent {
   }
 
   @Input()
-  requireEnd: boolean = false;
+  requireEnd = false;
 
   get dateRange(): DateRange | undefined {
     return this._dateRange;

@@ -9,7 +9,7 @@ import { CreateRecurringIncomeRequest } from '../../api/interfaces/requests/crea
 export class RecurringIncomesStoreService {
   loadStatus$ = this.store.select(recurringIncomesFeature.selectLoadStatus);
   recurringIncomes$ = this.store.select(
-    recurringIncomesFeature.selectRecurringIncomes
+    recurringIncomesFeature.selectRecurringIncomes,
   );
   createStatus$ = this.store.select(recurringIncomesFeature.selectCreateStatus);
 

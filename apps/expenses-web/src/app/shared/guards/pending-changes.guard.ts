@@ -13,7 +13,7 @@ export const PendingChangesGuard: CanDeactivateFn<ComponentCanDeactivate> = (
   component: ComponentCanDeactivate,
   currentRoute: ActivatedRouteSnapshot,
   currentState: RouterStateSnapshot,
-  nextState: RouterStateSnapshot
+  nextState: RouterStateSnapshot,
 ) => {
   return component.canDeactivate ? component.canDeactivate() : true;
 };

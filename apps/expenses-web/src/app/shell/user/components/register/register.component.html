@@ -1,70 +1,133 @@
 <div class="flex justify-content-center align-content-center w-full h-full">
-    <app-pending-changes-dialog />
-    <p-card class="w-3" *ngIf="(registerStatus$ | async)?.status !== 'success'; else registrationSuccess">
-        <p-stepper [linear]="true">
-            <p-stepperPanel header="Credentials">
-                <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
-                    <div class="text-center mt-3 mb-4 text-xl font-semibold">Create your account</div>
-                    <form class="formgrid grid" [formGroup]="credentialsFormGroup">
-                        <div class="mb-5 field col-12">
-                            <p-floatLabel>
-                                <input pInputText class="w-full" id="username" formControlName="username" type="text">
-                                <label for="username">Username</label>
-                            </p-floatLabel>
-                        </div>
-
-                        <div class="mb-5 field col-12">
-                            <p-floatLabel>
-                                <p-password inputStyleClass="w-full" styleClass="w-full" inputId="password"
-                                    formControlName="password" [toggleMask]="true" placeholder="Password" />
-                                <label for="password">Password</label>
-                            </p-floatLabel>
-                        </div>
-
-                        <div class="mb-5 field col-12">
-                            <p-floatLabel>
-                                <p-password inputStyleClass="w-full" styleClass="w-full" inputId="confirmPassword"
-                                    formControlName="confirmPassword" [toggleMask]="true" [feedback]="false"
-                                    placeholder="Confirm Password" />
-                                <label for="confirmPassword">Confirm Password</label>
-                            </p-floatLabel>
-                        </div>
-                    </form>
-                    <div class="flex pt-4 justify-content-between">
-                        <p-button label="Cancel" [link]="true" routerLink="/auth/login" />
-                        <p-button (onClick)="nextCallback.emit()" label="Next" icon="pi pi-arrow-right" iconPos="right"
-                            [disabled]="!credentialsFormGroup.valid" />
-                    </div>
-                </ng-template>
-            </p-stepperPanel>
-            <p-stepperPanel header="Settings">
-                <ng-template pTemplate="content" let-prevCallback="prevCallback" let-index="index">
-                    <div class="text-center mt-3 mb-4 text-xl font-semibold">Setup your account</div>
-                    <form class="formgrid grid" [formGroup]="settingsFormGroup">
-                        <div class="mb-5 field col-12">
-                            <p-floatLabel>
-                                <input pInputText class="w-full" id="currency" formControlName="currency" type="text">
-                                <label for="currency">TODO Currency</label>
-                            </p-floatLabel>
-                        </div>
-                    </form>
-                    <div class="flex pt-4 justify-content-between">
-                        <p-button (onClick)="prevCallback.emit()" label="Back" icon="pi pi-arrow-left" />
-                        <p-button (onClick)="register()" label="Register" icon="pi pi-user-plus" iconPos="right"
-                            [disabled]="!settingsFormGroup.valid" />
-                    </div>
-                </ng-template>
-            </p-stepperPanel>
-        </p-stepper>
-    </p-card>
-    <ng-template #registrationSuccess>
-        <p-card class="w-3">
-            <div class="text-center mt-3 mb-4 text-xl font-semibold">Successfully created the account</div>
-
-            <div class="text-center mt-3 mb-4">
-                You can now
-                <p-button label="login" [link]="true" routerLink="/auth/login" styleClass="p-0" />
+  <app-pending-changes-dialog />
+  <p-card
+    class="w-3"
+    *ngIf="
+      (registerStatus$ | async)?.status !== 'success';
+      else registrationSuccess
+    "
+  >
+    <p-stepper [linear]="true">
+      <p-stepperPanel header="Credentials">
+        <ng-template
+          pTemplate="content"
+          let-nextCallback="nextCallback"
+          let-index="index"
+        >
+          <div class="text-center mt-3 mb-4 text-xl font-semibold">
+            Create your account
+          </div>
+          <form class="formgrid grid" [formGroup]="credentialsFormGroup">
+            <div class="mb-5 field col-12">
+              <p-floatLabel>
+                <input
+                  pInputText
+                  class="w-full"
+                  id="username"
+                  formControlName="username"
+                  type="text"
+                />
+                <label for="username">Username</label>
+              </p-floatLabel>
             </div>
-        </p-card>
-    </ng-template>
+
+            <div class="mb-5 field col-12">
+              <p-floatLabel>
+                <p-password
+                  inputStyleClass="w-full"
+                  styleClass="w-full"
+                  inputId="password"
+                  formControlName="password"
+                  [toggleMask]="true"
+                  placeholder="Password"
+                />
+                <label for="password">Password</label>
+              </p-floatLabel>
+            </div>
+
+            <div class="mb-5 field col-12">
+              <p-floatLabel>
+                <p-password
+                  inputStyleClass="w-full"
+                  styleClass="w-full"
+                  inputId="confirmPassword"
+                  formControlName="confirmPassword"
+                  [toggleMask]="true"
+                  [feedback]="false"
+                  placeholder="Confirm Password"
+                />
+                <label for="confirmPassword">Confirm Password</label>
+              </p-floatLabel>
+            </div>
+          </form>
+          <div class="flex pt-4 justify-content-between">
+            <p-button label="Cancel" [link]="true" routerLink="/auth/login" />
+            <p-button
+              (onClick)="nextCallback.emit()"
+              label="Next"
+              icon="pi pi-arrow-right"
+              iconPos="right"
+              [disabled]="!credentialsFormGroup.valid"
+            />
+          </div>
+        </ng-template>
+      </p-stepperPanel>
+      <p-stepperPanel header="Settings">
+        <ng-template
+          pTemplate="content"
+          let-prevCallback="prevCallback"
+          let-index="index"
+        >
+          <div class="text-center mt-3 mb-4 text-xl font-semibold">
+            Setup your account
+          </div>
+          <form class="formgrid grid" [formGroup]="settingsFormGroup">
+            <div class="mb-5 field col-12">
+              <p-floatLabel>
+                <input
+                  pInputText
+                  class="w-full"
+                  id="currency"
+                  formControlName="currency"
+                  type="text"
+                />
+                <label for="currency">TODO Currency</label>
+              </p-floatLabel>
+            </div>
+          </form>
+          <div class="flex pt-4 justify-content-between">
+            <p-button
+              (onClick)="prevCallback.emit()"
+              label="Back"
+              icon="pi pi-arrow-left"
+            />
+            <p-button
+              (onClick)="register()"
+              label="Register"
+              icon="pi pi-user-plus"
+              iconPos="right"
+              [disabled]="!settingsFormGroup.valid"
+            />
+          </div>
+        </ng-template>
+      </p-stepperPanel>
+    </p-stepper>
+  </p-card>
+  <ng-template #registrationSuccess>
+    <p-card class="w-3">
+      <div class="text-center mt-3 mb-4 text-xl font-semibold">
+        Successfully created the account
+      </div>
+
+      <div class="text-center mt-3 mb-4">
+        You can now
+        <p-button
+          label="login"
+          [link]="true"
+          routerLink="/auth/login"
+          styleClass="p-0"
+        />
+      </div>
+    </p-card>
+  </ng-template>
 </div>

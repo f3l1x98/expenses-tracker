@@ -1,11 +1,11 @@
 import { RecurringCycle } from '../interfaces/recurring-cycle.enum';
 
 export function constructCron(cycle: RecurringCycle, startDate: Date): string {
-  let dayOfWeek: string = '*';
-  let month: string = '*';
-  let dayOfMonth: string = '*';
-  let hour: string = '2';
-  let minute: string = '0';
+  let dayOfWeek = '*';
+  let month = '*';
+  let dayOfMonth = '*';
+  const hour = '2';
+  const minute = '0';
   switch (cycle) {
     case RecurringCycle.YEARLY:
       month = `${startDate.getMonth()}`;
