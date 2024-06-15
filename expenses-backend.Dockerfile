@@ -13,6 +13,8 @@ COPY tsconfig.base.json .eslintrc.json .prettierrc jest.preset.js jest.config.ts
 
 COPY apps/expenses-backend apps/expenses-backend
 
+COPY libs/expenses-shared libs/expenses-shared
+
 RUN npm run nx run expenses-backend:build:production
 
 FROM node:lts-alpine
