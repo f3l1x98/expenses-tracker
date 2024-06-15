@@ -1,7 +1,3 @@
-/*
-https://docs.nestjs.com/controllers#controllers
-*/
-
 import {
   Body,
   Controller,
@@ -18,7 +14,6 @@ import { ExpensesService } from './expenses.service';
 import { ExpenseEntity } from './entities/expense.entity';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { Request } from 'express';
-import { IUser } from '../users/entities/user';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
   ApiBearerAuth,
@@ -30,6 +25,7 @@ import {
 } from '@nestjs/swagger';
 import { ExpenseNotFoundException } from './exceptions/expense-not-found';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
+import { IUser } from 'expenses-shared';
 
 @ApiTags('expenses')
 @ApiBearerAuth()

@@ -1,4 +1,4 @@
-export interface CurrentMonthData {
+export interface CurrentMonthDataDto {
   totalExpense: number;
   totalIncome: number;
   balance: number;

@@ -6,10 +6,10 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { UserEntity } from '../src/app/users/entities/user.entity';
 import { setupApp } from '../src/app/app';
 import { resetAllWhenMocks } from 'jest-when';
-import { defaultSettings } from '../src/app/users/entities/user-settings';
 import { CreateUserDto } from '../src/app/users/dto/create-user.dto';
 // Import this way due to "esModuleInterop": true
 import request from 'supertest';
+import { defaultSettings } from 'expenses-shared';
 
 describe('Users', () => {
   let app: INestApplication;

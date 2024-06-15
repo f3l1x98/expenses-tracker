@@ -3,7 +3,7 @@ import { BaseApiService } from '../../../shared/api/base-api.service';
 import { Observable } from 'rxjs';
 import { CreateRecurringExpenseRequest } from './interfaces/requests/create-recurring-expense-request.interface';
 import { UpdateRecurringExpenseRequest } from './interfaces/requests/update-recurring-expense-request.interface';
-import { RecurringExpense } from './interfaces/recurring-expense.interface';
+import { IRecurringExpense } from 'expenses-shared';
 
 @Injectable({ providedIn: 'root' })
 export class RecurringExpensesApiService {
@@ -16,17 +16,17 @@ export class RecurringExpensesApiService {
 
   create$(
     request: CreateRecurringExpenseRequest,
-  ): Observable<RecurringExpense> {
+  ): Observable<IRecurringExpense> {
     return this.apiService.post(this.createUrl, request);
   }
 
   update$(
     request: UpdateRecurringExpenseRequest,
-  ): Observable<RecurringExpense> {
+  ): Observable<IRecurringExpense> {
     return this.apiService.put(this.updateUrl, request);
   }
 
-  getAll$(): Observable<RecurringExpense[]> {
+  getAll$(): Observable<IRecurringExpense[]> {
     return this.apiService.get(this.getAllUrl);
   }
 

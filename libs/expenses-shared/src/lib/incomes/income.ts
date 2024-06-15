@@ -1,5 +1,5 @@
-import { IRecurringIncome } from '../../recurring-incomes/entities/recurring-income';
-import { IUser } from '../../users/entities/user';
+import { IRecurringIncome } from '../recurring-incomes/recurring-income';
+import { IUser } from '../users/user';
 import { IncomeCategory } from './income-category';
 
 export interface IIncome {

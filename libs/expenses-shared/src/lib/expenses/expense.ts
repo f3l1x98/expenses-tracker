@@ -1,5 +1,5 @@
-import { IRecurringExpense } from '../../recurring-expenses/entities/recurring-expense';
-import { IUser } from '../../users/entities/user';
+import { IRecurringExpense } from '../recurring-expenses/recurring-expense';
+import { IUser } from '../users/user';
 import { ExpenseCategory } from './expense-category';
 
 export interface IExpense {

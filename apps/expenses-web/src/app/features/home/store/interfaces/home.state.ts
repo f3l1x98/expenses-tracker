@@ -1,13 +1,15 @@
 import { StoreStateStatus } from '../../../../shared/interfaces/store-state-status.interface';
-import { ExpensesPerCategoryResponse } from '../../api/interfaces/expenses-per-catergory-response.interface';
-import { ExpensesPerMonthResponse } from '../../api/interfaces/expenses-per-month-response.interface';
-import { CurrentMonthData } from '../../api/interfaces/current-month-data.interface';
 import { DateRange } from '../../../../shared/interfaces/date-range.interface';
+import {
+  CurrentMonthDataDto,
+  ExpensesPerCategoryResponse,
+  ExpensesPerMonthResponse,
+} from 'expenses-shared';
 
 export interface HomeState {
   filter: DateRange;
   currentMonthData: {
-    data: CurrentMonthData | undefined;
+    data: CurrentMonthDataDto | undefined;
     status: StoreStateStatus;
   };
   expensesPerCategory: {

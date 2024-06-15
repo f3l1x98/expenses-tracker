@@ -13,7 +13,7 @@ import { ExpensesPerCategory } from './dto/expenses-per-category.dto';
 import { ExpensesPerMonth } from './dto/expenses-per-month.dto';
 import { DateRangeDto } from '../shared/date-range.dto';
 import { Request } from 'express';
-import { IUser } from '../users/entities/user';
+import { IUser } from 'expenses-shared';
 
 @ApiTags('dashboards')
 @ApiBearerAuth()

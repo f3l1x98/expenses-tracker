@@ -5,7 +5,6 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { IncomeCategory } from '../../api/interfaces/income-category';
 import { Subject } from 'rxjs';
 import { IncomesService } from '../../incomes.service';
 import { RecurringIncomesService } from '../../recurring-incomes.service';
@@ -13,6 +12,7 @@ import { RecurringCycle } from '../../../../shared/interfaces/recurring-cycle.en
 import { validateDateAfter } from '../../../../shared/validators/validate-date-after';
 import { constructCron } from '../../../../shared/utils/cron-utils';
 import { UserService } from '../../../../shell/user/user.service';
+import { IncomeCategory } from 'expenses-shared';
 
 @Component({
   selector: 'app-income-create',

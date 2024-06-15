@@ -8,6 +8,8 @@ COPY tsconfig.base.json .eslintrc.json .prettierrc jest.preset.js jest.config.ts
 
 COPY apps/expenses-web apps/expenses-web
 
+COPY libs/expenses-shared libs/expenses-shared
+
 RUN npm run nx run expenses-web:build:production
 
 FROM nginx:stable

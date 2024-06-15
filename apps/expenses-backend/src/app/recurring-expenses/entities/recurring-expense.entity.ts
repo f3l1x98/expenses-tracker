@@ -7,10 +7,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { ExpenseCategory } from '../../expenses/entities/expense-category';
-import { IRecurringExpense } from './recurring-expense';
 import { ApiProperty } from '@nestjs/swagger';
 import { UserEntity } from '../../users/entities/user.entity';
+import { ExpenseCategory, IRecurringExpense } from 'expenses-shared';
 
 @Entity()
 export class RecurringExpenseEntity implements IRecurringExpense {

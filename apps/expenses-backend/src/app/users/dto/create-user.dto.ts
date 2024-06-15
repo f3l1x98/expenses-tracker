@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { UserSettingsDto } from './user-settings.dto';
 import { Type } from 'class-transformer';
-import { defaultSettings } from '../entities/user-settings';
+import { defaultSettings } from 'expenses-shared';
 
 export abstract class CreateUserDto {
   @ApiProperty({

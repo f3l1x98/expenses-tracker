@@ -9,10 +9,8 @@ import { createTestingModuleWithDefaultMocks } from './mock';
 // Import this way due to "esModuleInterop": true
 import request from 'supertest';
 import { CreateExpenseDto } from '../src/app/expenses/dto/create-expense.dto';
-import { ExpenseCategory } from '../src/app/expenses/entities/expense-category';
-import { IUser } from '../src/app/users/entities/user';
-import { defaultSettings } from '../src/app/users/entities/user-settings';
 import { UserEntity } from '../src/app/users/entities/user.entity';
+import { ExpenseCategory, IUser, defaultSettings } from 'expenses-shared';
 
 describe('Expenses', () => {
   let app: INestApplication;

@@ -1,8 +1,8 @@
-import { IncomeCategory } from '../entities/income-category';
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
 import { RecurringIncomeEntity } from '../../recurring-incomes/entities/recurring-income.entitiy';
+import { IncomeCategory } from 'expenses-shared';
 
 export class CreateIncomeDto {
   @ApiProperty({

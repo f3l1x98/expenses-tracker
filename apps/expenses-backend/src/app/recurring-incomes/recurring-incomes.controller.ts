@@ -1,7 +1,3 @@
-/*
-https://docs.nestjs.com/controllers#controllers
-*/
-
 import {
   Body,
   Controller,
@@ -18,7 +14,6 @@ import { RecurringIncomesService } from './recurring-incomes.service';
 import { CreateRecurringIncomeDto } from './dto/create-recurring-income.dto';
 import { RecurringIncomeEntity } from './entities/recurring-income.entitiy';
 import { Request } from 'express';
-import { IUser } from '../users/entities/user';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
   ApiBearerAuth,
@@ -30,6 +25,7 @@ import {
 } from '@nestjs/swagger';
 import { RecurringIncomeNotFoundException } from './exceptions/recurring-income-not-found';
 import { UpdateRecurringIncomeDto } from './dto/update-recurring-income.dto';
+import { IUser } from 'expenses-shared';
 
 @ApiTags('recurring-incomes')
 @ApiBearerAuth()

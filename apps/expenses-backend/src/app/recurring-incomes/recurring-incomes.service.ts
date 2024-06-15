@@ -1,7 +1,3 @@
-/*
-https://docs.nestjs.com/providers#services
-*/
-
 import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { RecurringIncomeEntity } from './entities/recurring-income.entitiy';

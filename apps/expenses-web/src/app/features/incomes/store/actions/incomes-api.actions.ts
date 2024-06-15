@@ -1,11 +1,11 @@
 import { createAction, props } from '@ngrx/store';
-import { Income } from '../../api/interfaces/income.interface';
 import { CreateIncomeRequest } from '../../api/interfaces/requests/create-income-request.interface';
+import { IIncome } from 'expenses-shared';
 
 export const loadStart = createAction('[Incomes Api Actions] load start');
 export const loadSuccess = createAction(
   '[Incomes Api Actions] load success',
-  props<{ result: Income[] }>(),
+  props<{ result: IIncome[] }>(),
 );
 export const loadFailure = createAction(
   '[Incomes Api Actions] load failure',
@@ -18,7 +18,7 @@ export const createStart = createAction(
 );
 export const createSuccess = createAction(
   '[Incomes Api Actions] create success',
-  props<{ result: Income }>(),
+  props<{ result: IIncome }>(),
 );
 export const createFailure = createAction(
   '[Incomes Api Actions] create failure',

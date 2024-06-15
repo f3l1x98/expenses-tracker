@@ -8,9 +8,9 @@ import {
   IsPositive,
   IsString,
 } from 'class-validator';
-import { ExpenseCategory } from '../../expenses/entities/expense-category';
 import { IsAfterDate } from '../../utils/is-after-date';
 import { IsValidCron } from '../../utils/is-valid-cron';
+import { ExpenseCategory } from 'expenses-shared';
 
 export class CreateRecurringExpenseDto {
   @ApiProperty({

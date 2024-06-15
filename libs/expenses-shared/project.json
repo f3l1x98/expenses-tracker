@@ -1,0 +1,21 @@
+{
+  "name": "expenses-shared",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/expenses-shared/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project expenses-shared --web",
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/expenses-shared"],
+      "options": {
+        "jestConfig": "libs/expenses-shared/jest.config.ts"
+      }
+    }
+  }
+}

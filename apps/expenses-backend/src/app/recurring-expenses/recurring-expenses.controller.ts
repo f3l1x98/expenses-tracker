@@ -1,7 +1,3 @@
-/*
-https://docs.nestjs.com/controllers#controllers
-*/
-
 import {
   Body,
   Controller,
@@ -18,7 +14,6 @@ import { RecurringExpensesService } from './recurring-expenses.service';
 import { CreateRecurringExpenseDto } from './dto/create-recurring-expense.dto';
 import { RecurringExpenseEntity } from './entities/recurring-expense.entity';
 import { Request } from 'express';
-import { IUser } from '../users/entities/user';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
   ApiBearerAuth,
@@ -30,6 +25,7 @@ import {
 } from '@nestjs/swagger';
 import { RecurringExpenseNotFoundException } from './exceptions/recurring-expense-not-found';
 import { UpdateRecurringExpenseDto } from './dto/update-recurring-expense.dto';
+import { IUser } from 'expenses-shared';
 
 @ApiTags('recurring-expenses')
 @ApiBearerAuth()

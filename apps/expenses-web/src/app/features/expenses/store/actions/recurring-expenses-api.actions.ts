@@ -1,13 +1,13 @@
 import { createAction, props } from '@ngrx/store';
-import { RecurringExpense } from '../../api/interfaces/recurring-expense.interface';
 import { CreateRecurringExpenseRequest } from '../../api/interfaces/requests/create-recurring-expense-request.interface';
+import { IRecurringExpense } from 'expenses-shared';
 
 export const loadStart = createAction(
   '[Recurring Expenses Api Actions] load start',
 );
 export const loadSuccess = createAction(
   '[Recurring Expenses Api Actions] load success',
-  props<{ result: RecurringExpense[] }>(),
+  props<{ result: IRecurringExpense[] }>(),
 );
 export const loadFailure = createAction(
   '[Recurring Expenses Api Actions] load failure',
@@ -20,7 +20,7 @@ export const createStart = createAction(
 );
 export const createSuccess = createAction(
   '[Recurring Expenses Api Actions] create success',
-  props<{ result: RecurringExpense }>(),
+  props<{ result: IRecurringExpense }>(),
 );
 export const createFailure = createAction(
   '[Recurring Expenses Api Actions] create failure',

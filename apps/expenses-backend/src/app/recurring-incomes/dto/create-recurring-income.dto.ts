@@ -8,9 +8,9 @@ import {
   IsPositive,
   IsString,
 } from 'class-validator';
-import { IncomeCategory } from '../../incomes/entities/income-category';
 import { IsAfterDate } from '../../utils/is-after-date';
 import { IsValidCron } from '../../utils/is-valid-cron';
+import { IncomeCategory } from 'expenses-shared';
 
 export class CreateRecurringIncomeDto {
   @ApiProperty({

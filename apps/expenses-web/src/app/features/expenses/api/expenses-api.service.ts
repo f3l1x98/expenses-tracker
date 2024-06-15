@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { BaseApiService } from '../../../shared/api/base-api.service';
 import { CreateExpenseRequest } from './interfaces/requests/create-expense-request.interface';
 import { Observable } from 'rxjs';
-import { Expense } from './interfaces/expense.interface';
 import { UpdateExpenseRequest } from './interfaces/requests/update-expense-request.interface';
+import { IExpense } from 'expenses-shared';
 
 @Injectable({ providedIn: 'root' })
 export class ExpensesApiService {
@@ -14,15 +14,15 @@ export class ExpensesApiService {
   private readonly updateUrl: string = `${this.baseUrl}/`;
   private readonly getAllUrl: string = `${this.baseUrl}/`;
 
-  create$(request: CreateExpenseRequest): Observable<Expense> {
+  create$(request: CreateExpenseRequest): Observable<IExpense> {
     return this.apiService.post(this.createUrl, request);
   }
 
-  update$(request: UpdateExpenseRequest): Observable<Expense> {
+  update$(request: UpdateExpenseRequest): Observable<IExpense> {
     return this.apiService.put(this.updateUrl, request);
   }
 
-  getAll$(): Observable<Expense[]> {
+  getAll$(): Observable<IExpense[]> {
     return this.apiService.get(this.getAllUrl);
   }
 

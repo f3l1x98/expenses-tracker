@@ -1,8 +1,8 @@
+import { IExpense } from 'expenses-shared';
 import { StoreStateStatus } from '../../../../shared/interfaces/store-state-status.interface';
-import { Expense } from '../../api/interfaces/expense.interface';
 
 export interface ExpensesState {
-  expenses: Array<Expense>;
+  expenses: Array<IExpense>;
   loadStatus: StoreStateStatus;
   createStatus: StoreStateStatus;
   deleteStatus: StoreStateStatus;

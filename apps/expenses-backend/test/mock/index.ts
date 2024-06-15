@@ -3,8 +3,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test, TestingModuleBuilder } from '@nestjs/testing';
 import { AuthModule } from '../../src/app/auth/auth.module';
 import { ConfigServiceMock } from './config.mock';
-import { IUser } from '../../src/app/users/entities/user';
 import { JwtAuthGuard } from '../../src/app/auth/jwt-auth.guard';
+import { IUser } from 'expenses-shared';
 
 export function createTestingModuleWithDefaultMocks(
   metadata: ModuleMetadata,

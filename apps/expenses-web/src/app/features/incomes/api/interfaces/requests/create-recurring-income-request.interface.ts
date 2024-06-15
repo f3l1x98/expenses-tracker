@@ -1,4 +1,4 @@
-import { IncomeCategory } from '../income-category';
+import { IncomeCategory } from 'expenses-shared';
 
 export interface CreateRecurringIncomeRequest {
   description: string;
