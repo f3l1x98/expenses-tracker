@@ -3,7 +3,7 @@ import { LocalStorageConfig, localStorageSync } from 'ngrx-store-localstorage';
 import { AuthState } from './interfaces/auth.state';
 
 export function localStorageSyncReducer(
-  reducer: ActionReducer<AuthState>
+  reducer: ActionReducer<AuthState>,
 ): ActionReducer<AuthState> {
   const config: LocalStorageConfig = {
     keys: ['status', 'token', 'user'],

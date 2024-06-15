@@ -61,6 +61,6 @@ export const recurringIncomesFeature = createFeature({
     on(ApiActions.deleteFailure, (state, { error }) => ({
       ...state,
       createStatus: { status: 'error', error } as StoreStateStatus,
-    }))
+    })),
   ),
 });

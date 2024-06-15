@@ -31,7 +31,7 @@ export class ExpenseCreateComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private expensesService: ExpensesService,
     private recurringExpensesService: RecurringExpensesService,
-    private userService: UserService
+    private userService: UserService,
   ) {}
 
   ngOnDestroy(): void {
@@ -77,6 +77,7 @@ export class ExpenseCreateComponent implements OnInit, OnDestroy {
     if (!this.formGroup.valid) return;
 
     const isRecurringCreation: boolean =
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this.formGroup.get('isRecurring')!.value;
     const description = this.formGroup.get('description')?.value as string;
     const amount = this.formGroup.get('amount')?.value as number;

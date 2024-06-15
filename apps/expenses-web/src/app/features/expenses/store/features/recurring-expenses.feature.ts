@@ -61,6 +61,6 @@ export const recurringExpensesFeature = createFeature({
     on(ApiActions.deleteFailure, (state, { error }) => ({
       ...state,
       deleteStatus: { status: 'error', error: error } as StoreStateStatus,
-    }))
+    })),
   ),
 });

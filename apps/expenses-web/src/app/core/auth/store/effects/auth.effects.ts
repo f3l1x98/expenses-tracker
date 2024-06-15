@@ -9,16 +9,16 @@ import { AuthApiService } from '../../api/auth-api.service';
 export class AuthEffects {
   constructor(
     private actions$: Actions,
-    private authApiService: AuthApiService
+    private authApiService: AuthApiService,
   ) {}
 
   loginStart$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PageActions.login),
       switchMap((action) =>
-        of(ApiActions.loginStart({ request: action.request }))
-      )
-    )
+        of(ApiActions.loginStart({ request: action.request })),
+      ),
+    ),
   );
   login$ = createEffect(() =>
     this.actions$.pipe(
@@ -27,9 +27,9 @@ export class AuthEffects {
         this.authApiService.login$(action.request).pipe(
           take(1),
           map((result) => ApiActions.loginSuccess({ result })),
-          catchError((error) => of(ApiActions.loginFailure({ error })))
-        )
-      )
-    )
+          catchError((error) => of(ApiActions.loginFailure({ error }))),
+        ),
+      ),
+    ),
   );
 }

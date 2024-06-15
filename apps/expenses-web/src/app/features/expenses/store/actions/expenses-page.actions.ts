@@ -3,9 +3,9 @@ import { CreateExpenseRequest } from '../../api/interfaces/requests/create-expen
 
 export const createRequest = createAction(
   '[Expense Page Actions] create request',
-  props<{ request: CreateExpenseRequest }>()
+  props<{ request: CreateExpenseRequest }>(),
 );
 export const deleteRequest = createAction(
   '[Expense Page Actions] delete request',
-  props<{ id: string }>()
+  props<{ id: string }>(),
 );

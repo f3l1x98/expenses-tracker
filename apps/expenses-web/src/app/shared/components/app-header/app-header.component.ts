@@ -1,12 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-header',
   templateUrl: 'app-header.component.html',
   standalone: true,
 })
-export class AppHeaderComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
-}
+export class AppHeaderComponent {}

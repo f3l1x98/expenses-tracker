@@ -3,9 +3,9 @@ import { CreateRecurringExpenseRequest } from '../../api/interfaces/requests/cre
 
 export const createRequest = createAction(
   '[Recurring Expense Page Actions] create request',
-  props<{ request: CreateRecurringExpenseRequest }>()
+  props<{ request: CreateRecurringExpenseRequest }>(),
 );
 export const deleteRequest = createAction(
   '[Recurring Expense Page Actions] delete request',
-  props<{ id: string }>()
+  props<{ id: string }>(),
 );

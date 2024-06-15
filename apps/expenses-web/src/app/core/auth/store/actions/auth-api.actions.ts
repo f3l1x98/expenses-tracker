@@ -4,15 +4,15 @@ import { UserLoginResponse } from '../../api/interfaces/user-login-response.inte
 
 export const loginStart = createAction(
   '[Auth Api Actions] login start',
-  props<{ request: UserLoginRequest }>()
+  props<{ request: UserLoginRequest }>(),
 );
 
 export const loginSuccess = createAction(
   '[Auth Api Actions] login success',
-  props<{ result: UserLoginResponse }>()
+  props<{ result: UserLoginResponse }>(),
 );
 
 export const loginFailure = createAction(
   '[Auth Api Actions] login failure',
-  props<{ error: string }>()
+  props<{ error: string }>(),
 );

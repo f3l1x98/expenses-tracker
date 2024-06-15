@@ -54,7 +54,7 @@ export class RegisterComponent
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
   ) {}
 
   @HostListener('window:beforeunload')
