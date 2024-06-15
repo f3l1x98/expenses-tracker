@@ -1,4 +1,4 @@
-import { ExpenseCategory } from '../expense-category';
+import { ExpenseCategory } from 'expenses-shared';
 
 export interface CreateExpenseRequest {
   description: string;

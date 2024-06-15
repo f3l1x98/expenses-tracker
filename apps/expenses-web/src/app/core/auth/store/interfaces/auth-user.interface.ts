@@ -1,4 +1,3 @@
-export interface AuthUser {
-  id: string;
-  username: string;
-}
+import { IUser } from 'expenses-shared';
+
+export type AuthUser = Pick<IUser, 'id' | 'username'>;

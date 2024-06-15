@@ -1,7 +1,7 @@
-import { UserSettings } from '../user-settings.interface';
+import { IUserSettings } from 'expenses-shared';
 
 export interface CreateUserRequest {
   username: string;
   password: string;
-  settings: UserSettings;
+  settings: IUserSettings;
 }

@@ -1,11 +1,11 @@
 import { createAction, props } from '@ngrx/store';
-import { User } from '../../api/interfaces/user.interface';
+import { IUser } from 'expenses-shared';
 import { CreateUserRequest } from '../../api/interfaces/requests/create-user-request.interface';
 
 export const loadOwnStart = createAction('[User Api Actions] load own start');
 export const loadOwnSuccess = createAction(
   '[User Api Actions] load own success',
-  props<{ result: User }>(),
+  props<{ result: IUser }>(),
 );
 export const loadOwnFailure = createAction(
   '[User Api Actions] load own failure',
@@ -18,7 +18,7 @@ export const createStart = createAction(
 );
 export const createSuccess = createAction(
   '[User Api Actions] create success',
-  props<{ result: User }>(),
+  props<{ result: IUser }>(),
 );
 export const createFailure = createAction(
   '[User Api Actions] create failure',

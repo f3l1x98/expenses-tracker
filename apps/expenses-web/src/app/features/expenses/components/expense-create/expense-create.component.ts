@@ -5,7 +5,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { ExpenseCategory } from '../../api/interfaces/expense-category';
+import { ExpenseCategory } from 'expenses-shared';
 import { Subject } from 'rxjs';
 import { ExpensesService } from '../../expenses.service';
 import { RecurringExpensesService } from '../../recurring-expenses.service';
