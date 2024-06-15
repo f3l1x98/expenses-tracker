@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CalendarModule } from 'primeng/calendar';
 import { DateRange } from '../../interfaces/date-range.interface';
 import { FormsModule } from '@angular/forms';
@@ -10,8 +10,12 @@ import { FormsModule } from '@angular/forms';
   imports: [CalendarModule, FormsModule],
 })
 export class AppDateRangePickerComponent {
-  private _dateRange: DateRange | undefined;
   dateArray: Array<Date | null> | undefined;
+
+  private _dateRange: DateRange | undefined;
+  get dateRange(): DateRange | undefined {
+    return this._dateRange;
+  }
 
   @Input()
   set dateRange(value: DateRange | undefined) {
@@ -23,14 +27,10 @@ export class AppDateRangePickerComponent {
   @Input()
   requireEnd = false;
 
-  get dateRange(): DateRange | undefined {
-    return this._dateRange;
-  }
-
   @Output()
   dateRangeChange = new EventEmitter<DateRange>();
 
-  onDateChange(event: Date) {
+  onDateChange() {
     if (
       this.dateArray !== undefined &&
       (!this.requireEnd || !this.dateArray?.some((element) => element === null))

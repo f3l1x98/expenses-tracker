@@ -13,9 +13,9 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private auth: AuthStoreService) {}
 
   intercept(
-    req: HttpRequest<any>,
+    req: HttpRequest<unknown>,
     next: HttpHandler,
-  ): Observable<HttpEvent<any>> {
+  ): Observable<HttpEvent<unknown>> {
     return this.auth.token$.pipe(
       take(1),
       switchMap((token) => {

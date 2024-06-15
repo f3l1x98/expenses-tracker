@@ -7,8 +7,6 @@ export class NotificationService {
   private notificationSubject = new Subject<Notification>();
   notifications$ = this.notificationSubject.asObservable();
 
-  constructor() {}
-
   info(label: string, detail: string) {
     const notification: Notification = {
       summary: label,

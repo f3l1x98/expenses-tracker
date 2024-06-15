@@ -24,7 +24,7 @@ export class ExpensesEffect {
       ofType(ApiActions.deleteStart),
       switchMap((action) =>
         this.apiService.delete$(action.id).pipe(
-          switchMap((result) =>
+          switchMap(() =>
             of(ApiActions.deleteSuccess(), ApiActions.loadStart()),
           ),
           catchError((error) => of(ApiActions.deleteFailure(error))),
@@ -59,7 +59,7 @@ export class ExpensesEffect {
   load$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ApiActions.loadStart),
-      switchMap((action) =>
+      switchMap(() =>
         this.apiService.getAll$().pipe(
           map((result) => ApiActions.loadSuccess({ result })),
           catchError((error) => of(ApiActions.loadFailure({ error }))),

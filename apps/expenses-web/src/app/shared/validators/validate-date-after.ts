@@ -32,6 +32,7 @@ export function validateDateAfter(
       beforeValue = options.value;
     } else {
       const formGroup = control.parent as FormGroup;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       beforeValue = formGroup.controls[options.formControlName!].value;
       if (!(beforeValue instanceof Date)) {
         console.error(

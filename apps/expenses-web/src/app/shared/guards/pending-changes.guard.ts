@@ -1,8 +1,4 @@
-import {
-  ActivatedRouteSnapshot,
-  CanDeactivateFn,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { CanDeactivateFn } from '@angular/router';
 import { Observable } from 'rxjs';
 
 export interface ComponentCanDeactivate {
@@ -11,9 +7,6 @@ export interface ComponentCanDeactivate {
 
 export const PendingChangesGuard: CanDeactivateFn<ComponentCanDeactivate> = (
   component: ComponentCanDeactivate,
-  currentRoute: ActivatedRouteSnapshot,
-  currentState: RouterStateSnapshot,
-  nextState: RouterStateSnapshot,
 ) => {
   return component.canDeactivate ? component.canDeactivate() : true;
 };

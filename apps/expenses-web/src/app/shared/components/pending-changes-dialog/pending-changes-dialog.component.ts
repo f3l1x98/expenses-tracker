@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
@@ -8,8 +8,4 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
   standalone: true,
   imports: [ConfirmDialogModule, ButtonModule],
 })
-export class PendingChangesDialogComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
-}
+export class PendingChangesDialogComponent {}

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
-import { Observable, Subject, filter, map, of, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, map, of, takeUntil } from 'rxjs';
 import { DateRange } from '../../../shared/interfaces/date-range.interface';
 import { HomeService } from '../home.service';
 import { CurrentMonthData } from '../api/interfaces/current-month-data.interface';

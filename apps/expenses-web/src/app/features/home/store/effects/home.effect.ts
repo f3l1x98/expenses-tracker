@@ -15,7 +15,7 @@ export class HomeEffect {
   enterPage$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PageActions.enterPage),
-      switchMap((action) => {
+      switchMap(() => {
         const now = new Date();
         const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
         return of(
@@ -43,7 +43,7 @@ export class HomeEffect {
   loadCurrentMonthData$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ApiActions.currentMonthDataLoadStart),
-      switchMap((action) =>
+      switchMap(() =>
         this.homeApiService.getCurrentMonthData$().pipe(
           map((result) => ApiActions.currentMonthDataLoadSuccess({ result })),
           catchError((error) =>

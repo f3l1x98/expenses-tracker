@@ -72,7 +72,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (!this.formGroup.valid) return;
 
     this.authService.login(
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this.formGroup.get('username')!.value,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this.formGroup.get('password')!.value,
     );
   }

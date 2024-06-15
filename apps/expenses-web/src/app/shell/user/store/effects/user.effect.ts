@@ -36,14 +36,14 @@ export class UserEffect {
   loadUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PageActions.loadOwn),
-      switchMap((action) => of(ApiActions.loadOwnStart())),
+      switchMap(() => of(ApiActions.loadOwnStart())),
     ),
   );
 
   load$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ApiActions.loadOwnStart),
-      switchMap((action) =>
+      switchMap(() =>
         this.apiService.getOwn$().pipe(
           map((result) => ApiActions.loadOwnSuccess({ result })),
           catchError((error) => of(ApiActions.loadOwnFailure({ error }))),

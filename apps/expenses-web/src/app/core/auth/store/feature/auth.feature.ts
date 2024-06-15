@@ -31,7 +31,7 @@ export const authFeature = createFeature({
       ...state,
       status: { value: 'failure', error: error } as AuthStatus,
     })),
-    on(PageActions.logout, (state) => initialState),
+    on(PageActions.logout, () => initialState),
   ),
   extraSelectors({ selectStatus }) {
     const selectErrorMessage = createSelector(

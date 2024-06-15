@@ -40,7 +40,7 @@ export class BaseApiService {
   public request<T>(
     method: string,
     url: string,
-    body?: {},
+    body?: Record<string, unknown>,
     headers?:
       | HttpHeaders
       | {
@@ -66,11 +66,11 @@ export class BaseApiService {
       );
   }
 
-  public post<T>(url: string, body: {}): Observable<T> {
+  public post<T>(url: string, body: Record<string, unknown>): Observable<T> {
     return this.request<T>('post', url, body, this.defaultHttpHeaders);
   }
 
-  public put<T>(url: string, body: {}): Observable<T> {
+  public put<T>(url: string, body: Record<string, unknown>): Observable<T> {
     return this.request<T>('put', url, body, this.defaultHttpHeaders);
   }
 
