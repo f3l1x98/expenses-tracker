@@ -7,6 +7,7 @@ import { ConfirmationService, MenuItem } from 'primeng/api';
 @Component({
   selector: 'app-expenses-list',
   templateUrl: 'expenses-list.component.html',
+  styleUrls: ['./expenses-list.component.scss'],
 })
 export class ExpensesListComponent implements OnInit, OnDestroy {
   actionMenuItems$: BehaviorSubject<MenuItem[]> = new BehaviorSubject(
