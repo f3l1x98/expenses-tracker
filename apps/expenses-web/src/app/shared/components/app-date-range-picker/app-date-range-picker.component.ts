@@ -5,16 +5,28 @@ import {
   OnChanges,
   Output,
   SimpleChanges,
+  forwardRef,
 } from '@angular/core';
 import { CalendarModule } from 'primeng/calendar';
 import { DateRange } from '../../interfaces/date-range.interface';
-import { ControlValueAccessor, FormsModule } from '@angular/forms';
+import {
+  ControlValueAccessor,
+  FormsModule,
+  NG_VALUE_ACCESSOR,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-date-range-picker',
   templateUrl: 'app-date-range-picker.component.html',
   standalone: true,
   imports: [CalendarModule, FormsModule],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: forwardRef(() => AppDateRangePickerComponent),
+    },
+  ],
 })
 export class AppDateRangePickerComponent
   implements OnChanges, ControlValueAccessor
