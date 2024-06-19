@@ -1,2 +1,12 @@
-<p-calendar [(ngModel)]="calenderValue" selectionMode="range" dateFormat="dd/mm/yy" placeholder="Filter date range"
-  [showClear]="showClear" (onSelect)="valueChanged()" />
+<ng-template [ngIf]="!!label">
+  <p-floatLabel>
+    <p-calendar [(ngModel)]="calenderValue" selectionMode="range" dateFormat="dd/mm/yy" placeholder="Filter date range"
+      [showClear]="showClear" (onSelect)="valueChanged()" inputId="dateRange" />
+    <label for="dateRange">{{label}}</label>
+  </p-floatLabel>
+</ng-template>
+
+<ng-template [ngIf]="!label">
+  <p-calendar [(ngModel)]="calenderValue" selectionMode="range" dateFormat="dd/mm/yy" placeholder="Filter date range"
+    [showClear]="showClear" (onSelect)="valueChanged()" inputId="dateRange" />
+</ng-template>

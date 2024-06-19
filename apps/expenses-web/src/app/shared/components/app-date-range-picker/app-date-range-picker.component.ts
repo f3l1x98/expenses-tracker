@@ -14,12 +14,14 @@ import {
   FormsModule,
   NG_VALUE_ACCESSOR,
 } from '@angular/forms';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-date-range-picker',
   templateUrl: 'app-date-range-picker.component.html',
   standalone: true,
-  imports: [CalendarModule, FormsModule],
+  imports: [CommonModule, CalendarModule, FormsModule, FloatLabelModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -31,6 +33,9 @@ import {
 export class AppDateRangePickerComponent
   implements OnChanges, ControlValueAccessor
 {
+  @Input()
+  label: string = '';
+
   @Input()
   showClear = false;
 
