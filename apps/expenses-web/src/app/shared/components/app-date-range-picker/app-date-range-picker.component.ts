@@ -1,7 +1,14 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { CalendarModule } from 'primeng/calendar';
 import { DateRange } from '../../interfaces/date-range.interface';
-import { FormsModule } from '@angular/forms';
+import { ControlValueAccessor, FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-date-range-picker',
@@ -9,39 +16,68 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CalendarModule, FormsModule],
 })
-export class AppDateRangePickerComponent {
-  dateArray: Array<Date | null> | undefined;
-
-  private _dateRange: DateRange | undefined;
-  get dateRange(): DateRange | undefined {
-    return this._dateRange;
-  }
+export class AppDateRangePickerComponent
+  implements OnChanges, ControlValueAccessor
+{
+  @Input()
+  showClear = false;
 
   @Input()
-  set dateRange(value: DateRange | undefined) {
-    this._dateRange = value;
-    this.dateArray =
-      value !== undefined ? [value.startDate, value.endDate] : undefined;
-  }
-
-  @Input()
-  requireEnd = false;
+  requireEnd = true;
 
   @Output()
-  dateRangeChange = new EventEmitter<DateRange>();
+  onChange = new EventEmitter<DateRange>();
 
-  onDateChange() {
-    if (
-      this.dateArray !== undefined &&
-      this.dateArray[0] !== null &&
-      (!this.requireEnd || this.dateArray[1] !== null)
-    ) {
-      this._dateRange = {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        startDate: this.dateArray[0]!,
-        endDate: this.dateArray[1],
-      };
-      this.dateRangeChange.emit(this._dateRange);
+  calenderValue: Array<Date | null> | undefined;
+
+  value!: DateRange | undefined;
+  private touched = false;
+
+  disabled = false;
+
+  onChangeFn = (value: DateRange | undefined) => {};
+
+  onTouchedFn = () => {};
+
+  valueChanged() {
+    if (!this.disabled) {
+      if (
+        this.calenderValue !== undefined &&
+        this.calenderValue[0] !== null &&
+        (!this.requireEnd || this.calenderValue[1] !== null)
+      ) {
+        this.value = {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          startDate: this.calenderValue[0]!,
+          endDate: this.calenderValue[1],
+        };
+        this.onChangeFn(this.value);
+        this.onChange.emit(this.value);
+      }
+
+      this.markAsTouched();
     }
+  }
+
+  private markAsTouched() {
+    if (!this.touched) {
+      this.onTouchedFn();
+      this.touched = true;
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {}
+
+  writeValue(value: DateRange | undefined): void {
+    this.value = value;
+  }
+  registerOnChange(fn: any): void {
+    this.onChangeFn = fn;
+  }
+  registerOnTouched(fn: any): void {
+    this.onTouchedFn = fn;
+  }
+  setDisabledState?(isDisabled: boolean): void {
+    this.disabled = isDisabled;
   }
 }
