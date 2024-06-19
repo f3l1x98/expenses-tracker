@@ -30,6 +30,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { InputTextModule } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
+import { ExpenseCategoryDropdownComponent } from './components/expense-category-dropdown/expense-category-dropdown.component';
 
 @NgModule({
   imports: [
@@ -54,6 +55,7 @@ import { ConfirmationService } from 'primeng/api';
     CalendarModule,
     InputTextModule,
     ConfirmDialogModule,
+    ExpenseCategoryDropdownComponent,
   ],
   exports: [],
   declarations: [
