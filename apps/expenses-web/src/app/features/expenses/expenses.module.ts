@@ -31,6 +31,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { ExpenseCategoryDropdownComponent } from './components/expense-category-dropdown/expense-category-dropdown.component';
+import { ExpensesFilterComponent } from './components/expenses-list/expenses-filter/expenses-filter.component';
 
 @NgModule({
   imports: [
@@ -56,6 +57,7 @@ import { ExpenseCategoryDropdownComponent } from './components/expense-category-
     InputTextModule,
     ConfirmDialogModule,
     ExpenseCategoryDropdownComponent,
+    ExpensesFilterComponent,
   ],
   exports: [],
   declarations: [
