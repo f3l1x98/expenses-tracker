@@ -1,9 +1,9 @@
 import { createAction, props } from '@ngrx/store';
-import { CreateRecurringExpenseRequest } from '../../api/interfaces/requests/create-recurring-expense-request.interface';
+import { ICreateRecurringExpenseDto } from 'expenses-shared';
 
 export const createRequest = createAction(
   '[Recurring Expense Page Actions] create request',
-  props<{ request: CreateRecurringExpenseRequest }>(),
+  props<{ request: ICreateRecurringExpenseDto }>(),
 );
 export const deleteRequest = createAction(
   '[Recurring Expense Page Actions] delete request',

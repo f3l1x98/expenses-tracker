@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RecurringExpensesStoreService } from './store/services/recurring-expenses-store.service';
-import { CreateRecurringExpenseRequest } from './api/interfaces/requests/create-recurring-expense-request.interface';
+import { ICreateRecurringExpenseDto } from 'expenses-shared';
 
 @Injectable()
 export class RecurringExpensesService {
@@ -14,7 +14,7 @@ export class RecurringExpensesService {
     this.store.load();
   }
 
-  create(request: CreateRecurringExpenseRequest) {
+  create(request: ICreateRecurringExpenseDto) {
     this.store.create(request);
   }
 
