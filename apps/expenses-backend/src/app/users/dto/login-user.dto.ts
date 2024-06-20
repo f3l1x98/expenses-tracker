@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { ILoginUserDto } from 'expenses-shared';
 
-export abstract class LoginUserDto {
+export abstract class LoginUserDto implements ILoginUserDto {
   @ApiProperty({
     description: 'Username of user to be logged in',
     required: true,
