@@ -1,6 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { IUser } from 'expenses-shared';
-import { CreateUserRequest } from '../../api/interfaces/requests/create-user-request.interface';
+import { ICreateUserDto, IUser } from 'expenses-shared';
 
 export const loadOwnStart = createAction('[User Api Actions] load own start');
 export const loadOwnSuccess = createAction(
@@ -14,7 +13,7 @@ export const loadOwnFailure = createAction(
 
 export const createStart = createAction(
   '[User Api Actions] create start',
-  props<{ request: CreateUserRequest }>(),
+  props<{ request: ICreateUserDto }>(),
 );
 export const createSuccess = createAction(
   '[User Api Actions] create success',

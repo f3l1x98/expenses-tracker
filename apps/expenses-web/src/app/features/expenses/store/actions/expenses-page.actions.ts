@@ -1,9 +1,9 @@
 import { createAction, props } from '@ngrx/store';
-import { CreateExpenseRequest } from '../../api/interfaces/requests/create-expense-request.interface';
+import { ICreateExpenseDto } from 'expenses-shared';
 
 export const createRequest = createAction(
   '[Expense Page Actions] create request',
-  props<{ request: CreateExpenseRequest }>(),
+  props<{ request: ICreateExpenseDto }>(),
 );
 export const deleteRequest = createAction(
   '[Expense Page Actions] delete request',

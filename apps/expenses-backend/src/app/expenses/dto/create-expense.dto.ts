@@ -2,9 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
 import { RecurringExpenseEntity } from '../../recurring-expenses/entities/recurring-expense.entity';
-import { ExpenseCategory } from 'expenses-shared';
+import { ExpenseCategory, ICreateExpenseDto } from 'expenses-shared';
 
-export class CreateExpenseDto {
+export class CreateExpenseDto implements ICreateExpenseDto {
   @ApiProperty({
     description: 'Description of the expense',
     required: true,

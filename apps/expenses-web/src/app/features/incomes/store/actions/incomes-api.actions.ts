@@ -1,6 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { CreateIncomeRequest } from '../../api/interfaces/requests/create-income-request.interface';
-import { IIncome } from 'expenses-shared';
+import { ICreateIncomeDto, IIncome } from 'expenses-shared';
 
 export const loadStart = createAction('[Incomes Api Actions] load start');
 export const loadSuccess = createAction(
@@ -14,7 +13,7 @@ export const loadFailure = createAction(
 
 export const createStart = createAction(
   '[Incomes Api Actions] create start',
-  props<{ request: CreateIncomeRequest }>(),
+  props<{ request: ICreateIncomeDto }>(),
 );
 export const createSuccess = createAction(
   '[Incomes Api Actions] create success',

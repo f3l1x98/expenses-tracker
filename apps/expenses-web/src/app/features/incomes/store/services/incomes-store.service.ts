@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { incomesFeature } from '../features/incomes.feature';
 import * as ApiActions from '../actions/incomes-api.actions';
 import * as PageActions from '../actions/incomes-page.actions';
-import { CreateIncomeRequest } from '../../api/interfaces/requests/create-income-request.interface';
+import { ICreateIncomeDto } from 'expenses-shared';
 
 @Injectable({ providedIn: 'root' })
 export class IncomesStoreService {
@@ -17,7 +17,7 @@ export class IncomesStoreService {
     this.store.dispatch(ApiActions.loadStart());
   }
 
-  create(request: CreateIncomeRequest) {
+  create(request: ICreateIncomeDto) {
     this.store.dispatch(PageActions.createRequest({ request }));
   }
 

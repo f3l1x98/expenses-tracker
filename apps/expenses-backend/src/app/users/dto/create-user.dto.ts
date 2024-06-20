@@ -8,9 +8,9 @@ import {
 } from 'class-validator';
 import { UserSettingsDto } from './user-settings.dto';
 import { Type } from 'class-transformer';
-import { defaultSettings } from 'expenses-shared';
+import { ICreateUserDto, defaultSettings } from 'expenses-shared';
 
-export abstract class CreateUserDto {
+export abstract class CreateUserDto implements ICreateUserDto {
   @ApiProperty({
     description: 'Username of new user',
     required: true,

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ExpensesStoreService } from './store/services/expenses-store.service';
-import { CreateExpenseRequest } from './api/interfaces/requests/create-expense-request.interface';
+import { ICreateExpenseDto } from 'expenses-shared';
 
 @Injectable()
 export class ExpensesService {
@@ -14,7 +14,7 @@ export class ExpensesService {
     this.store.load();
   }
 
-  create(request: CreateExpenseRequest) {
+  create(request: ICreateExpenseDto) {
     this.store.create(request);
   }
 
