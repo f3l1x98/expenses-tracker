@@ -1,9 +1,9 @@
 import { createAction, props } from '@ngrx/store';
-import { UserLoginRequest } from '../../api/interfaces/user-login-request.interface';
+import { ILoginUserDto } from 'expenses-shared';
 
 export const login = createAction(
   '[Auth Page Actions] login',
-  props<{ request: UserLoginRequest }>(),
+  props<{ request: ILoginUserDto }>(),
 );
 
 export const logout = createAction('[Auth Page Actions] logout');

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as PageActions from '../actions/user-page.actions';
 import { userFeature } from '../features/user.feature';
-import { CreateUserRequest } from '../../api/interfaces/requests/create-user-request.interface';
+import { ICreateUserDto } from 'expenses-shared';
 
 @Injectable({ providedIn: 'root' })
 export class UserStoreService {
@@ -12,7 +12,7 @@ export class UserStoreService {
 
   constructor(private store: Store) {}
 
-  register(request: CreateUserRequest) {
+  register(request: ICreateUserDto) {
     this.store.dispatch(PageActions.register({ request }));
   }
 
