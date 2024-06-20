@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UserStoreService } from './store/services/user-store.service';
-import { CreateUserRequest } from './api/interfaces/requests/create-user-request.interface';
+import { ICreateUserDto } from 'expenses-shared';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -10,7 +10,7 @@ export class UserService {
 
   constructor(private storeService: UserStoreService) {}
 
-  register(request: CreateUserRequest) {
+  register(request: ICreateUserDto) {
     this.storeService.register(request);
   }
 

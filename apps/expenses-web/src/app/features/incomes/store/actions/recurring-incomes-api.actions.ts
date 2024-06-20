@@ -1,6 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { CreateRecurringIncomeRequest } from '../../api/interfaces/requests/create-recurring-income-request.interface';
-import { IRecurringIncome } from 'expenses-shared';
+import { ICreateRecurringIncomeDto, IRecurringIncome } from 'expenses-shared';
 
 export const loadStart = createAction(
   '[Recurring Incomes Api Actions] load start',
@@ -16,7 +15,7 @@ export const loadFailure = createAction(
 
 export const createStart = createAction(
   '[Recurring Incomes Api Actions] create start',
-  props<{ request: CreateRecurringIncomeRequest }>(),
+  props<{ request: ICreateRecurringIncomeDto }>(),
 );
 export const createSuccess = createAction(
   '[Recurring Incomes Api Actions] create success',

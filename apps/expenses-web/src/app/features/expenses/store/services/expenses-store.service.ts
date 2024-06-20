@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { expensesFeature } from '../features/expenses.feature';
 import * as ApiActions from '../actions/expenses-api.actions';
 import * as PageActions from '../actions/expenses-page.actions';
-import { CreateExpenseRequest } from '../../api/interfaces/requests/create-expense-request.interface';
+import { ICreateExpenseDto } from 'expenses-shared';
 
 @Injectable({ providedIn: 'root' })
 export class ExpensesStoreService {
@@ -17,7 +17,7 @@ export class ExpensesStoreService {
     this.store.dispatch(ApiActions.loadStart());
   }
 
-  create(request: CreateExpenseRequest) {
+  create(request: ICreateExpenseDto) {
     this.store.dispatch(PageActions.createRequest({ request }));
   }
 

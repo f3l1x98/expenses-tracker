@@ -1,15 +1,14 @@
 import { createAction, props } from '@ngrx/store';
-import { UserLoginRequest } from '../../api/interfaces/user-login-request.interface';
-import { UserLoginResponse } from '../../api/interfaces/user-login-response.interface';
+import { ILoginUserDto, ILoginUserResponse } from 'expenses-shared';
 
 export const loginStart = createAction(
   '[Auth Api Actions] login start',
-  props<{ request: UserLoginRequest }>(),
+  props<{ request: ILoginUserDto }>(),
 );
 
 export const loginSuccess = createAction(
   '[Auth Api Actions] login success',
-  props<{ result: UserLoginResponse }>(),
+  props<{ result: ILoginUserResponse }>(),
 );
 
 export const loginFailure = createAction(

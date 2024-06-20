@@ -1,9 +1,9 @@
 import { createAction, props } from '@ngrx/store';
-import { CreateRecurringIncomeRequest } from '../../api/interfaces/requests/create-recurring-income-request.interface';
+import { ICreateRecurringIncomeDto } from 'expenses-shared';
 
 export const createRequest = createAction(
   '[Recurring Income Page Actions] create request',
-  props<{ request: CreateRecurringIncomeRequest }>(),
+  props<{ request: ICreateRecurringIncomeDto }>(),
 );
 export const deleteRequest = createAction(
   '[Recurring Income Page Actions] delete request',

@@ -10,9 +10,9 @@ import {
 } from 'class-validator';
 import { IsAfterDate } from '../../utils/is-after-date';
 import { IsValidCron } from '../../utils/is-valid-cron';
-import { IncomeCategory } from 'expenses-shared';
+import { ICreateRecurringIncomeDto, IncomeCategory } from 'expenses-shared';
 
-export class CreateRecurringIncomeDto {
+export class CreateRecurringIncomeDto implements ICreateRecurringIncomeDto {
   @ApiProperty({
     description: 'Description of the recurring income',
     required: true,

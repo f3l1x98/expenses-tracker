@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BaseApiService } from '../../../shared/api/base-api.service';
 import { Observable } from 'rxjs';
-import { CreateRecurringExpenseRequest } from './interfaces/requests/create-recurring-expense-request.interface';
-import { UpdateRecurringExpenseRequest } from './interfaces/requests/update-recurring-expense-request.interface';
-import { IRecurringExpense } from 'expenses-shared';
+import {
+  ICreateRecurringExpenseDto,
+  IRecurringExpense,
+  IUpdateRecurringExpenseDto,
+} from 'expenses-shared';
 
 @Injectable({ providedIn: 'root' })
 export class RecurringExpensesApiService {
@@ -14,15 +16,11 @@ export class RecurringExpensesApiService {
   private readonly updateUrl: string = `${this.baseUrl}/`;
   private readonly getAllUrl: string = `${this.baseUrl}/`;
 
-  create$(
-    request: CreateRecurringExpenseRequest,
-  ): Observable<IRecurringExpense> {
+  create$(request: ICreateRecurringExpenseDto): Observable<IRecurringExpense> {
     return this.apiService.post(this.createUrl, request);
   }
 
-  update$(
-    request: UpdateRecurringExpenseRequest,
-  ): Observable<IRecurringExpense> {
+  update$(request: IUpdateRecurringExpenseDto): Observable<IRecurringExpense> {
     return this.apiService.put(this.updateUrl, request);
   }
 
