@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BaseApiService } from '../../../shared/api/base-api.service';
 import { Observable } from 'rxjs';
-import { UserLoginResponse } from './interfaces/user-login-response.interface';
-import { ILoginUserDto } from 'expenses-shared';
+import { ILoginUserDto, ILoginUserResponse } from 'expenses-shared';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +12,7 @@ export class AuthApiService {
   private readonly authUrl: string = `${this.apiService.apiRoot}/auth`;
   private readonly loginUrl: string = `${this.authUrl}/login`;
 
-  login$(request: ILoginUserDto): Observable<UserLoginResponse> {
+  login$(request: ILoginUserDto): Observable<ILoginUserResponse> {
     return this.apiService.post(this.loginUrl, request);
   }
 }
