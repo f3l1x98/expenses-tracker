@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import * as ApiActions from '../actions/recurring-incomes-api.actions';
 import * as PageActions from '../actions/recurring-incomes-page.actions';
 import { recurringIncomesFeature } from '../features/recurring-incomes.feature';
-import { CreateRecurringIncomeRequest } from '../../api/interfaces/requests/create-recurring-income-request.interface';
+import { ICreateRecurringIncomeDto } from 'expenses-shared';
 
 @Injectable({ providedIn: 'root' })
 export class RecurringIncomesStoreService {
@@ -19,7 +19,7 @@ export class RecurringIncomesStoreService {
     this.store.dispatch(ApiActions.loadStart());
   }
 
-  create(request: CreateRecurringIncomeRequest) {
+  create(request: ICreateRecurringIncomeDto) {
     this.store.dispatch(PageActions.createRequest({ request }));
   }
 
