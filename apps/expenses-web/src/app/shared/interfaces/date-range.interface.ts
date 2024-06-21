@@ -1,4 +1,3 @@
-export interface DateRange {
-  startDate: Date;
-  endDate: Date | null;
-}
+import { IDateRangeDto } from 'expenses-shared';
+
+export interface DateRange extends IDateRangeDto {}

@@ -66,7 +66,7 @@ export class AppDateRangePickerComponent
         this.value = {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           startDate: this.calenderValue[0]!,
-          endDate: this.calenderValue[1],
+          endDate: this.calenderValue[1] ?? undefined,
         };
         this.onChangeFn(this.value);
         this.onChange.emit(this.value);
