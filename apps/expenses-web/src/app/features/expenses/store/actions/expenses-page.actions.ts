@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { ICreateExpenseDto } from 'expenses-shared';
+import { ICreateExpenseDto, IFilterDto } from 'expenses-shared';
 
 export const createRequest = createAction(
   '[Expense Page Actions] create request',
@@ -8,4 +8,8 @@ export const createRequest = createAction(
 export const deleteRequest = createAction(
   '[Expense Page Actions] delete request',
   props<{ id: string }>(),
+);
+export const updateFilter = createAction(
+  '[Expense Page Actions] update filter',
+  props<{ filter: IFilterDto }>(),
 );
