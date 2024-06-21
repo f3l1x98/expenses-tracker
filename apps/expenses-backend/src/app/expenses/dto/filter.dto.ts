@@ -1,17 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsOptional, IsString, ValidateNested } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 import { ExpenseCategory, IFilterDto } from 'expenses-shared';
 import { DateRangeDto } from '../../shared/date-range.dto';
+import { PartialType } from '@nestjs/mapped-types';
 
-export class FilterDto implements IFilterDto {
+export class FilterDto extends PartialType(DateRangeDto) implements IFilterDto {
   @ApiProperty({
     description: 'Description of the expense',
     required: false,
   })
   @IsOptional()
   @IsString()
-  description: string;
+  description?: string;
 
   @ApiProperty({
     description: 'Description of the expense',
@@ -20,14 +21,5 @@ export class FilterDto implements IFilterDto {
   })
   @IsOptional()
   @IsString()
-  category: ExpenseCategory;
-
-  @ApiProperty({
-    description: 'Description of the expense',
-    required: false,
-  })
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => DateRangeDto)
-  dateRange: DateRangeDto;
+  category?: ExpenseCategory;
 }
