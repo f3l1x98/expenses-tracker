@@ -3,11 +3,15 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { ExpensesApiService } from '../../api/expenses-api.service';
 import * as ApiActions from '../actions/expenses-api.actions';
 import * as PageActions from '../actions/expenses-page.actions';
-import { catchError, map, of, switchMap } from 'rxjs';
+import { catchError, map, of, switchMap, withLatestFrom } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { ExpensesState } from '../interfaces/expenses.state';
+import { expensesFeature } from '../features/expenses.feature';
 
 @Injectable()
 export class ExpensesEffect {
   constructor(
+    private store: Store<ExpensesState>,
     private actions$: Actions,
     private apiService: ExpensesApiService,
   ) {}
@@ -59,12 +63,20 @@ export class ExpensesEffect {
   load$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ApiActions.loadStart),
-      switchMap(() =>
-        this.apiService.getAll$().pipe(
+      withLatestFrom(this.store.select(expensesFeature.selectFilter)),
+      switchMap(([action, filterState]) =>
+        this.apiService.getAll$(filterState).pipe(
           map((result) => ApiActions.loadSuccess({ result })),
           catchError((error) => of(ApiActions.loadFailure({ error }))),
         ),
       ),
+    ),
+  );
+
+  updateFilter$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PageActions.updateFilter),
+      switchMap(() => of(ApiActions.loadStart())),
     ),
   );
 }
