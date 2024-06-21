@@ -9,7 +9,7 @@ import { environment } from '../../../environments/environment';
 import { Observable, catchError, throwError } from 'rxjs';
 import { NotificationService } from '../../shell/notification/notification.service';
 
-type RequestParams =
+export type RequestParams =
   | HttpParams
   | {
       [param: string]:
@@ -52,7 +52,9 @@ export class BaseApiService {
       .request<T>(method, url, {
         body: body,
         headers: headers,
-        params: params,
+        params:
+          // JSON.parse(JSON.stringify(object)) is used to remove keys with explicit undefined values
+          params !== undefined ? JSON.parse(JSON.stringify(params)) : undefined,
       })
       .pipe(
         catchError((err) => {
