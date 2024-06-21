@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -7,11 +7,12 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { ExpenseCategoryDropdownComponent } from '../../expense-category-dropdown/expense-category-dropdown.component';
-import { ExpenseCategory } from 'expenses-shared';
+import { ExpenseCategory, IDateRangeDto, IFilterDto } from 'expenses-shared';
 import { InputTextModule } from 'primeng/inputtext';
 import { AppDateRangePickerComponent } from 'apps/expenses-web/src/app/shared/components/app-date-range-picker/app-date-range-picker.component';
-import { DateRange } from 'apps/expenses-web/src/app/shared/interfaces/date-range.interface';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { Subject, debounceTime, takeUntil } from 'rxjs';
+import { ExpensesService } from '../../../expenses.service';
 
 @Component({
   selector: 'app-expenses-filter',
@@ -26,9 +27,15 @@ import { FloatLabelModule } from 'primeng/floatlabel';
     FloatLabelModule,
   ],
 })
-export class ExpensesFilterComponent implements OnInit {
+export class ExpensesFilterComponent implements OnInit, OnDestroy {
   formGroup!: FormGroup;
-  constructor(private formBuilder: FormBuilder) {}
+
+  private destroy$ = new Subject<void>();
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private expensesService: ExpensesService,
+  ) {}
 
   ngOnInit() {
     this.formGroup = this.formBuilder.group({
@@ -38,9 +45,34 @@ export class ExpensesFilterComponent implements OnInit {
       category: new FormControl<ExpenseCategory | undefined>(undefined, {
         nonNullable: true,
       }),
-      dateRange: new FormControl<DateRange | undefined>(undefined, {
+      dateRange: new FormControl<IDateRangeDto | undefined>(undefined, {
         nonNullable: true,
       }),
     });
+
+    this.formGroup.valueChanges
+      .pipe(takeUntil(this.destroy$), debounceTime(300))
+      .subscribe(() => this.applyFilter());
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  applyFilter() {
+    const description: string | undefined =
+      this.formGroup.get('description')?.value ?? undefined;
+    const category: ExpenseCategory | undefined =
+      this.formGroup.get('category')?.value ?? undefined;
+    const dateRange: IDateRangeDto | undefined =
+      this.formGroup.get('dateRange')?.value ?? undefined;
+
+    const filter: IFilterDto = {
+      description: description,
+      category: category,
+      ...dateRange,
+    };
+    this.expensesService.updateFilter(filter);
   }
 }
