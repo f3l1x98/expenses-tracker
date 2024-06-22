@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsDate,
+  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -35,6 +36,7 @@ export class CreateRecurringIncomeDto implements ICreateRecurringIncomeDto {
     enum: IncomeCategory,
   })
   @IsNotEmpty()
+  @IsEnum(IncomeCategory)
   category: IncomeCategory;
 
   @ApiProperty({

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { ExpenseCategory, IFilterDto } from 'expenses-shared';
 import { DateRangeDto } from '../../shared/date-range.dto';
 import { PartialType } from '@nestjs/mapped-types';
@@ -20,6 +20,6 @@ export class FilterDto extends PartialType(DateRangeDto) implements IFilterDto {
     enum: ExpenseCategory,
   })
   @IsOptional()
-  @IsString()
+  @IsEnum(ExpenseCategory)
   category?: ExpenseCategory;
 }
