@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -26,6 +27,7 @@ import {
 import { ExpenseNotFoundException } from './exceptions/expense-not-found';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
 import { IUser } from 'expenses-shared';
+import { FilterDto } from './dto/filter.dto';
 
 @ApiTags('expenses')
 @ApiBearerAuth()
@@ -59,8 +61,11 @@ export class ExpensesController {
     summary: 'Returns all expenses for the requesting user.',
   })
   @Get()
-  async findOwn(@Req() req: Request): Promise<ExpenseEntity[]> {
-    return this.expensesService.findAllForUser((req.user as IUser).id);
+  async findOwn(
+    @Req() req: Request,
+    @Query() filter: FilterDto,
+  ): Promise<ExpenseEntity[]> {
+    return this.expensesService.findAllForUser((req.user as IUser).id, filter);
   }
 
   @ApiOperation({
