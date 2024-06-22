@@ -36,7 +36,7 @@ export class ExpensesService {
   ): Promise<ExpenseEntity[]> {
     let query = this.expensesRepository
       .createQueryBuilder('expense')
-      .innerJoin('expense.user', 'user')
+      .innerJoinAndSelect('expense.user', 'user')
       .where('user.id = :userId', { userId })
       .andWhere('expense.description ILIKE :description', {
         description: `%${filter.description ?? ''}%`,

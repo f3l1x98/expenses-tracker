@@ -22,7 +22,7 @@ export const repositoryMockFactory: () => MockType<
 const createQueryBuilderDefaultMocks = {
   select: jest.fn().mockReturnThis(),
   addSelect: jest.fn().mockReturnThis(),
-  innerJoin: jest.fn().mockReturnThis(),
+  innerJoinAndSelect: jest.fn().mockReturnThis(),
   where: jest.fn().mockReturnThis(),
   andWhere: jest.fn().mockReturnThis(),
   groupBy: jest.fn().mockReturnThis(),
