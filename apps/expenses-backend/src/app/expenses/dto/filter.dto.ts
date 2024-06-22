@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { ExpenseCategory, IFilterDto } from 'expenses-shared';
 import { DateRangeDto } from '../../shared/date-range.dto';

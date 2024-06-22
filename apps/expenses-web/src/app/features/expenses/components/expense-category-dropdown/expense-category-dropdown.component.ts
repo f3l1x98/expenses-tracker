@@ -1,11 +1,4 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-  forwardRef,
-} from '@angular/core';
+import { Component, Input, forwardRef } from '@angular/core';
 import {
   ControlValueAccessor,
   NG_VALUE_ACCESSOR,
@@ -28,11 +21,9 @@ import { FloatLabelModule } from 'primeng/floatlabel';
     },
   ],
 })
-export class ExpenseCategoryDropdownComponent
-  implements OnInit, OnChanges, ControlValueAccessor
-{
+export class ExpenseCategoryDropdownComponent implements ControlValueAccessor {
   @Input()
-  showClear: boolean = false;
+  showClear = false;
 
   options = Object.values(ExpenseCategory);
   value!: ExpenseCategory | undefined;
@@ -40,13 +31,11 @@ export class ExpenseCategoryDropdownComponent
 
   disabled = false;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
   onChange = (value: ExpenseCategory | undefined) => {};
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onTouched = () => {};
-
-  constructor() {}
-
-  ngOnInit() {}
 
   valueChanged(val: ExpenseCategory | undefined) {
     if (!this.disabled) {
@@ -63,15 +52,13 @@ export class ExpenseCategoryDropdownComponent
     }
   }
 
-  ngOnChanges(changes: SimpleChanges): void {}
-
   writeValue(value: ExpenseCategory | undefined): void {
     this.value = value;
   }
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (value: ExpenseCategory | undefined) => void): void {
     this.onChange = fn;
   }
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
   setDisabledState?(isDisabled: boolean): void {

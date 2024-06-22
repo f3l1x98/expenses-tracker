@@ -2,9 +2,7 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges,
   Output,
-  SimpleChanges,
   forwardRef,
 } from '@angular/core';
 import { CalendarModule } from 'primeng/calendar';
@@ -30,11 +28,9 @@ import { CommonModule } from '@angular/common';
     },
   ],
 })
-export class AppDateRangePickerComponent
-  implements OnChanges, ControlValueAccessor
-{
+export class AppDateRangePickerComponent implements ControlValueAccessor {
   @Input()
-  label: string = '';
+  label = '';
 
   @Input()
   showClear = false;
@@ -43,6 +39,7 @@ export class AppDateRangePickerComponent
   requireEnd = true;
 
   @Output()
+  // eslint-disable-next-line @angular-eslint/no-output-on-prefix
   onChange = new EventEmitter<DateRange>();
 
   calenderValue: Array<Date | null> | undefined;
@@ -52,8 +49,10 @@ export class AppDateRangePickerComponent
 
   disabled = false;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
   onChangeFn = (value: DateRange | undefined) => {};
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onTouchedFn = () => {};
 
   valueChanged() {
@@ -83,15 +82,13 @@ export class AppDateRangePickerComponent
     }
   }
 
-  ngOnChanges(changes: SimpleChanges): void {}
-
   writeValue(value: DateRange | undefined): void {
     this.value = value;
   }
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (value: DateRange | undefined) => void): void {
     this.onChangeFn = fn;
   }
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouchedFn = fn;
   }
   setDisabledState?(isDisabled: boolean): void {

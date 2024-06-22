@@ -9,10 +9,10 @@ import {
 import { ExpenseCategoryDropdownComponent } from '../../expense-category-dropdown/expense-category-dropdown.component';
 import { ExpenseCategory, IDateRangeDto, IFilterDto } from 'expenses-shared';
 import { InputTextModule } from 'primeng/inputtext';
-import { AppDateRangePickerComponent } from 'apps/expenses-web/src/app/shared/components/app-date-range-picker/app-date-range-picker.component';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { ExpensesService } from '../../../expenses.service';
+import { AppDateRangePickerComponent } from '../../../../../shared/components/app-date-range-picker/app-date-range-picker.component';
 
 @Component({
   selector: 'app-expenses-filter',

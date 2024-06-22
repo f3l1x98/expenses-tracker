@@ -64,6 +64,7 @@ export class ExpensesEffect {
     this.actions$.pipe(
       ofType(ApiActions.loadStart),
       withLatestFrom(this.store.select(expensesFeature.selectFilter)),
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       switchMap(([action, filterState]) =>
         this.apiService.getAll$(filterState).pipe(
           map((result) => ApiActions.loadSuccess({ result })),
