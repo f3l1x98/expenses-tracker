@@ -1,6 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
-import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsPositive,
+  IsString,
+} from 'class-validator';
 import { RecurringExpenseEntity } from '../../recurring-expenses/entities/recurring-expense.entity';
 import { ExpenseCategory, ICreateExpenseDto } from 'expenses-shared';
 
@@ -27,6 +33,7 @@ export class CreateExpenseDto implements ICreateExpenseDto {
     enum: ExpenseCategory,
   })
   @IsNotEmpty()
+  @IsEnum(ExpenseCategory)
   category: ExpenseCategory;
 
   @Exclude()

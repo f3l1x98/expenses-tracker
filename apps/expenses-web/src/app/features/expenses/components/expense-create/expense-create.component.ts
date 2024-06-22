@@ -20,7 +20,6 @@ import { UserService } from '../../../../shell/user/user.service';
 })
 export class ExpenseCreateComponent implements OnInit, OnDestroy {
   formGroup!: FormGroup;
-  categoryOptions = Object.values(ExpenseCategory);
   recurringCycleOptions = Object.values(RecurringCycle);
 
   user$ = this.userService.own$;

@@ -19,8 +19,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   expensesPerMonthData$!: Observable<ChartData>;
   expensesPerMonthOptions$!: Observable<ChartOptions<'line'>>;
 
-  dateRangeFilter: DateRange | undefined;
-
   private destory$ = new Subject<void>();
 
   constructor(private homeService: HomeService) {}

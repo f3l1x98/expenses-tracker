@@ -1,61 +1,30 @@
 <form class="formgrid grid mt-4" [formGroup]="formGroup">
   <div class="field col-12 lg:col-8">
     <p-floatLabel>
-      <input
-        pInputText
-        class="w-full"
-        id="description"
-        formControlName="description"
-        type="text"
-      />
+      <input pInputText class="w-full" id="description" formControlName="description" type="text" />
       <label for="description">Description</label>
     </p-floatLabel>
   </div>
 
   <div class="field col-12 lg:col-2">
     <p-floatLabel>
-      <p-inputNumber
-        styleClass="w-full"
-        class="w-full"
-        [min]="0"
-        formControlName="amount"
-        inputId="amount"
-        mode="currency"
-        [currency]="(user$ | async)?.settings?.currency"
-        locale="en-US"
-      />
+      <p-inputNumber styleClass="w-full" class="w-full" [min]="0" formControlName="amount" inputId="amount"
+        mode="currency" [currency]="(user$ | async)?.settings?.currency" locale="en-US" />
       <label for="amount">Amount</label>
     </p-floatLabel>
   </div>
 
   <div class="field col-12 lg:col-2">
-    <p-floatLabel>
-      <p-dropdown
-        formControlName="category"
-        styleClass="w-full"
-        class="w-full"
-        inputId="category"
-        [options]="categoryOptions"
-      />
-      <label for="category">Category</label>
-    </p-floatLabel>
+    <app-expense-category-dropdown formControlName="category"></app-expense-category-dropdown>
   </div>
 
   <div class="field col-12 flex justify-content-center gap-3">
     <div class="field-checkbox">
-      <p-radioButton
-        inputId="onetime"
-        [value]="false"
-        formControlName="isRecurring"
-      />
+      <p-radioButton inputId="onetime" [value]="false" formControlName="isRecurring" />
       <label for="onetime">Onetime</label>
     </div>
     <div class="field-checkbox">
-      <p-radioButton
-        inputId="recurring"
-        [value]="true"
-        formControlName="isRecurring"
-      />
+      <p-radioButton inputId="recurring" [value]="true" formControlName="isRecurring" />
       <label for="recurring">Recurring</label>
     </div>
   </div>
@@ -63,51 +32,30 @@
   <ng-container *ngIf="formGroup.controls['isRecurring'].value">
     <div class="field col-12 lg:col-4">
       <p-floatLabel>
-        <p-dropdown
-          formControlName="recurringCycle"
-          styleClass="w-full"
-          class="w-full"
-          inputId="recurringCycle"
-          [options]="recurringCycleOptions"
-        />
+        <p-dropdown formControlName="recurringCycle" styleClass="w-full" class="w-full" inputId="recurringCycle"
+          [options]="recurringCycleOptions" />
         <label for="recurringCycle">Cycle</label>
       </p-floatLabel>
     </div>
 
     <div class="field col-12 lg:col-4">
       <p-floatLabel>
-        <p-calendar
-          class="w-full"
-          styleClass="w-full"
-          inputId="startDate"
-          formControlName="startDate"
-          [showIcon]="true"
-        />
+        <p-calendar class="w-full" styleClass="w-full" inputId="startDate" formControlName="startDate"
+          [showIcon]="true" />
         <label for="startDate">Start date</label>
       </p-floatLabel>
     </div>
 
     <div class="field col-12 lg:col-4">
       <p-floatLabel>
-        <p-calendar
-          class="w-full"
-          styleClass="w-full"
-          inputId="endDate"
-          formControlName="endDate"
-          [showIcon]="true"
-        />
+        <p-calendar class="w-full" styleClass="w-full" inputId="endDate" formControlName="endDate" [showIcon]="true" />
         <label for="endDate">End date</label>
       </p-floatLabel>
     </div>
   </ng-container>
 
   <div class="col-12 flex justify-content-end">
-    <p-button
-      label="Create"
-      icon="pi pi-receipt"
-      (onClick)="submit()"
-      [loading]="false"
-      [disabled]="!formGroup.valid"
-    ></p-button>
+    <p-button label="Create" icon="pi pi-receipt" (onClick)="submit()" [loading]="false"
+      [disabled]="!formGroup.valid"></p-button>
   </div>
 </form>

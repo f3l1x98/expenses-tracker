@@ -20,7 +20,7 @@ export class HomeEffect {
         const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
         return of(
           PageActions.setDateRangeFilter({
-            filter: { startDate: startOfMonth, endDate: null },
+            filter: { startDate: startOfMonth, endDate: undefined },
           }),
           ApiActions.currentMonthDataLoadStart(),
         );

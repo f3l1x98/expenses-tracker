@@ -22,7 +22,7 @@ export class HomeApiService {
 
   getExpensesPerCategory$(
     startDate: Date,
-    endDate: Date | null,
+    endDate: Date | undefined,
   ): Observable<ExpensesPerCategoryResponse> {
     return this.apiService.get(this.getExpensesPerCategoryUrl, {
       startDate: startDate.toISOString(),
@@ -32,7 +32,7 @@ export class HomeApiService {
 
   getExpensesPerMonth$(
     startDate: Date,
-    endDate: Date | null,
+    endDate: Date | undefined,
   ): Observable<ExpensesPerMonthResponse> {
     return this.apiService.get(this.getExpensesPerMonthUrl, {
       startDate: startDate.toISOString(),
