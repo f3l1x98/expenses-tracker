@@ -4,6 +4,7 @@ import { ExpensesService } from './expenses.service';
 import { ExpenseEntity } from './entities/expense.entity';
 import { Request } from 'express';
 import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
+import { FilterDto } from './dto/filter.dto';
 
 describe('ExpensesController', () => {
   let expensesController: ExpensesController;
@@ -31,9 +32,12 @@ describe('ExpensesController', () => {
       jest.spyOn(expensesService, 'findAllForUser').mockResolvedValue(result);
 
       expect(
-        await expensesController.findOwn({
-          user: { id: 'TestId' },
-        } as unknown as Request),
+        await expensesController.findOwn(
+          {
+            user: { id: 'TestId' },
+          } as unknown as Request,
+          {} as FilterDto,
+        ),
       ).toBe(result);
     });
   });
