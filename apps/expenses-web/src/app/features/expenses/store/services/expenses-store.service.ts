@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { expensesFeature } from '../features/expenses.feature';
 import * as ApiActions from '../actions/expenses-api.actions';
 import * as PageActions from '../actions/expenses-page.actions';
-import { ICreateExpenseDto, IFilterDto } from 'expenses-shared';
+import { ICreateExpenseDto, IExpenseFilterDto } from 'expenses-shared';
 
 @Injectable({ providedIn: 'root' })
 export class ExpensesStoreService {
@@ -17,7 +17,7 @@ export class ExpensesStoreService {
     this.store.dispatch(ApiActions.loadStart());
   }
 
-  updateFilter(filter: IFilterDto) {
+  updateFilter(filter: IExpenseFilterDto) {
     this.store.dispatch(PageActions.updateFilter({ filter }));
   }
 

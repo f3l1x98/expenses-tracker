@@ -6,7 +6,7 @@ import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UserEntity } from '../users/entities/user.entity';
 import { ExpenseNotFoundException } from './exceptions/expense-not-found';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
-import { FilterDto } from './dto/filter.dto';
+import { ExpensesFilterDto } from './dto/filter.dto';
 
 @Injectable()
 export class ExpensesService {
@@ -32,7 +32,7 @@ export class ExpensesService {
 
   async findAllForUser(
     userId: string,
-    filter: FilterDto,
+    filter: ExpensesFilterDto,
   ): Promise<ExpenseEntity[]> {
     let query = this.expensesRepository
       .createQueryBuilder('expense')

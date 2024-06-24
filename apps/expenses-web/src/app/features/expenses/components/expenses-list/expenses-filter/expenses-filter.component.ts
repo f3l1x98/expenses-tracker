@@ -7,7 +7,11 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { ExpenseCategoryDropdownComponent } from '../../expense-category-dropdown/expense-category-dropdown.component';
-import { ExpenseCategory, IDateRangeDto, IFilterDto } from 'expenses-shared';
+import {
+  ExpenseCategory,
+  IDateRangeDto,
+  IExpenseFilterDto,
+} from 'expenses-shared';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
@@ -68,7 +72,7 @@ export class ExpensesFilterComponent implements OnInit, OnDestroy {
     const dateRange: IDateRangeDto | undefined =
       this.formGroup.get('dateRange')?.value ?? undefined;
 
-    const filter: IFilterDto = {
+    const filter: IExpenseFilterDto = {
       description: description,
       category: category,
       ...dateRange,

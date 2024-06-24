@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import {
   ICreateExpenseDto,
   IExpense,
-  IFilterDto,
+  IExpenseFilterDto,
   IUpdateExpenseDto,
 } from 'expenses-shared';
 
@@ -28,7 +28,7 @@ export class ExpensesApiService {
     return this.apiService.put(this.updateUrl, request);
   }
 
-  getAll$(filter?: IFilterDto): Observable<IExpense[]> {
+  getAll$(filter?: IExpenseFilterDto): Observable<IExpense[]> {
     return this.apiService.get(
       this.getAllUrl,
       filter as unknown as RequestParams,
