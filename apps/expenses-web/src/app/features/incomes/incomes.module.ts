@@ -30,6 +30,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { IncomeCreateComponent } from './components/income-create/income-create.component';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { IncomesFilterComponent } from './components/incomes-list/incomes-filter/incomes-filter.component';
 
 @NgModule({
   exports: [],
@@ -62,6 +63,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     CalendarModule,
     InputTextModule,
     ConfirmDialogModule,
+    IncomesFilterComponent,
   ],
 })
 export class IncomesModule {}
