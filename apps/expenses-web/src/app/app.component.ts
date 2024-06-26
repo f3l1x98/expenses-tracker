@@ -2,6 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from './core/auth/auth.service';
 import { UserService } from './shell/user/user.service';
 import { Subject, takeUntil } from 'rxjs';
+import {
+  RouteConfigLoadEnd,
+  RouteConfigLoadStart,
+  Router,
+} from '@angular/router';
+import { SpinnerService } from './shell/spinner/spinner.service';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +20,8 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private userService: UserService,
+    private router: Router,
+    private spinnerService: SpinnerService,
   ) {}
 
   ngOnDestroy(): void {
@@ -31,5 +39,12 @@ export class AppComponent implements OnInit, OnDestroy {
           this.userService.clearOwn();
         }
       });
+    this.router.events.pipe(takeUntil(this.destory$)).subscribe((event) => {
+      if (event instanceof RouteConfigLoadStart) {
+        this.spinnerService.setState({ active: true });
+      } else if (event instanceof RouteConfigLoadEnd) {
+        this.spinnerService.setState({ active: false });
+      }
+    });
   }
 }
