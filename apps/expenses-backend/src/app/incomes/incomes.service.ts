@@ -6,6 +6,7 @@ import { CreateIncomeDto } from './dto/create-income.dto';
 import { UserEntity } from '../users/entities/user.entity';
 import { IncomeNotFoundException } from './exceptions/income-not-found';
 import { UpdateIncomeDto } from './dto/update-income.dto';
+import { IncomesFilterDto } from './dto/filter.dto';
 
 @Injectable()
 export class IncomesService {
@@ -29,13 +30,40 @@ export class IncomesService {
     return this.incomesRepository.save(income);
   }
 
-  async findAllForUser(userId: string): Promise<IncomeEntity[]> {
-    return this.incomesRepository.find({
-      where: { user: { id: userId } },
-      order: {
-        createdAt: 'DESC',
-      },
-    });
+  async findAllForUser(
+    userId: string,
+    filter: IncomesFilterDto,
+  ): Promise<IncomeEntity[]> {
+    let query = this.incomesRepository
+      .createQueryBuilder('income')
+      .innerJoinAndSelect('income.user', 'user')
+      .where('user.id = :userId', { userId })
+      .andWhere('income.description ILIKE :description', {
+        description: `%${filter.description ?? ''}%`,
+      });
+
+    if (filter.category !== undefined) {
+      query = query.andWhere('income.category = :category', {
+        category: filter.category,
+      });
+    }
+
+    if (filter.startDate !== undefined && filter.endDate !== undefined) {
+      query = query.andWhere(
+        'income.createdAt BETWEEN :startDate AND :endDate',
+        { startDate: filter.startDate, endDate: filter.endDate },
+      );
+    } else if (filter.startDate !== undefined) {
+      query = query.andWhere('income.createdAt >= :startDate', {
+        startDate: filter.startDate,
+      });
+    } else if (filter.endDate !== undefined) {
+      query = query.andWhere('income.createdAt <= :endDate', {
+        endDate: filter.endDate,
+      });
+    }
+
+    return query.orderBy('income.createdAt', 'DESC').getMany();
   }
 
   async delete(id: string, userId: string) {
