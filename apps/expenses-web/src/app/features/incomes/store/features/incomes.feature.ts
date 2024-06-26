@@ -1,10 +1,17 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { IncomesState } from '../interfaces/incomes.state';
 import * as ApiActions from '../actions/incomes-api.actions';
+import * as PageActions from '../actions/incomes-page.actions';
 import { StoreStateStatus } from '../../../../shared/interfaces/store-state-status.interface';
 
 export const initialState: IncomesState = {
   incomes: [],
+  filter: {
+    description: undefined,
+    category: undefined,
+    startDate: undefined,
+    endDate: undefined,
+  },
   loadStatus: {
     error: undefined,
     status: 'initial',
@@ -36,6 +43,8 @@ export const incomesFeature = createFeature({
       ...state,
       loadStatus: { status: 'error', error } as StoreStateStatus,
     })),
+
+    on(PageActions.updateFilter, (state, { filter }) => ({ ...state, filter })),
 
     on(ApiActions.createStart, (state) => ({
       ...state,
