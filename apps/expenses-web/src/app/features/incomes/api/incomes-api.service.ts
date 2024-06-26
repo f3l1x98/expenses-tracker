@@ -1,7 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseApiService } from '../../../shared/api/base-api.service';
-import { ICreateIncomeDto, IIncome, IUpdateIncomeDto } from 'expenses-shared';
+import {
+  BaseApiService,
+  RequestParams,
+} from '../../../shared/api/base-api.service';
+import {
+  ICreateIncomeDto,
+  IIncome,
+  IIncomeFilterDto,
+  IUpdateIncomeDto,
+} from 'expenses-shared';
 
 @Injectable({ providedIn: 'root' })
 export class IncomesApiService {
@@ -20,8 +28,11 @@ export class IncomesApiService {
     return this.apiService.put(this.updateUrl, request);
   }
 
-  getAll$(): Observable<IIncome[]> {
-    return this.apiService.get(this.getAllUrl);
+  getAll$(filter?: IIncomeFilterDto): Observable<IIncome[]> {
+    return this.apiService.get(
+      this.getAllUrl,
+      filter as unknown as RequestParams,
+    );
   }
 
   delete$(id: string): Observable<void> {
