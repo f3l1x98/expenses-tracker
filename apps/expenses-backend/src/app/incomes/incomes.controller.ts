@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -26,6 +27,7 @@ import {
 import { IncomeNotFoundException } from './exceptions/income-not-found';
 import { UpdateIncomeDto } from './dto/update-income.dto';
 import { IUser } from 'expenses-shared';
+import { IncomesFilterDto } from './dto/filter.dto';
 
 @ApiTags('incomes')
 @ApiBearerAuth()
@@ -56,8 +58,11 @@ export class IncomesController {
     summary: 'Returns all incomes for the requesting user.',
   })
   @Get()
-  async findOwn(@Req() req: Request): Promise<IncomeEntity[]> {
-    return this.incomesService.findAllForUser((req.user as IUser).id);
+  async findOwn(
+    @Req() req: Request,
+    @Query() filter: IncomesFilterDto,
+  ): Promise<IncomeEntity[]> {
+    return this.incomesService.findAllForUser((req.user as IUser).id, filter);
   }
 
   @ApiOperation({

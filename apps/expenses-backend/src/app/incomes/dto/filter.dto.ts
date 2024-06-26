@@ -1,12 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { ExpenseCategory, IExpenseFilterDto } from 'expenses-shared';
+import { IIncomeFilterDto, IncomeCategory } from 'expenses-shared';
 import { DateRangeDto } from '../../shared/date-range.dto';
 import { PartialType } from '@nestjs/mapped-types';
 
-export class ExpensesFilterDto
+export class IncomesFilterDto
   extends PartialType(DateRangeDto)
-  implements IExpenseFilterDto
+  implements IIncomeFilterDto
 {
   @ApiProperty({
     description: 'Description of the expense',
@@ -19,9 +19,9 @@ export class ExpensesFilterDto
   @ApiProperty({
     description: 'Description of the expense',
     required: false,
-    enum: ExpenseCategory,
+    enum: IncomeCategory,
   })
   @IsOptional()
-  @IsEnum(ExpenseCategory)
-  category?: ExpenseCategory;
+  @IsEnum(IncomeCategory)
+  category?: IncomeCategory;
 }

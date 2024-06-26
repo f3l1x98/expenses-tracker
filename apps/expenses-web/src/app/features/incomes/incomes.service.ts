@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IncomesStoreService } from './store/services/incomes-store.service';
-import { ICreateIncomeDto } from 'expenses-shared';
+import { ICreateIncomeDto, IIncomeFilterDto } from 'expenses-shared';
 
 @Injectable()
 export class IncomesService {
@@ -12,6 +12,10 @@ export class IncomesService {
 
   load() {
     this.store.load();
+  }
+
+  updateFilter(filter: IIncomeFilterDto) {
+    this.store.updateFilter(filter);
   }
 
   create(request: ICreateIncomeDto) {

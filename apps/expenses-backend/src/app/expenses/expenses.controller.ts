@@ -27,7 +27,7 @@ import {
 import { ExpenseNotFoundException } from './exceptions/expense-not-found';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
 import { IUser } from 'expenses-shared';
-import { FilterDto } from './dto/filter.dto';
+import { ExpensesFilterDto } from './dto/filter.dto';
 
 @ApiTags('expenses')
 @ApiBearerAuth()
@@ -63,7 +63,7 @@ export class ExpensesController {
   @Get()
   async findOwn(
     @Req() req: Request,
-    @Query() filter: FilterDto,
+    @Query() filter: ExpensesFilterDto,
   ): Promise<ExpenseEntity[]> {
     return this.expensesService.findAllForUser((req.user as IUser).id, filter);
   }

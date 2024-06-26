@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { incomesFeature } from '../features/incomes.feature';
 import * as ApiActions from '../actions/incomes-api.actions';
 import * as PageActions from '../actions/incomes-page.actions';
-import { ICreateIncomeDto } from 'expenses-shared';
+import { ICreateIncomeDto, IIncomeFilterDto } from 'expenses-shared';
 
 @Injectable({ providedIn: 'root' })
 export class IncomesStoreService {
@@ -15,6 +15,10 @@ export class IncomesStoreService {
 
   load() {
     this.store.dispatch(ApiActions.loadStart());
+  }
+
+  updateFilter(filter: IIncomeFilterDto) {
+    this.store.dispatch(PageActions.updateFilter({ filter }));
   }
 
   create(request: ICreateIncomeDto) {

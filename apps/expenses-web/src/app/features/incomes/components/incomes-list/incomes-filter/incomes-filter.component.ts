@@ -6,39 +6,39 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { ExpenseCategoryDropdownComponent } from '../../expense-category-dropdown/expense-category-dropdown.component';
 import {
-  ExpenseCategory,
   IDateRangeDto,
-  IExpenseFilterDto,
+  IIncomeFilterDto,
+  IncomeCategory,
 } from 'expenses-shared';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
-import { ExpensesService } from '../../../expenses.service';
 import { AppDateRangePickerComponent } from '../../../../../shared/components/app-date-range-picker/app-date-range-picker.component';
+import { IncomeCategoryDropdownComponent } from '../../income-category-dropdown/income-category-dropdown.component';
+import { IncomesService } from '../../../incomes.service';
 
 @Component({
-  selector: 'app-expenses-filter',
-  templateUrl: 'expenses-filter.component.html',
+  selector: 'app-incomes-filter',
+  templateUrl: 'incomes-filter.component.html',
   standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    ExpenseCategoryDropdownComponent,
+    IncomeCategoryDropdownComponent,
     InputTextModule,
     AppDateRangePickerComponent,
     FloatLabelModule,
   ],
 })
-export class ExpensesFilterComponent implements OnInit, OnDestroy {
+export class IncomesFilterComponent implements OnInit, OnDestroy {
   formGroup!: FormGroup;
 
   private destroy$ = new Subject<void>();
 
   constructor(
     private formBuilder: FormBuilder,
-    private expensesService: ExpensesService,
+    private incomesService: IncomesService,
   ) {}
 
   ngOnInit() {
@@ -46,7 +46,7 @@ export class ExpensesFilterComponent implements OnInit, OnDestroy {
       description: new FormControl('', {
         nonNullable: true,
       }),
-      category: new FormControl<ExpenseCategory | undefined>(undefined, {
+      category: new FormControl<IncomeCategory | undefined>(undefined, {
         nonNullable: true,
       }),
       dateRange: new FormControl<IDateRangeDto | undefined>(undefined, {
@@ -67,16 +67,16 @@ export class ExpensesFilterComponent implements OnInit, OnDestroy {
   applyFilter() {
     const description: string | undefined =
       this.formGroup.get('description')?.value ?? undefined;
-    const category: ExpenseCategory | undefined =
+    const category: IncomeCategory | undefined =
       this.formGroup.get('category')?.value ?? undefined;
     const dateRange: IDateRangeDto | undefined =
       this.formGroup.get('dateRange')?.value ?? undefined;
 
-    const filter: IExpenseFilterDto = {
+    const filter: IIncomeFilterDto = {
       description: description,
       category: category,
       ...dateRange,
     };
-    this.expensesService.updateFilter(filter);
+    this.incomesService.updateFilter(filter);
   }
 }
