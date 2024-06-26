@@ -77,6 +77,6 @@ export class IncomesFilterComponent implements OnInit, OnDestroy {
       category: category,
       ...dateRange,
     };
-    //this.incomesService.updateFilter(filter);
+    this.incomesService.updateFilter(filter);
   }
 }
