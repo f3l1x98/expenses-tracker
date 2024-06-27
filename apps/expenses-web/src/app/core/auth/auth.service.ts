@@ -10,6 +10,7 @@ export class AuthService implements OnDestroy {
 
   status$ = this.authStore.status$;
   currentUser$ = this.authStore.currentUser$;
+  token$ = this.authStore.token$;
 
   constructor(private authStore: AuthStoreService) {}
 
