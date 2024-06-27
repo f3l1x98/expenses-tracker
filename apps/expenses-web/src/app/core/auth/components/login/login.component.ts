@@ -14,7 +14,7 @@ import { PasswordModule } from 'primeng/password';
 import { Subject, map, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../auth.service';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { AppHeaderComponent } from '../../../../shared/components/app-header/app-header.component';
 
@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnDestroy(): void {
@@ -62,7 +63,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((status) => {
         if (status.value == 'success') {
-          this.router.navigate(['/features']);
+          const returnUrl =
+            this.route.snapshot.queryParams['returnUrl'] || '/features';
+          this.router.navigate([returnUrl]);
           this.formGroup.reset();
         }
       });
