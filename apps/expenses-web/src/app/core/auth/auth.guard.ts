@@ -8,13 +8,14 @@ function tokenExpired(token: string) {
   return Math.floor(new Date().getTime() / 1000) >= expiry;
 }
 
-export const AuthGuard: CanActivateFn = () => {
+export const AuthGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
   return authService.token$.pipe(
     map((token) => {
       if (!token || tokenExpired(token)) {
-        router.navigate(['/auth/login']);
+        const returnUrl = state.url;
+        router.navigate(['/auth/login'], { queryParams: { returnUrl } });
         return false;
       } else {
         return true;
