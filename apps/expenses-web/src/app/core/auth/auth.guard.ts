@@ -15,6 +15,7 @@ export const AuthGuard: CanActivateFn = (route, state) => {
     map((token) => {
       if (!token || tokenExpired(token)) {
         const returnUrl = state.url;
+        authService.logout();
         router.navigate(['/auth/login'], { queryParams: { returnUrl } });
         return false;
       } else {
