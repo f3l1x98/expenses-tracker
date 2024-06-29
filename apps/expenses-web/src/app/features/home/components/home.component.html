@@ -5,26 +5,26 @@
   </div>
   <div class="grid">
     <p-card class="col-3" header="This months expense">
-      <div *ngIf="!!(currentMonthDataData$ | async)">
+      <div *ngIf="currentMonthDataData$ | async; let currentMonthDataData">
         {{
-        (currentMonthDataData$ | async)!.totalExpense
-        | formatCurrency: (currentMonthDataData$ | async)!.currency
+        currentMonthDataData.totalExpense
+        | formatCurrency: currentMonthDataData.currency
         }}
       </div>
     </p-card>
     <p-card class="col-3" header="This months income">
-      <div *ngIf="!!(currentMonthDataData$ | async)">
+      <div *ngIf="currentMonthDataData$ | async; let currentMonthDataData">
         {{
-        (currentMonthDataData$ | async)!.totalIncome
-        | formatCurrency: (currentMonthDataData$ | async)!.currency
+        currentMonthDataData.totalIncome
+        | formatCurrency: currentMonthDataData.currency
         }}
       </div>
     </p-card>
     <p-card class="col-3" header="Balance">
-      <div *ngIf="!!(currentMonthDataData$ | async)">
+      <div *ngIf="currentMonthDataData$ | async; let currentMonthDataData">
         {{
-        (currentMonthDataData$ | async)!.balance
-        | formatCurrency: (currentMonthDataData$ | async)!.currency
+        currentMonthDataData.balance
+        | formatCurrency: currentMonthDataData.currency
         }}
       </div>
     </p-card>
