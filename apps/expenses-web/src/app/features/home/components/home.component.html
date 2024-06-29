@@ -21,7 +21,8 @@
       </div>
     </p-card>
     <p-card class="col-3" header="Balance">
-      <div *ngIf="currentMonthDataData$ | async; let currentMonthDataData">
+      <div *ngIf="currentMonthDataData$ | async; let currentMonthDataData"
+        [style.color]="currentMonthDataData.balance < 0 ? 'red' : ''">
         {{
         currentMonthDataData.balance
         | formatCurrency: currentMonthDataData.currency
