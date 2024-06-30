@@ -10,6 +10,7 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 import { UserEntity } from '../../users/entities/user.entity';
 import { IRecurringIncome, IncomeCategory } from 'expenses-shared';
+import { RecurringType } from 'libs/expenses-shared/src/lib/shared/recurring-type.enum';
 
 @Entity()
 export class RecurringIncomeEntity implements IRecurringIncome {
@@ -58,6 +59,18 @@ export class RecurringIncomeEntity implements IRecurringIncome {
   })
   @Column({ nullable: false })
   cron!: string;
+
+  @ApiProperty({
+    description: 'The recurring type of this recurring income',
+    required: true,
+    enum: RecurringType,
+  })
+  @Column({
+    nullable: false,
+    type: 'enum',
+    enum: RecurringType,
+  })
+  recurringType!: RecurringType;
 
   @ApiProperty({
     description:
