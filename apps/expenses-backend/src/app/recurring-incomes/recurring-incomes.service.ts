@@ -10,6 +10,7 @@ import { CronJob, CronTime } from 'cron';
 import { IncomesService } from '../incomes/incomes.service';
 import { CreateIncomeDto } from '../incomes/dto/create-income.dto';
 import { UpdateRecurringIncomeDto } from './dto/update-recurring-income.dto';
+import { constructCron } from '../utils/cron-utils';
 
 @Injectable()
 export class RecurringIncomesService implements OnApplicationBootstrap {
@@ -112,7 +113,11 @@ export class RecurringIncomesService implements OnApplicationBootstrap {
     recurringIncome.amount = createRecurringIncomeDto.amount;
     recurringIncome.category = createRecurringIncomeDto.category;
     recurringIncome.user = userId as unknown as UserEntity;
-    recurringIncome.cron = createRecurringIncomeDto.cron;
+    recurringIncome.cron = constructCron(
+      createRecurringIncomeDto.recurringType,
+      createRecurringIncomeDto.startDate,
+    );
+    recurringIncome.recurringType = createRecurringIncomeDto.recurringType;
     recurringIncome.startDate = createRecurringIncomeDto.startDate;
     recurringIncome.endDate = createRecurringIncomeDto.endDate;
 
@@ -168,21 +173,25 @@ export class RecurringIncomesService implements OnApplicationBootstrap {
     if (updateRecurringIncomeDto.amount !== undefined) {
       recurringIncome.amount = updateRecurringIncomeDto.amount;
     }
-    if (updateRecurringIncomeDto.cron !== undefined) {
-      recurringIncome.cron = updateRecurringIncomeDto.cron;
-    }
     if (updateRecurringIncomeDto.endDate !== undefined) {
       recurringIncome.endDate = updateRecurringIncomeDto.endDate;
     }
     if (updateRecurringIncomeDto.startDate !== undefined) {
       recurringIncome.startDate = updateRecurringIncomeDto.startDate;
     }
+    if (updateRecurringIncomeDto.recurringType !== undefined) {
+      recurringIncome.recurringType = updateRecurringIncomeDto.recurringType;
+      recurringIncome.cron = constructCron(
+        recurringIncome.recurringType,
+        recurringIncome.startDate,
+      );
+    }
 
     const updatedEntity =
       await this.recurringIncomesRepository.save(recurringIncome);
 
     if (
-      updateRecurringIncomeDto.cron !== undefined ||
+      updateRecurringIncomeDto.recurringType !== undefined ||
       updateRecurringIncomeDto.startDate !== undefined ||
       updateRecurringIncomeDto.endDate !== undefined
     ) {

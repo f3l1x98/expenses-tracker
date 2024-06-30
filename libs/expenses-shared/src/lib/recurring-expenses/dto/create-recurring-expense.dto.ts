@@ -1,7 +1,8 @@
 import { ICreateExpenseDto } from '../../expenses';
+import { RecurringType } from '../../shared/recurring-type.enum';
 
 export interface ICreateRecurringExpenseDto extends ICreateExpenseDto {
-  cron: string;
+  recurringType: RecurringType;
   startDate?: Date;
   endDate?: Date;
 }
