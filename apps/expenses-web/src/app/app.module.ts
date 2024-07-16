@@ -50,6 +50,7 @@ function HttpLoaderFactory(http: HttpClient) {
     SpinnerComponent,
     NotificationComponent,
     TranslateModule.forRoot({
+      defaultLanguage: 'en',
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
