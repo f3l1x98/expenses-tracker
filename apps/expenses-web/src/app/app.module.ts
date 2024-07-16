@@ -6,12 +6,22 @@ import { StoreModule } from '@ngrx/store';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthModule } from './core/auth/auth.module';
 import { EffectsModule } from '@ngrx/effects';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  HttpClientModule,
+} from '@angular/common/http';
 import { AuthInterceptor } from './core/auth/auth.interceptor';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { SpinnerComponent } from './shell/spinner/spinner.component';
 import { NotificationComponent } from './shell/notification/notification.component';
 import { UserModule } from './shell/user/user.module';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [AppComponent],
@@ -39,6 +49,13 @@ import { UserModule } from './shell/user/user.module';
     }),
     SpinnerComponent,
     NotificationComponent,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
   ],
 })
 export class AppModule {}
