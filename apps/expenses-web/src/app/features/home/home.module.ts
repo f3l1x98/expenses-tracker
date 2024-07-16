@@ -16,6 +16,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { HomeEffect } from './store/effects/home.effect';
 import { NoDataComponent } from './components/no-data/no-data.component';
 import { SharedModule } from '../../shared/shared.nodule';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { SharedModule } from '../../shared/shared.nodule';
     SharedModule,
     StoreModule.forFeature(homeFeature),
     EffectsModule.forFeature([HomeEffect]),
+    TranslateModule,
   ],
   exports: [],
   declarations: [HomeComponent, NoDataComponent],

@@ -1,1 +1,23 @@
-{}
+{
+  "home": {
+    "title": "Home",
+    "noData": "No Data",
+    "currentMonth": {
+      "totalExpenseCard": {
+        "header": "This months expense"
+      },
+      "totalIncomeCard": {
+        "header": "This months income"
+      },
+      "balanceCard": {
+        "header": "Balance"
+      }
+    },
+    "perCategory": {
+      "header": "Expenses per category"
+    },
+    "perMonth": {
+      "header": "Expenses per month"
+    }
+  }
+}
