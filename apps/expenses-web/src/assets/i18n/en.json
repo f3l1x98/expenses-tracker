@@ -1,4 +1,14 @@
 {
+  "title": "Expense Tracker",
+  "sidebar": {
+    "items": {
+      "home": "Home",
+      "expenses": "Expense",
+      "incomes": "Income",
+      "settings": "Settings"
+    },
+    "logout": "Logout"
+  },
   "home": {
     "title": "Home",
     "noData": "No Data",
