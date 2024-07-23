@@ -22,6 +22,7 @@ import { RouterModule } from '@angular/router';
 import { ComponentCanDeactivate } from '../../../../shared/guards/pending-changes.guard';
 import { ConfirmationService } from 'primeng/api';
 import { PendingChangesDialogComponent } from '../../../../shared/components/pending-changes-dialog/pending-changes-dialog.component';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-register',
@@ -38,6 +39,7 @@ import { PendingChangesDialogComponent } from '../../../../shared/components/pen
     InputTextModule,
     ButtonModule,
     PendingChangesDialogComponent,
+    TranslateModule,
   ],
   providers: [ConfirmationService],
 })
@@ -55,6 +57,7 @@ export class RegisterComponent
     private formBuilder: FormBuilder,
     private userService: UserService,
     private confirmationService: ConfirmationService,
+    private translateService: TranslateService,
   ) {}
 
   @HostListener('window:beforeunload')
@@ -64,8 +67,8 @@ export class RegisterComponent
     }
     const canDeactiveSubject$ = new Subject<boolean>();
     this.confirmationService.confirm({
-      message: 'You have unsafed data. Are you sure that you want to proceed?',
-      header: 'Confirmation',
+      message: this.translateService.instant('dialogs.unsafedData.message'),
+      header: this.translateService.instant('dialogs.unsafedData.header'),
       icon: 'pi pi-exclamation-triangle',
       acceptIcon: 'none',
       rejectIcon: 'none',

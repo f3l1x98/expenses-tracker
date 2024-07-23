@@ -25,6 +25,12 @@
       "placeholder": "Filter date range"
     }
   },
+  "dialogs": {
+    "unsafedData": {
+      "header": "Confirmation",
+      "message": "You have unsafed data. Are you sure that you want to proceed?"
+    }
+  },
   "home": {
     "title": "Home",
     "noData": "No Data",
@@ -99,6 +105,36 @@
       "buttons": {
         "login": "Login",
         "register": "Register"
+      }
+    },
+    "register": {
+      "credentials": {
+        "header": "Credentials",
+        "title": "Create your account",
+        "form": {
+          "username": "Username",
+          "password": "Password",
+          "confirmPassword": "Confirm password"
+        }
+      },
+      "settings": {
+        "header": "Settings",
+        "title": "Setup your account",
+        "form": {
+          "currency": "TODO CURRENCY"
+        }
+      },
+      "buttons": {
+        "next": "Next",
+        "back": "Back",
+        "register": "Register"
+      },
+      "success": {
+        "title": "Successfully created the account",
+        "message": {
+          "text": "You can now",
+          "button": "login"
+        }
       }
     }
   }

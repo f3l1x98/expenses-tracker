@@ -1,113 +1,65 @@
 <div class="flex justify-content-center align-content-center w-full h-full">
   <app-pending-changes-dialog />
-  <p-card
-    class="w-3"
-    *ngIf="
+  <p-card class="w-3" *ngIf="
       (registerStatus$ | async)?.status !== 'success';
       else registrationSuccess
-    "
-  >
+    ">
     <p-stepper [linear]="true">
-      <p-stepperPanel header="Credentials">
-        <ng-template
-          pTemplate="content"
-          let-nextCallback="nextCallback"
-          let-index="index"
-        >
+      <p-stepperPanel header="{{'user.register.header' | translate}}">
+        <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
           <div class="text-center mt-3 mb-4 text-xl font-semibold">
-            Create your account
+            {{'user.register.title' | translate}}
           </div>
           <form class="formgrid grid" [formGroup]="credentialsFormGroup">
             <div class="mb-5 field col-12">
               <p-floatLabel>
-                <input
-                  pInputText
-                  class="w-full"
-                  id="username"
-                  formControlName="username"
-                  type="text"
-                />
-                <label for="username">Username</label>
+                <input pInputText class="w-full" id="username" formControlName="username" type="text" />
+                <label for="username">{{'user.register.form.username' | translate}}</label>
               </p-floatLabel>
             </div>
 
             <div class="mb-5 field col-12">
               <p-floatLabel>
-                <p-password
-                  inputStyleClass="w-full"
-                  styleClass="w-full"
-                  inputId="password"
-                  formControlName="password"
-                  [toggleMask]="true"
-                  placeholder="Password"
-                />
-                <label for="password">Password</label>
+                <p-password inputStyleClass="w-full" styleClass="w-full" inputId="password" formControlName="password"
+                  [toggleMask]="true" placeholder="Password" />
+                <label for="password">{{'user.register.form.password' | translate}}</label>
               </p-floatLabel>
             </div>
 
             <div class="mb-5 field col-12">
               <p-floatLabel>
-                <p-password
-                  inputStyleClass="w-full"
-                  styleClass="w-full"
-                  inputId="confirmPassword"
-                  formControlName="confirmPassword"
-                  [toggleMask]="true"
-                  [feedback]="false"
-                  placeholder="Confirm Password"
-                />
-                <label for="confirmPassword">Confirm Password</label>
+                <p-password inputStyleClass="w-full" styleClass="w-full" inputId="confirmPassword"
+                  formControlName="confirmPassword" [toggleMask]="true" [feedback]="false"
+                  placeholder="Confirm Password" />
+                <label for="confirmPassword">{{'user.register.form.confirmPassword' | translate}}</label>
               </p-floatLabel>
             </div>
           </form>
           <div class="flex pt-4 justify-content-between">
-            <p-button label="Cancel" [link]="true" routerLink="/auth/login" />
-            <p-button
-              (onClick)="nextCallback.emit()"
-              label="Next"
-              icon="pi pi-arrow-right"
-              iconPos="right"
-              [disabled]="!credentialsFormGroup.valid"
-            />
+            <p-button label="{{'buttons.cancel' | translate}}" [link]="true" routerLink="/auth/login" />
+            <p-button (onClick)="nextCallback.emit()" label="{{'user.register.next' | translate}}"
+              icon="pi pi-arrow-right" iconPos="right" [disabled]="!credentialsFormGroup.valid" />
           </div>
         </ng-template>
       </p-stepperPanel>
-      <p-stepperPanel header="Settings">
-        <ng-template
-          pTemplate="content"
-          let-prevCallback="prevCallback"
-          let-index="index"
-        >
+      <p-stepperPanel header="{{'user.register.header' | translate}}">
+        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-index="index">
           <div class="text-center mt-3 mb-4 text-xl font-semibold">
-            Setup your account
+            {{'user.register.title' | translate}}
           </div>
           <form class="formgrid grid" [formGroup]="settingsFormGroup">
             <div class="mb-5 field col-12">
               <p-floatLabel>
-                <input
-                  pInputText
-                  class="w-full"
-                  id="currency"
-                  formControlName="currency"
-                  type="text"
-                />
-                <label for="currency">TODO Currency</label>
+                <input pInputText class="w-full" id="currency" formControlName="currency" type="text" />
+                <label for="currency">{{'user.register.form.currency' | translate}}</label>
               </p-floatLabel>
             </div>
           </form>
           <div class="flex pt-4 justify-content-between">
-            <p-button
-              (onClick)="prevCallback.emit()"
-              label="Back"
-              icon="pi pi-arrow-left"
-            />
-            <p-button
-              (onClick)="register()"
-              label="Register"
-              icon="pi pi-user-plus"
-              iconPos="right"
-              [disabled]="!settingsFormGroup.valid"
-            />
+            <p-button (onClick)="prevCallback.emit()" label="{{'user.register.buttons.back' | translate}}"
+              icon="pi pi-arrow-left" />
+            <p-button (onClick)="register()" label="{{'user.register.buttons.register' | translate}}"
+              icon="pi pi-user-plus" iconPos="right" [disabled]="!settingsFormGroup.valid" />
           </div>
         </ng-template>
       </p-stepperPanel>
@@ -116,17 +68,13 @@
   <ng-template #registrationSuccess>
     <p-card class="w-3">
       <div class="text-center mt-3 mb-4 text-xl font-semibold">
-        Successfully created the account
+        {{'user.register.success.title' | translate}}
       </div>
 
       <div class="text-center mt-3 mb-4">
-        You can now
-        <p-button
-          label="login"
-          [link]="true"
-          routerLink="/auth/login"
-          styleClass="p-0"
-        />
+        {{'user.register.success.message.text' | translate}}
+        <p-button label="{{'user.register.success.message.button' | translate}}" [link]="true" routerLink="/auth/login"
+          styleClass="p-0" />
       </div>
     </p-card>
   </ng-template>

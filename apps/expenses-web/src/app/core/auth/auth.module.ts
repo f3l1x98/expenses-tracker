@@ -6,6 +6,7 @@ import { authFeature } from './store/feature/auth.feature';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './store/effects/auth.effects';
 import { localStorageSyncReducer } from './store/local-storage-sync.reducer';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { localStorageSyncReducer } from './store/local-storage-sync.reducer';
       metaReducers: [localStorageSyncReducer],
     }),
     EffectsModule.forFeature([AuthEffects]),
+    TranslateModule.forChild(),
   ],
   exports: [],
   declarations: [],
