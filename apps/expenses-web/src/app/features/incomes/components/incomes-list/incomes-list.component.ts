@@ -3,6 +3,7 @@ import { IncomesService } from '../../incomes.service';
 import { SpinnerService } from '../../../../shell/spinner/spinner.service';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { ConfirmationService, MenuItem } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-incomes-list',
@@ -21,6 +22,7 @@ export class IncomesListComponent implements OnInit, OnDestroy {
     private service: IncomesService,
     private spinnerService: SpinnerService,
     private confirmationService: ConfirmationService,
+    private translateService: TranslateService,
   ) {}
 
   ngOnInit() {
@@ -42,16 +44,17 @@ export class IncomesListComponent implements OnInit, OnDestroy {
   onMenuShow(expenseId: string) {
     this.actionMenuItems$.next([
       {
-        label: 'Edit',
+        label: this.translateService.instant('actionMenu.items.edit'),
         icon: 'pi pi-pencil',
         command() {
           console.log('TODO EDIT');
         },
       },
       {
-        label: 'Delete',
+        label: this.translateService.instant('actionMenu.items.delete'),
         icon: 'pi pi-trash',
         command: () => {
+          // TODO translate (unsure if separate for income or expense or shared translation)
           this.confirmationService.confirm({
             message: 'Do you want to delete this income?',
             header: 'Delete Confirmation',
