@@ -46,11 +46,11 @@
     "createHeader": "Create new",
     "filter": {
       "description": "Description",
-      "dateRange": "Date range",
-      "category": {
-        "label": "Category",
-        "placeholder": "Please select a category"
-      }
+      "dateRange": "Date range"
+    },
+    "categoryInput": {
+      "label": "Category",
+      "placeholder": "Please select a category"
     }
   }
 }
