@@ -16,7 +16,9 @@
     }
   },
   "buttons": {
-    "create": "Create"
+    "create": "Create",
+    "leave": "Leave",
+    "cancel": "Cancel"
   },
   "filter": {
     "dateRangePicker": {
