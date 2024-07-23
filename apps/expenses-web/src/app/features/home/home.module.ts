@@ -31,7 +31,7 @@ import { TranslateModule } from '@ngx-translate/core';
     SharedModule,
     StoreModule.forFeature(homeFeature),
     EffectsModule.forFeature([HomeEffect]),
-    TranslateModule,
+    TranslateModule.forChild(),
   ],
   exports: [],
   declarations: [HomeComponent, NoDataComponent],
