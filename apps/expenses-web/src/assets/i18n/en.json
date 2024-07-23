@@ -91,5 +91,15 @@
       "description": "Description",
       "dateRange": "Date range"
     }
+  },
+  "user": {
+    "login": {
+      "username": "Username",
+      "password": "Password",
+      "buttons": {
+        "login": "Login",
+        "register": "Register"
+      }
+    }
   }
 }
