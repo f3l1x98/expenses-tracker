@@ -69,6 +69,10 @@
   },
   "incomes": {
     "title": "Income",
-    "createHeader": "Create new"
+    "createHeader": "Create new",
+    "categoryInput": {
+      "label": "Category",
+      "placeholder": "Please select a category"
+    }
   }
 }
