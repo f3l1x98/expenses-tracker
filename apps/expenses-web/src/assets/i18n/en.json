@@ -15,6 +15,9 @@
       "delete": "Delete"
     }
   },
+  "buttons": {
+    "create": "Create"
+  },
   "filter": {
     "dateRangePicker": {
       "placeholder": "Filter date range"
@@ -51,6 +54,17 @@
     "categoryInput": {
       "label": "Category",
       "placeholder": "Please select a category"
+    },
+    "create": {
+      "description": "Description",
+      "amount": "Amount",
+      "type": {
+        "onetime": "Onetime",
+        "recurring": "Recurring"
+      },
+      "recurringCycle": "Cycle",
+      "startDate": "Start date",
+      "endDate": "End date"
     }
   }
 }
