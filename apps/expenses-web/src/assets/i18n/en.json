@@ -66,5 +66,9 @@
       "startDate": "Start date",
       "endDate": "End date"
     }
+  },
+  "incomes": {
+    "title": "Income",
+    "createHeader": "Create new"
   }
 }
