@@ -55,9 +55,10 @@ export class ExpensesListComponent implements OnInit, OnDestroy {
         icon: 'pi pi-trash',
         command: () => {
           this.confirmationService.confirm({
-            // TODO translate (unsure if separate for income or expense or shared translation)
-            message: 'Do you want to delete this expense?',
-            header: 'Delete Confirmation',
+            message: this.translateService.instant('dialogs.delete.message', {
+              item: 'this expense',
+            }),
+            header: this.translateService.instant('dialogs.delete.header'),
             icon: 'pi pi-info-circle',
             acceptButtonStyleClass: 'p-button-danger p-button-text',
             rejectButtonStyleClass: 'p-button-text p-button-text',

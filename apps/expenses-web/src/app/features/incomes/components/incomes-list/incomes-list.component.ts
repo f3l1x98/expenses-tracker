@@ -54,10 +54,11 @@ export class IncomesListComponent implements OnInit, OnDestroy {
         label: this.translateService.instant('actionMenu.items.delete'),
         icon: 'pi pi-trash',
         command: () => {
-          // TODO translate (unsure if separate for income or expense or shared translation)
           this.confirmationService.confirm({
-            message: 'Do you want to delete this income?',
-            header: 'Delete Confirmation',
+            message: this.translateService.instant('dialogs.delete.message', {
+              item: 'this income',
+            }),
+            header: this.translateService.instant('dialogs.delete.header'),
             icon: 'pi pi-info-circle',
             acceptButtonStyleClass: 'p-button-danger p-button-text',
             rejectButtonStyleClass: 'p-button-text p-button-text',
