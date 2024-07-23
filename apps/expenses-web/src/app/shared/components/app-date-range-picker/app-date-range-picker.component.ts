@@ -14,12 +14,19 @@ import {
 } from '@angular/forms';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-date-range-picker',
   templateUrl: 'app-date-range-picker.component.html',
   standalone: true,
-  imports: [CommonModule, CalendarModule, FormsModule, FloatLabelModule],
+  imports: [
+    CommonModule,
+    CalendarModule,
+    FormsModule,
+    FloatLabelModule,
+    TranslateModule,
+  ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

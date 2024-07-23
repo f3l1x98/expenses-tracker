@@ -9,6 +9,17 @@
     },
     "logout": "Logout"
   },
+  "actionMenu": {
+    "items": {
+      "edit": "Edit",
+      "delete": "Delete"
+    }
+  },
+  "filter": {
+    "dateRangePicker": {
+      "placeholder": "Filter date range"
+    }
+  },
   "home": {
     "title": "Home",
     "noData": "No Data",
@@ -28,6 +39,18 @@
     },
     "perMonth": {
       "header": "Expenses per month"
+    }
+  },
+  "expenses": {
+    "title": "Expenses",
+    "createHeader": "Create new",
+    "filter": {
+      "description": "Description",
+      "dateRange": "Date range",
+      "category": {
+        "label": "Category",
+        "placeholder": "Please select a category"
+      }
     }
   }
 }
