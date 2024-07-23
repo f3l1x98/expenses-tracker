@@ -116,9 +116,18 @@
         "header": "Credentials",
         "title": "Create your account",
         "form": {
-          "username": "Username",
-          "password": "Password",
-          "confirmPassword": "Confirm password"
+          "username": {
+            "label": "Username",
+            "placeholder": "Username"
+          },
+          "password": {
+            "label": "Password",
+            "placeholder": "Password"
+          },
+          "confirmPassword": {
+            "label": "Confirm Password",
+            "placeholder": "Confirm Password"
+          }
         }
       },
       "settings": {
