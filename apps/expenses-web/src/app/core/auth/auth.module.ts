@@ -16,7 +16,7 @@ import { TranslateModule } from '@ngx-translate/core';
       metaReducers: [localStorageSyncReducer],
     }),
     EffectsModule.forFeature([AuthEffects]),
-    TranslateModule.forChild(),
+    TranslateModule,
   ],
   exports: [],
   declarations: [],

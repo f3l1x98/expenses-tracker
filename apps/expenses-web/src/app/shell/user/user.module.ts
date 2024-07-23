@@ -14,7 +14,7 @@ import { TranslateModule } from '@ngx-translate/core';
     RegisterComponent,
     StoreModule.forFeature(userFeature),
     EffectsModule.forFeature([UserEffect]),
-    TranslateModule.forChild(),
+    TranslateModule,
   ],
   exports: [],
   declarations: [],
