@@ -3,6 +3,7 @@ import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { SpinnerService } from '../../../../shell/spinner/spinner.service';
 import { RecurringExpensesService } from '../../recurring-expenses.service';
 import { ConfirmationService, MenuItem } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-recurring-expenses-list',
@@ -21,6 +22,7 @@ export class RecurringExpensesListComponent implements OnInit, OnDestroy {
     private service: RecurringExpensesService,
     private spinnerService: SpinnerService,
     private confirmationService: ConfirmationService,
+    private translateService: TranslateService,
   ) {}
 
   ngOnInit() {
@@ -42,19 +44,21 @@ export class RecurringExpensesListComponent implements OnInit, OnDestroy {
   onMenuShow(recurringExpenseId: string) {
     this.actionMenuItems$.next([
       {
-        label: 'Edit',
+        label: this.translateService.instant('actionMenu.items.edit'),
         icon: 'pi pi-pencil',
         command() {
           console.log('TODO EDIT');
         },
       },
       {
-        label: 'Delete',
+        label: this.translateService.instant('actionMenu.items.delete'),
         icon: 'pi pi-trash',
         command: () => {
           this.confirmationService.confirm({
-            message: 'Do you want to delete this recurring expense?',
-            header: 'Delete Confirmation',
+            message: this.translateService.instant('dialogs.delete.message', {
+              item: 'this recurring expense',
+            }),
+            header: this.translateService.instant('dialogs.delete.header'),
             icon: 'pi pi-info-circle',
             acceptButtonStyleClass: 'p-button-danger p-button-text',
             rejectButtonStyleClass: 'p-button-text p-button-text',
