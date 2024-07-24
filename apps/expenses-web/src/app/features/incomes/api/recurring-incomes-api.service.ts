@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseApiService } from '../../../shared/api/base-api.service';
+import {
+  BaseApiService,
+  RequestParams,
+} from '../../../shared/api/base-api.service';
 import {
   ICreateRecurringIncomeDto,
   IRecurringIncome,
+  IRecurringIncomeFilterDto,
   IUpdateRecurringIncomeDto,
 } from 'expenses-shared';
 
@@ -24,8 +28,11 @@ export class RecurringIncomesApiService {
     return this.apiService.put(this.updateUrl, request);
   }
 
-  getAll$(): Observable<IRecurringIncome[]> {
-    return this.apiService.get(this.getAllUrl);
+  getAll$(filter?: IRecurringIncomeFilterDto): Observable<IRecurringIncome[]> {
+    return this.apiService.get(
+      this.getAllUrl,
+      filter as unknown as RequestParams,
+    );
   }
 
   delete$(id: string): Observable<void> {
