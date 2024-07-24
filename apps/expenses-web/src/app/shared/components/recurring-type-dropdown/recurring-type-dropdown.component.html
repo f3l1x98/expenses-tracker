@@ -1,0 +1,6 @@
+<p-floatLabel>
+    <p-dropdown styleClass="w-full" class="w-full" inputId="recurringType" [options]="options" [disabled]="disabled"
+        [showClear]="showClear" placeholder="{{'recurringType.placeholder' | translate}}"
+        (onChange)="valueChanged($event.value)" />
+    <label for="recurringType">{{'recurringType.label' | translate}}</label>
+</p-floatLabel>
