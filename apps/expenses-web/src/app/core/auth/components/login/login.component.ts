@@ -17,6 +17,7 @@ import { AuthService } from '../../auth.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { AppHeaderComponent } from '../../../../shared/components/app-header/app-header.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
@@ -33,6 +34,7 @@ import { AppHeaderComponent } from '../../../../shared/components/app-header/app
     PasswordModule,
     AppHeaderComponent,
     FloatLabelModule,
+    TranslateModule,
   ],
 })
 export class LoginComponent implements OnInit, OnDestroy {

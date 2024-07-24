@@ -17,6 +17,7 @@ import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { AppDateRangePickerComponent } from '../../../../../shared/components/app-date-range-picker/app-date-range-picker.component';
 import { IncomeCategoryDropdownComponent } from '../../income-category-dropdown/income-category-dropdown.component';
 import { IncomesService } from '../../../incomes.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-incomes-filter',
@@ -29,6 +30,7 @@ import { IncomesService } from '../../../incomes.service';
     InputTextModule,
     AppDateRangePickerComponent,
     FloatLabelModule,
+    TranslateModule,
   ],
 })
 export class IncomesFilterComponent implements OnInit, OnDestroy {

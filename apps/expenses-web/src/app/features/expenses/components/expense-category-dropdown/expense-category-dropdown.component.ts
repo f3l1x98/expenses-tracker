@@ -4,6 +4,7 @@ import {
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import { ExpenseCategory } from 'expenses-shared';
 import { DropdownModule } from 'primeng/dropdown';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -12,7 +13,12 @@ import { FloatLabelModule } from 'primeng/floatlabel';
   selector: 'app-expense-category-dropdown',
   templateUrl: 'expense-category-dropdown.component.html',
   standalone: true,
-  imports: [FloatLabelModule, DropdownModule, ReactiveFormsModule],
+  imports: [
+    FloatLabelModule,
+    DropdownModule,
+    ReactiveFormsModule,
+    TranslateModule,
+  ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
