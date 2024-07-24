@@ -19,13 +19,13 @@
                                 </span>
                                 <div class="text-lg font-medium text-900">
                                     {{ recurringExpense.description }}
-                                    <span class="text-sm">
-                                        ({{ recurringExpense.recurringType | capitalize }})
-                                    </span>
                                 </div>
                                 <span class="font-medium text-secondary text-sm">
-                                    Next execution date:
-                                    {{ recurringExpense.nextExecution | formatDate: 'DD MMM YYYY' }}
+                                    {{ recurringExpense.recurringType | capitalize }}
+                                    <span>
+                                        (next due date
+                                        {{ recurringExpense.nextExecution | formatDate: 'DD MMM YYYY' }})
+                                    </span>
                                 </span>
                             </div>
                         </div>
