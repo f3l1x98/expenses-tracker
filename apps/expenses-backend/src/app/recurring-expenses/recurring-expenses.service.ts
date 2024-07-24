@@ -11,6 +11,7 @@ import { ExpensesService } from '../expenses/expenses.service';
 import { CreateExpenseDto } from '../expenses/dto/create-expense.dto';
 import { UpdateRecurringExpenseDto } from './dto/update-recurring-expense.dto';
 import { constructCron } from '../utils/cron-utils';
+import { RecurringExpensesFilterDto } from './dto/filter.dto';
 
 @Injectable()
 export class RecurringExpensesService implements OnApplicationBootstrap {
@@ -131,13 +132,49 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
     return recurringExpenseEntity;
   }
 
-  async findAllForUser(userId: string): Promise<RecurringExpenseEntity[]> {
-    return this.recurringExpensesRepository.find({
-      where: { user: { id: userId } },
-      order: {
-        createdAt: 'DESC',
-      },
-    });
+  async findAllForUser(
+    userId: string,
+    filter: RecurringExpensesFilterDto,
+  ): Promise<RecurringExpenseEntity[]> {
+    let query = this.recurringExpensesRepository
+      .createQueryBuilder('recurringExpense')
+      .innerJoinAndSelect('recurringExpense.user', 'user')
+      .where('user.id = :userId', { userId })
+      .andWhere('recurringExpense.description ILIKE :description', {
+        description: `%${filter.description ?? ''}%`,
+      });
+
+    if (filter.category !== undefined) {
+      query = query.andWhere('recurringExpense.category = :category', {
+        category: filter.category,
+      });
+    }
+
+    if (filter.recurringType !== undefined) {
+      query = query.andWhere(
+        'recurringExpense.recurringType = :recurringType',
+        {
+          recurringType: filter.recurringType,
+        },
+      );
+    }
+
+    if (filter.startDate !== undefined && filter.endDate !== undefined) {
+      query = query.andWhere(
+        'recurringExpense.createdAt BETWEEN :startDate AND :endDate',
+        { startDate: filter.startDate, endDate: filter.endDate },
+      );
+    } else if (filter.startDate !== undefined) {
+      query = query.andWhere('recurringExpense.createdAt >= :startDate', {
+        startDate: filter.startDate,
+      });
+    } else if (filter.endDate !== undefined) {
+      query = query.andWhere('recurringExpense.createdAt <= :endDate', {
+        endDate: filter.endDate,
+      });
+    }
+
+    return query.orderBy('recurringExpense.createdAt', 'DESC').getMany();
   }
 
   async delete(id: string, userId: string) {
