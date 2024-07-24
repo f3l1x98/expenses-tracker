@@ -32,7 +32,7 @@
     },
     "delete": {
       "header": "Delete Confirmation",
-      "message": "Do you want to delete {item}?"
+      "message": "Do you want to delete {{item}}?"
     }
   },
   "home": {
