@@ -32,6 +32,7 @@ import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { IncomesFilterComponent } from './components/incomes-list/incomes-filter/incomes-filter.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { RecurringIncomesFilterComponent } from './components/recurring-incomes-list/filter/recurring-incomes-filter.component';
 
 @NgModule({
   exports: [],
@@ -66,6 +67,7 @@ import { TranslateModule } from '@ngx-translate/core';
     ConfirmDialogModule,
     IncomesFilterComponent,
     TranslateModule.forChild(),
+    RecurringIncomesFilterComponent,
   ],
 })
 export class IncomesModule {}
