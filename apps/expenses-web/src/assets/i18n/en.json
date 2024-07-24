@@ -74,7 +74,7 @@
         "onetime": "Onetime",
         "recurring": "Recurring"
       },
-      "recurringCycle": "Cycle",
+      "recurringType": "Type",
       "startDate": "Start date",
       "endDate": "End date"
     }
@@ -93,7 +93,7 @@
         "onetime": "Onetime",
         "recurring": "Recurring"
       },
-      "recurringCycle": "Cycle",
+      "recurringType": "Type",
       "startDate": "Start date",
       "endDate": "End date"
     },

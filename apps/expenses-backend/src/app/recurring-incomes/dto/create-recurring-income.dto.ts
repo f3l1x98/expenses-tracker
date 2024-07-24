@@ -12,6 +12,7 @@ import {
 import { IsAfterDate } from '../../utils/is-after-date';
 import { IsValidCron } from '../../utils/is-valid-cron';
 import { ICreateRecurringIncomeDto, IncomeCategory } from 'expenses-shared';
+import { RecurringType } from 'libs/expenses-shared/src/lib/shared/recurring-type.enum';
 
 export class CreateRecurringIncomeDto implements ICreateRecurringIncomeDto {
   @ApiProperty({
@@ -40,12 +41,13 @@ export class CreateRecurringIncomeDto implements ICreateRecurringIncomeDto {
   category: IncomeCategory;
 
   @ApiProperty({
-    description: 'The cron expression for this recurring income',
+    description: 'The recurring type of this recurring income',
     required: true,
-    example: '* * * * *',
+    enum: RecurringType,
   })
-  @IsValidCron()
-  cron: string;
+  @IsNotEmpty()
+  @IsEnum(RecurringType)
+  recurringType: RecurringType;
 
   @ApiProperty({
     description:

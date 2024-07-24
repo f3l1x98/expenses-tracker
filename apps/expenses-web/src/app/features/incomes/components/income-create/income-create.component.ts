@@ -8,11 +8,10 @@ import {
 import { Subject } from 'rxjs';
 import { IncomesService } from '../../incomes.service';
 import { RecurringIncomesService } from '../../recurring-incomes.service';
-import { RecurringCycle } from '../../../../shared/interfaces/recurring-cycle.enum';
 import { validateDateAfter } from '../../../../shared/validators/validate-date-after';
-import { constructCron } from '../../../../shared/utils/cron-utils';
 import { UserService } from '../../../../shell/user/user.service';
 import { IncomeCategory } from 'expenses-shared';
+import { RecurringType } from 'libs/expenses-shared/src/lib/shared/recurring-type.enum';
 
 @Component({
   selector: 'app-income-create',
@@ -21,7 +20,7 @@ import { IncomeCategory } from 'expenses-shared';
 export class IncomeCreateComponent implements OnInit, OnDestroy {
   formGroup!: FormGroup;
   categoryOptions = Object.values(IncomeCategory);
-  recurringCycleOptions = Object.values(RecurringCycle);
+  recurringTypeOptions = Object.values(RecurringType);
 
   user$ = this.userService.own$;
 
@@ -58,7 +57,7 @@ export class IncomeCreateComponent implements OnInit, OnDestroy {
         nonNullable: true,
         validators: [Validators.required, Validators.min(0)],
       }),
-      recurringCycle: new FormControl<RecurringCycle>(RecurringCycle.MONTHLY, {
+      recurringType: new FormControl<RecurringType>(RecurringType.MONTHLY, {
         nonNullable: true,
         validators: [Validators.required],
       }),
@@ -83,15 +82,15 @@ export class IncomeCreateComponent implements OnInit, OnDestroy {
     const amount = this.formGroup.get('amount')?.value as number;
     const category = this.formGroup.get('category')?.value as IncomeCategory;
     if (isRecurringCreation) {
-      const recurringCycle = this.formGroup.get('recurringCycle')
-        ?.value as RecurringCycle;
+      const recurringType = this.formGroup.get('recurringType')
+        ?.value as RecurringType;
       const startDate = this.formGroup.get('startDate')?.value as Date;
       const endDate = this.formGroup.get('endDate')?.value as Date | undefined;
       this.recurringIncomesService.create({
         description: description,
         category: category,
         amount: amount,
-        cron: constructCron(recurringCycle, startDate),
+        recurringType: recurringType,
         startDate: startDate,
         endDate: endDate,
       });

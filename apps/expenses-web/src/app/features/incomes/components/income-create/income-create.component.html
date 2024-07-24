@@ -36,9 +36,9 @@
   <ng-container *ngIf="formGroup.controls['isRecurring'].value">
     <div class="field col-12 lg:col-4">
       <p-floatLabel>
-        <p-dropdown formControlName="recurringCycle" styleClass="w-full" class="w-full" inputId="recurringCycle"
-          [options]="recurringCycleOptions" />
-        <label for="recurringCycle">{{'incomes.create.recurringCycle' | translate}}</label>
+        <p-dropdown formControlName="recurringType" styleClass="w-full" class="w-full" inputId="recurringType"
+          [options]="recurringTypeOptions" />
+        <label for="recurringType">{{'incomes.create.recurringType' | translate}}</label>
       </p-floatLabel>
     </div>
 
