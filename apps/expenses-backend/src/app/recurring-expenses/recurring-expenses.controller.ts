@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -26,6 +27,7 @@ import {
 import { RecurringExpenseNotFoundException } from './exceptions/recurring-expense-not-found';
 import { UpdateRecurringExpenseDto } from './dto/update-recurring-expense.dto';
 import { IUser } from 'expenses-shared';
+import { RecurringExpensesFilterDto } from './dto/filter.dto';
 
 @ApiTags('recurring-expenses')
 @ApiBearerAuth()
@@ -59,8 +61,14 @@ export class RecurringExpensesController {
     summary: 'Returns all recurring expenses for the requesting user.',
   })
   @Get()
-  async findOwn(@Req() req: Request): Promise<RecurringExpenseEntity[]> {
-    return this.recurringExpensesService.findAllForUser((req.user as IUser).id);
+  async findOwn(
+    @Req() req: Request,
+    @Query() filter: RecurringExpensesFilterDto,
+  ): Promise<RecurringExpenseEntity[]> {
+    return this.recurringExpensesService.findAllForUser(
+      (req.user as IUser).id,
+      filter,
+    );
   }
 
   @ApiOperation({
