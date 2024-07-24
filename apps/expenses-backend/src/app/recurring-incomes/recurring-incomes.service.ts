@@ -11,6 +11,7 @@ import { IncomesService } from '../incomes/incomes.service';
 import { CreateIncomeDto } from '../incomes/dto/create-income.dto';
 import { UpdateRecurringIncomeDto } from './dto/update-recurring-income.dto';
 import { constructCron } from '../utils/cron-utils';
+import { RecurringIncomeFilterDto } from './dto/filter.dto';
 
 @Injectable()
 export class RecurringIncomesService implements OnApplicationBootstrap {
@@ -129,13 +130,46 @@ export class RecurringIncomesService implements OnApplicationBootstrap {
     return recurringIncomeEntity;
   }
 
-  async findAllForUser(userId: string): Promise<RecurringIncomeEntity[]> {
-    return this.recurringIncomesRepository.find({
-      where: { user: { id: userId } },
-      order: {
-        createdAt: 'DESC',
-      },
-    });
+  async findAllForUser(
+    userId: string,
+    filter: RecurringIncomeFilterDto,
+  ): Promise<RecurringIncomeEntity[]> {
+    let query = this.recurringIncomesRepository
+      .createQueryBuilder('recurringIncome')
+      .innerJoinAndSelect('recurringIncome.user', 'user')
+      .where('user.id = :userId', { userId })
+      .andWhere('recurringIncome.description ILIKE :description', {
+        description: `%${filter.description ?? ''}%`,
+      });
+
+    if (filter.category !== undefined) {
+      query = query.andWhere('recurringIncome.category = :category', {
+        category: filter.category,
+      });
+    }
+
+    if (filter.recurringType !== undefined) {
+      query = query.andWhere('recurringIncome.recurringType = :recurringType', {
+        recurringType: filter.recurringType,
+      });
+    }
+
+    if (filter.startDate !== undefined && filter.endDate !== undefined) {
+      query = query.andWhere(
+        'recurringIncome.createdAt BETWEEN :startDate AND :endDate',
+        { startDate: filter.startDate, endDate: filter.endDate },
+      );
+    } else if (filter.startDate !== undefined) {
+      query = query.andWhere('recurringIncome.createdAt >= :startDate', {
+        startDate: filter.startDate,
+      });
+    } else if (filter.endDate !== undefined) {
+      query = query.andWhere('recurringIncome.createdAt <= :endDate', {
+        endDate: filter.endDate,
+      });
+    }
+
+    return query.orderBy('recurringIncome.createdAt', 'DESC').getMany();
   }
 
   async delete(id: string, userId: string) {

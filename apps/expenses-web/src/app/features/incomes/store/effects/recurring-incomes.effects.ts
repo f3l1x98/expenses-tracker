@@ -2,12 +2,16 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as ApiActions from '../actions/recurring-incomes-api.actions';
 import * as PageActions from '../actions/recurring-incomes-page.actions';
-import { catchError, map, of, switchMap } from 'rxjs';
+import { catchError, map, of, switchMap, withLatestFrom } from 'rxjs';
 import { RecurringIncomesApiService } from '../../api/recurring-incomes-api.service';
+import { Store } from '@ngrx/store';
+import { RecurringIncomesState } from '../interfaces/recurring-incomes.state';
+import { recurringIncomesFeature } from '../features/recurring-incomes.feature';
 
 @Injectable()
 export class RecurringIncomesEffect {
   constructor(
+    private store: Store<RecurringIncomesState>,
     private actions$: Actions,
     private apiService: RecurringIncomesApiService,
   ) {}
@@ -59,12 +63,21 @@ export class RecurringIncomesEffect {
   load$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ApiActions.loadStart),
-      switchMap(() =>
-        this.apiService.getAll$().pipe(
+      withLatestFrom(this.store.select(recurringIncomesFeature.selectFilter)),
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      switchMap(([action, filterState]) =>
+        this.apiService.getAll$(filterState).pipe(
           map((result) => ApiActions.loadSuccess({ result })),
           catchError((error) => of(ApiActions.loadFailure({ error }))),
         ),
       ),
+    ),
+  );
+
+  updateFilter$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PageActions.updateFilter),
+      switchMap(() => of(ApiActions.loadStart())),
     ),
   );
 }

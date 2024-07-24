@@ -1,10 +1,18 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import * as ApiActions from '../actions/recurring-incomes-api.actions';
+import * as PageActions from '../actions/recurring-incomes-page.actions';
 import { StoreStateStatus } from '../../../../shared/interfaces/store-state-status.interface';
 import { RecurringIncomesState } from '../interfaces/recurring-incomes.state';
 
 export const initialState: RecurringIncomesState = {
   recurringIncomes: [],
+  filter: {
+    description: undefined,
+    category: undefined,
+    startDate: undefined,
+    endDate: undefined,
+    recurringType: undefined,
+  },
   loadStatus: {
     error: undefined,
     status: 'initial',
@@ -36,6 +44,8 @@ export const recurringIncomesFeature = createFeature({
       ...state,
       loadStatus: { status: 'error', error } as StoreStateStatus,
     })),
+
+    on(PageActions.updateFilter, (state, { filter }) => ({ ...state, filter })),
 
     on(ApiActions.createStart, (state) => ({
       ...state,
