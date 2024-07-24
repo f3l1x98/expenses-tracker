@@ -20,9 +20,10 @@
                                 <div class="text-lg font-medium text-900">
                                     {{ recurringExpense.description }}
                                     <span class="text-sm">
-                                        ({{ recurringExpense.cron | formatCron }})
+                                        ({{ recurringExpense.recurringType | capitalize }})
                                     </span>
                                 </div>
+                                <!--TODO perhaps remove cron and move nextCron calc into backend -->
                                 <span class="font-medium text-secondary text-sm">
                                     Next execution date:
                                     {{ recurringExpense.cron | nextCronExecution | formatDate: 'DD MMM YYYY' }}
