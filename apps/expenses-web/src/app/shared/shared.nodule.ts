@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { FormatDatePipe } from './pipes/format-date.pipe';
 import { FormatCurrencyPipe } from './pipes/format-currency.pipe';
 import { NextCronExecutionPipe } from './pipes/next-cron-execution.pipe';
-import { FormatCronPipe } from './pipes/format-cron.pipe';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
 import { HighlightNegativeCurrencyDirective } from './directives/highlight-negative-currency.directive';
 
@@ -12,7 +11,6 @@ import { HighlightNegativeCurrencyDirective } from './directives/highlight-negat
     FormatDatePipe,
     FormatCurrencyPipe,
     NextCronExecutionPipe,
-    FormatCronPipe,
     CapitalizePipe,
     HighlightNegativeCurrencyDirective,
   ],
@@ -20,7 +18,6 @@ import { HighlightNegativeCurrencyDirective } from './directives/highlight-negat
     FormatDatePipe,
     FormatCurrencyPipe,
     NextCronExecutionPipe,
-    FormatCronPipe,
     CapitalizePipe,
     HighlightNegativeCurrencyDirective,
   ],

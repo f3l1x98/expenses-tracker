@@ -50,6 +50,7 @@ export class RecurringExpensesListComponent implements OnInit, OnDestroy {
           console.log('TODO EDIT');
         },
       },
+      // TODO pause/resume (needs paused flag to change option)
       {
         label: this.translateService.instant('actionMenu.items.delete'),
         icon: 'pi pi-trash',
