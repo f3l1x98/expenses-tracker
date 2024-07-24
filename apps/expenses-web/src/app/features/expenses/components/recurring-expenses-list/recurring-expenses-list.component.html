@@ -23,10 +23,9 @@
                                         ({{ recurringExpense.recurringType | capitalize }})
                                     </span>
                                 </div>
-                                <!--TODO perhaps remove cron and move nextCron calc into backend -->
                                 <span class="font-medium text-secondary text-sm">
                                     Next execution date:
-                                    {{ recurringExpense.cron | nextCronExecution | formatDate: 'DD MMM YYYY' }}
+                                    {{ recurringExpense.nextExecution | formatDate: 'DD MMM YYYY' }}
                                 </span>
                             </div>
                         </div>
