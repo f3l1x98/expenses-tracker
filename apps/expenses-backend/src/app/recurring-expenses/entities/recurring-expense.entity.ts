@@ -11,6 +11,8 @@ import { ApiProperty } from '@nestjs/swagger';
 import { UserEntity } from '../../users/entities/user.entity';
 import { ExpenseCategory, IRecurringExpense } from 'expenses-shared';
 import { RecurringType } from 'libs/expenses-shared/src/lib/shared/recurring-type.enum';
+import { parseExpression } from 'cron-parser';
+import { Exclude, Expose } from 'class-transformer';
 
 @Entity()
 export class RecurringExpenseEntity implements IRecurringExpense {
@@ -59,7 +61,20 @@ export class RecurringExpenseEntity implements IRecurringExpense {
     example: '* * * * *',
   })
   @Column({ nullable: false })
+  @Exclude()
   cron!: string;
+
+  @ApiProperty({
+    description: 'The date of the next execution of this recurring expense',
+    required: true,
+  })
+  @Expose()
+  get nextExecution(): Date {
+    const interval = parseExpression(this.cron, {
+      currentDate: this.startDate ?? new Date(),
+    });
+    return new Date(interval.next().toDate().toDateString());
+  }
 
   @ApiProperty({
     description: 'The recurring type of this recurring expense',
