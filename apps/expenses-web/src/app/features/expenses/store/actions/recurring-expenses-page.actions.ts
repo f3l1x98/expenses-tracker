@@ -1,5 +1,8 @@
 import { createAction, props } from '@ngrx/store';
-import { ICreateRecurringExpenseDto } from 'expenses-shared';
+import {
+  ICreateRecurringExpenseDto,
+  IRecurringExpenseFilterDto,
+} from 'expenses-shared';
 
 export const createRequest = createAction(
   '[Recurring Expense Page Actions] create request',
@@ -8,4 +11,8 @@ export const createRequest = createAction(
 export const deleteRequest = createAction(
   '[Recurring Expense Page Actions] delete request',
   props<{ id: string }>(),
+);
+export const updateFilter = createAction(
+  '[Recurring Expense Page Actions] update filter',
+  props<{ filter: IRecurringExpenseFilterDto }>(),
 );

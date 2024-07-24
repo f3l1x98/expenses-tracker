@@ -3,7 +3,10 @@ import { Store } from '@ngrx/store';
 import { recurringExpensesFeature } from '../features/recurring-expenses.feature';
 import * as ApiActions from '../actions/recurring-expenses-api.actions';
 import * as PageActions from '../actions/recurring-expenses-page.actions';
-import { ICreateRecurringExpenseDto } from 'expenses-shared';
+import {
+  ICreateRecurringExpenseDto,
+  IRecurringExpenseFilterDto,
+} from 'expenses-shared';
 
 @Injectable({ providedIn: 'root' })
 export class RecurringExpensesStoreService {
@@ -19,6 +22,10 @@ export class RecurringExpensesStoreService {
 
   load() {
     this.store.dispatch(ApiActions.loadStart());
+  }
+
+  updateFilter(filter: IRecurringExpenseFilterDto) {
+    this.store.dispatch(PageActions.updateFilter({ filter }));
   }
 
   create(request: ICreateRecurringExpenseDto) {
