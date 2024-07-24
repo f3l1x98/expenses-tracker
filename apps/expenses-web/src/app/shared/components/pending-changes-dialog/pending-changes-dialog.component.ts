@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
@@ -6,6 +7,6 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
   selector: 'app-pending-changes-dialog',
   templateUrl: 'pending-changes-dialog.component.html',
   standalone: true,
-  imports: [ConfirmDialogModule, ButtonModule],
+  imports: [ConfirmDialogModule, ButtonModule, TranslateModule],
 })
 export class PendingChangesDialogComponent {}

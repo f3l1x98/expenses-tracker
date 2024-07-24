@@ -17,6 +17,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { ExpensesService } from '../../../expenses.service';
 import { AppDateRangePickerComponent } from '../../../../../shared/components/app-date-range-picker/app-date-range-picker.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-expenses-filter',
@@ -29,6 +30,7 @@ import { AppDateRangePickerComponent } from '../../../../../shared/components/ap
     InputTextModule,
     AppDateRangePickerComponent,
     FloatLabelModule,
+    TranslateModule,
   ],
 })
 export class ExpensesFilterComponent implements OnInit, OnDestroy {

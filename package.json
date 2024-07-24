@@ -94,6 +94,8 @@
     "@ngrx/effects": "^17.2.0",
     "@ngrx/store": "^17.2.0",
     "@ngrx/store-devtools": "^17.2.0",
+    "@ngx-translate/core": "^15.0.0",
+    "@ngx-translate/http-loader": "^8.0.0",
     "@types/bcrypt": "5.0.2",
     "@types/jest-when": "^3.5.5",
     "axios": "^1.6.0",

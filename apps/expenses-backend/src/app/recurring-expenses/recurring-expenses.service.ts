@@ -10,6 +10,7 @@ import { CronJob, CronTime } from 'cron';
 import { ExpensesService } from '../expenses/expenses.service';
 import { CreateExpenseDto } from '../expenses/dto/create-expense.dto';
 import { UpdateRecurringExpenseDto } from './dto/update-recurring-expense.dto';
+import { constructCron } from '../utils/cron-utils';
 
 @Injectable()
 export class RecurringExpensesService implements OnApplicationBootstrap {
@@ -114,7 +115,11 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
     recurringExpense.amount = createRecurringExpenseDto.amount;
     recurringExpense.category = createRecurringExpenseDto.category;
     recurringExpense.user = userId as unknown as UserEntity;
-    recurringExpense.cron = createRecurringExpenseDto.cron;
+    recurringExpense.cron = constructCron(
+      createRecurringExpenseDto.recurringType,
+      createRecurringExpenseDto.startDate,
+    );
+    recurringExpense.recurringType = createRecurringExpenseDto.recurringType;
     recurringExpense.startDate = createRecurringExpenseDto.startDate;
     recurringExpense.endDate = createRecurringExpenseDto.endDate;
 
@@ -170,21 +175,25 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
     if (updateRecurringExpenseDto.amount !== undefined) {
       recurringExpense.amount = updateRecurringExpenseDto.amount;
     }
-    if (updateRecurringExpenseDto.cron !== undefined) {
-      recurringExpense.cron = updateRecurringExpenseDto.cron;
-    }
     if (updateRecurringExpenseDto.endDate !== undefined) {
       recurringExpense.endDate = updateRecurringExpenseDto.endDate;
     }
     if (updateRecurringExpenseDto.startDate !== undefined) {
       recurringExpense.startDate = updateRecurringExpenseDto.startDate;
     }
+    if (updateRecurringExpenseDto.recurringType !== undefined) {
+      recurringExpense.recurringType = updateRecurringExpenseDto.recurringType;
+      recurringExpense.cron = constructCron(
+        recurringExpense.recurringType,
+        recurringExpense.startDate,
+      );
+    }
 
     const updatedEntity =
       await this.recurringExpensesRepository.save(recurringExpense);
 
     if (
-      updateRecurringExpenseDto.cron !== undefined ||
+      updateRecurringExpenseDto.recurringType !== undefined ||
       updateRecurringExpenseDto.startDate !== undefined ||
       updateRecurringExpenseDto.endDate !== undefined
     ) {

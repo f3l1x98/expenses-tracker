@@ -3,47 +3,26 @@
     <div class="flex justify-content-center px-4 pt-3 pb-5">
       <app-header></app-header>
     </div>
-    <form
-      class="formgrid grid"
-      [formGroup]="formGroup"
-      (keydown.enter)="submit()"
-    >
+    <form class="formgrid grid" [formGroup]="formGroup" (keydown.enter)="submit()">
       <div class="mb-5 field col-12">
         <p-floatLabel>
-          <input
-            pInputText
-            class="w-full"
-            id="username"
-            formControlName="username"
-            type="text"
-          />
-          <label for="username">Username</label>
+          <input pInputText class="w-full" id="username" formControlName="username" type="text" />
+          <label for="username">{{'user.login.username' | translate}}</label>
         </p-floatLabel>
       </div>
 
       <div class="mb-5 field col-12">
         <p-floatLabel>
-          <p-password
-            inputStyleClass="w-full"
-            styleClass="w-full"
-            inputId="password"
-            formControlName="password"
-            [feedback]="false"
-          />
-          <label for="password">Password</label>
+          <p-password inputStyleClass="w-full" styleClass="w-full" inputId="password" formControlName="password"
+            [feedback]="false" />
+          <label for="password">{{'user.login.password' | translate}}</label>
         </p-floatLabel>
       </div>
     </form>
 
-    <p-button
-      label="Login"
-      icon="pi pi-user"
-      class="w-full"
-      (onClick)="submit()"
-      [loading]="loading$ | async"
-      [disabled]="!formGroup.valid"
-    ></p-button>
+    <p-button label="{{'user.login.buttons.login' | translate}}" icon="pi pi-user" class="w-full" (onClick)="submit()"
+      [loading]="loading$ | async" [disabled]="!formGroup.valid"></p-button>
 
-    <p-button label="Register" [link]="true" routerLink="/user/register" />
+    <p-button label="{{'user.login.buttons.register' | translate}}" [link]="true" routerLink="/user/register" />
   </p-card>
 </div>

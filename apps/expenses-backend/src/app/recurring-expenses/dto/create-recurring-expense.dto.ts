@@ -10,8 +10,8 @@ import {
   IsString,
 } from 'class-validator';
 import { IsAfterDate } from '../../utils/is-after-date';
-import { IsValidCron } from '../../utils/is-valid-cron';
 import { ExpenseCategory, ICreateRecurringExpenseDto } from 'expenses-shared';
+import { RecurringType } from 'libs/expenses-shared/src/lib/shared/recurring-type.enum';
 
 export class CreateRecurringExpenseDto implements ICreateRecurringExpenseDto {
   @ApiProperty({
@@ -40,15 +40,13 @@ export class CreateRecurringExpenseDto implements ICreateRecurringExpenseDto {
   category: ExpenseCategory;
 
   @ApiProperty({
-    description: 'The cron expression for this recurring expense',
+    description: 'The recurring type of this recurring expense',
     required: true,
-    example: '* * * * *',
+    enum: RecurringType,
   })
   @IsNotEmpty()
-  @IsValidCron({
-    message: 'This must be a valid cron expression',
-  })
-  cron: string;
+  @IsEnum(RecurringType)
+  recurringType: RecurringType;
 
   @ApiProperty({
     description:

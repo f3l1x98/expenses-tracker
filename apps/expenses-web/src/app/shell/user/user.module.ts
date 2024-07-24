@@ -6,6 +6,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { UserService } from './user.service';
 import { UserRoutingModule } from './user-routing.module';
 import { RegisterComponent } from './components/register/register.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -13,6 +14,7 @@ import { RegisterComponent } from './components/register/register.component';
     RegisterComponent,
     StoreModule.forFeature(userFeature),
     EffectsModule.forFeature([UserEffect]),
+    TranslateModule,
   ],
   exports: [],
   declarations: [],

@@ -9,6 +9,8 @@ ENV NX_VERBOSE_LOGGING true
 
 COPY package.json package-lock.json ./
 RUN npm ci
+# Necessary due to bcrypt otherwise crashing container: https://github.com/kelektiv/node.bcrypt.js/issues/528
+RUN npm rebuild bcrypt --build-from-source
 COPY tsconfig.base.json .eslintrc.json .prettierrc jest.preset.js jest.config.ts nx.json ./
 
 COPY apps/expenses-backend apps/expenses-backend

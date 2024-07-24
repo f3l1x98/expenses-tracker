@@ -1,7 +1,7 @@
 <app-content-wrapper>
-  <span slot="header">Expenses</span>
+  <span slot="header">{{'expenses.title' | translate}}</span>
   <div class="grid m-0">
-    <p-card class="col-12" header="Create new">
+    <p-card class="col-12" header="{{'expenses.createHeader' | translate}}">
       <app-expense-create></app-expense-create>
     </p-card>
     <p-card class="col-8">
