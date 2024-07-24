@@ -2,7 +2,7 @@
   <div class="field col-12 lg:col-8">
     <p-floatLabel>
       <input pInputText class="w-full" id="description" formControlName="description" type="text" />
-      <label for="description">Description</label>
+      <label for="description">{{'incomes.create.description' | translate}}</label>
     </p-floatLabel>
   </div>
 
@@ -10,7 +10,7 @@
     <p-floatLabel>
       <p-inputNumber styleClass="w-full" class="w-full" [min]="0" formControlName="amount" inputId="amount"
         mode="currency" [currency]="(user$ | async)?.settings?.currency" locale="en-US" />
-      <label for="amount">Amount</label>
+      <label for="amount">{{'incomes.create.amount' | translate}}</label>
     </p-floatLabel>
   </div>
 
@@ -18,18 +18,18 @@
     <p-floatLabel>
       <p-dropdown formControlName="category" styleClass="w-full" class="w-full" inputId="category"
         [options]="categoryOptions" />
-      <label for="category">Category</label>
+      <label for="category">{{'incomes.categoryInput.label' | translate}}</label>
     </p-floatLabel>
   </div>
 
   <div class="field col-12 flex justify-content-center gap-3">
     <div class="field-checkbox">
       <p-radioButton inputId="onetime" [value]="false" formControlName="isRecurring" />
-      <label for="onetime">Onetime</label>
+      <label for="onetime">{{'incomes.create.type.onetime' | translate}}</label>
     </div>
     <div class="field-checkbox">
       <p-radioButton inputId="recurring" [value]="true" formControlName="isRecurring" />
-      <label for="recurring">Recurring</label>
+      <label for="recurring">{{'incomes.create.type.recurring' | translate}}</label>
     </div>
   </div>
 
@@ -38,7 +38,7 @@
       <p-floatLabel>
         <p-dropdown formControlName="recurringType" styleClass="w-full" class="w-full" inputId="recurringType"
           [options]="recurringTypeOptions" />
-        <label for="recurringType">Type</label>
+        <label for="recurringType">{{'incomes.create.recurringType' | translate}}</label>
       </p-floatLabel>
     </div>
 
@@ -46,20 +46,20 @@
       <p-floatLabel>
         <p-calendar class="w-full" styleClass="w-full" inputId="startDate" formControlName="startDate"
           [showIcon]="true" />
-        <label for="startDate">Start date</label>
+        <label for="startDate">{{'incomes.create.startDate' | translate}}</label>
       </p-floatLabel>
     </div>
 
     <div class="field col-12 lg:col-4">
       <p-floatLabel>
         <p-calendar class="w-full" styleClass="w-full" inputId="endDate" formControlName="endDate" [showIcon]="true" />
-        <label for="endDate">End date</label>
+        <label for="endDate">{{'incomes.create.endDate' | translate}}</label>
       </p-floatLabel>
     </div>
   </ng-container>
 
   <div class="col-12 flex justify-content-end">
-    <p-button label="Create" icon="pi pi-wallet" (onClick)="submit()" [loading]="false"
+    <p-button label="{{'buttons.create' | translate}}" icon="pi pi-wallet" (onClick)="submit()" [loading]="false"
       [disabled]="!formGroup.valid"></p-button>
   </div>
 </form>

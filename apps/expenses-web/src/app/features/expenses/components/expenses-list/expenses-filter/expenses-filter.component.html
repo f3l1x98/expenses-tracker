@@ -1,14 +1,15 @@
 <form [formGroup]="formGroup" class="formgrid grid">
-    <div class="field col-12 lg:col-8">
-        <p-floatLabel>
-            <input pInputText class="w-full" formControlName="description" type="text" />
-            <label for="description">Description</label>
-        </p-floatLabel>
-    </div>
-    <div class="field col-6 lg:col-2">
-        <app-expense-category-dropdown formControlName="category"></app-expense-category-dropdown>
-    </div>
-    <div class="field col-6 lg:col-2">
-        <app-date-range-picker formControlName="dateRange" label="Date range"></app-date-range-picker>
-    </div>
+  <div class="field col-12 lg:col-8">
+    <p-floatLabel>
+      <input pInputText class="w-full" formControlName="description" type="text" />
+      <label for="description">{{'expenses.filter.description' | translate}}</label>
+    </p-floatLabel>
+  </div>
+  <div class="field col-6 lg:col-2">
+    <app-expense-category-dropdown formControlName="category"></app-expense-category-dropdown>
+  </div>
+  <div class="field col-6 lg:col-2">
+    <app-date-range-picker formControlName="dateRange"
+      label="{{'expenses.filter.dateRange' | translate}}"></app-date-range-picker>
+  </div>
 </form>

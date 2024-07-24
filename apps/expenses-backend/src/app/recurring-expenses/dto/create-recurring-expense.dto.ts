@@ -10,7 +10,6 @@ import {
   IsString,
 } from 'class-validator';
 import { IsAfterDate } from '../../utils/is-after-date';
-import { IsValidCron } from '../../utils/is-valid-cron';
 import { ExpenseCategory, ICreateRecurringExpenseDto } from 'expenses-shared';
 import { RecurringType } from 'libs/expenses-shared/src/lib/shared/recurring-type.enum';
 

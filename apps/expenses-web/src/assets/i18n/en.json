@@ -1,0 +1,154 @@
+{
+  "title": "Expense Tracker",
+  "sidebar": {
+    "items": {
+      "home": "Home",
+      "expenses": "Expense",
+      "incomes": "Income",
+      "settings": "Settings"
+    },
+    "logout": "Logout"
+  },
+  "actionMenu": {
+    "items": {
+      "edit": "Edit",
+      "delete": "Delete"
+    }
+  },
+  "buttons": {
+    "create": "Create",
+    "leave": "Leave",
+    "cancel": "Cancel"
+  },
+  "filter": {
+    "dateRangePicker": {
+      "placeholder": "Filter date range"
+    }
+  },
+  "dialogs": {
+    "unsafedData": {
+      "header": "Confirmation",
+      "message": "You have unsafed data. Are you sure that you want to proceed?"
+    },
+    "delete": {
+      "header": "Delete Confirmation",
+      "message": "Do you want to delete {item}?"
+    }
+  },
+  "home": {
+    "title": "Home",
+    "noData": "No Data",
+    "currentMonth": {
+      "totalExpenseCard": {
+        "header": "This months expense"
+      },
+      "totalIncomeCard": {
+        "header": "This months income"
+      },
+      "balanceCard": {
+        "header": "Balance"
+      }
+    },
+    "perCategory": {
+      "header": "Expenses per category"
+    },
+    "perMonth": {
+      "header": "Expenses per month"
+    }
+  },
+  "expenses": {
+    "title": "Expenses",
+    "createHeader": "Create new",
+    "filter": {
+      "description": "Description",
+      "dateRange": "Date range"
+    },
+    "categoryInput": {
+      "label": "Category",
+      "placeholder": "Please select a category"
+    },
+    "create": {
+      "description": "Description",
+      "amount": "Amount",
+      "type": {
+        "onetime": "Onetime",
+        "recurring": "Recurring"
+      },
+      "recurringType": "Type",
+      "startDate": "Start date",
+      "endDate": "End date"
+    }
+  },
+  "incomes": {
+    "title": "Income",
+    "createHeader": "Create new",
+    "categoryInput": {
+      "label": "Category",
+      "placeholder": "Please select a category"
+    },
+    "create": {
+      "description": "Description",
+      "amount": "Amount",
+      "type": {
+        "onetime": "Onetime",
+        "recurring": "Recurring"
+      },
+      "recurringType": "Type",
+      "startDate": "Start date",
+      "endDate": "End date"
+    },
+    "filter": {
+      "description": "Description",
+      "dateRange": "Date range"
+    }
+  },
+  "user": {
+    "login": {
+      "username": "Username",
+      "password": "Password",
+      "buttons": {
+        "login": "Login",
+        "register": "Register"
+      }
+    },
+    "register": {
+      "credentials": {
+        "header": "Credentials",
+        "title": "Create your account",
+        "form": {
+          "username": {
+            "label": "Username",
+            "placeholder": "Username"
+          },
+          "password": {
+            "label": "Password",
+            "placeholder": "Password"
+          },
+          "confirmPassword": {
+            "label": "Confirm Password",
+            "placeholder": "Confirm Password"
+          }
+        }
+      },
+      "settings": {
+        "header": "Settings",
+        "title": "Setup your account",
+        "form": {
+          "currency": "TODO CURRENCY"
+        }
+      },
+      "buttons": {
+        "next": "Next",
+        "back": "Back",
+        "register": "Register"
+      },
+      "success": {
+        "title": "Successfully created the account",
+        "message": {
+          "text": "You can now",
+          "button": "login"
+        }
+      }
+    }
+  }
+}
