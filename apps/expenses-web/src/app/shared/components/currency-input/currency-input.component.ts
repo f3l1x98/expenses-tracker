@@ -16,6 +16,7 @@ import { Currency, currencies } from './currencys';
 @Component({
   selector: 'app-currency-input',
   templateUrl: 'currency-input.component.html',
+  styleUrls: ['./currency-input.component.scss'],
   standalone: true,
   imports: [
     FloatLabelModule,
