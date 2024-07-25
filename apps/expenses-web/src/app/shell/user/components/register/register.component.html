@@ -51,10 +51,7 @@
           </div>
           <form class="formgrid grid" [formGroup]="settingsFormGroup">
             <div class="mb-5 field col-12">
-              <p-floatLabel>
-                <input pInputText class="w-full" id="currency" formControlName="currency" type="text" />
-                <label for="currency">{{'user.register.settings.form.currency' | translate}}</label>
-              </p-floatLabel>
+              <app-currency-input formControlName="currency"></app-currency-input>
             </div>
           </form>
           <div class="flex pt-4 justify-content-between">

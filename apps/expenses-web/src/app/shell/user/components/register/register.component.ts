@@ -23,6 +23,8 @@ import { ComponentCanDeactivate } from '../../../../shared/guards/pending-change
 import { ConfirmationService } from 'primeng/api';
 import { PendingChangesDialogComponent } from '../../../../shared/components/pending-changes-dialog/pending-changes-dialog.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { CurrencyInputComponent } from '../../../../shared/components/currency-input/currency-input.component';
+import { Currency } from 'apps/expenses-web/src/app/shared/components/currency-input/currencys';
 
 @Component({
   selector: 'app-register',
@@ -40,6 +42,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
     ButtonModule,
     PendingChangesDialogComponent,
     TranslateModule,
+    CurrencyInputComponent,
   ],
   providers: [ConfirmationService],
 })
@@ -98,7 +101,9 @@ export class RegisterComponent
       ]),
     });
     this.settingsFormGroup = this.formBuilder.group({
-      currency: new FormControl('', [Validators.required]),
+      currency: new FormControl<Currency | undefined>(undefined, [
+        Validators.required,
+      ]),
     });
     this.userService.registerStatus$
       .pipe(takeUntil(this.destroy$))
@@ -127,11 +132,15 @@ export class RegisterComponent
   register() {
     if (!this.credentialsFormGroup.valid || !this.settingsFormGroup.valid)
       return;
+
+    const currency = this.settingsFormGroup.get('currency')?.value as
+      | Currency
+      | undefined;
     this.userService.register({
       password: this.credentialsFormGroup.get('password')?.value,
       username: this.credentialsFormGroup.get('username')?.value,
       settings: {
-        currency: this.settingsFormGroup.get('currency')?.value,
+        currency: currency?.code ?? '',
       },
     });
   }
