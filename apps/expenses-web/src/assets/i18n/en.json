@@ -20,6 +20,9 @@
     "leave": "Leave",
     "cancel": "Cancel"
   },
+  "currencyInput": {
+    "label": "Currency"
+  },
   "filter": {
     "dateRangePicker": {
       "placeholder": "Filter date range"
