@@ -5,24 +5,25 @@
       else registrationSuccess
     ">
     <p-stepper [linear]="true">
-      <p-stepperPanel header="{{'user.register.header' | translate}}">
+      <p-stepperPanel header="{{'user.register.credentials.header' | translate}}">
         <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
           <div class="text-center mt-3 mb-4 text-xl font-semibold">
-            {{'user.register.title' | translate}}
+            {{'user.register.credentials.title' | translate}}
           </div>
           <form class="formgrid grid" [formGroup]="credentialsFormGroup">
             <div class="mb-5 field col-12">
               <p-floatLabel>
                 <input pInputText class="w-full" id="username" formControlName="username" type="text" />
-                <label for="username">{{'user.register.form.username.label' | translate}}</label>
+                <label for="username">{{'user.register.credentials.form.username.label' | translate}}</label>
               </p-floatLabel>
             </div>
 
             <div class="mb-5 field col-12">
               <p-floatLabel>
                 <p-password inputStyleClass="w-full" styleClass="w-full" inputId="password" formControlName="password"
-                  [toggleMask]="true" placeholder="{{'user.register.form.password.placeholder' | translate}}" />
-                <label for="password">{{'user.register.form.password.label' | translate}}</label>
+                  [toggleMask]="true"
+                  placeholder="{{'user.register.credentials.form.password.placeholder' | translate}}" />
+                <label for="password">{{'user.register.credentials.form.password.label' | translate}}</label>
               </p-floatLabel>
             </div>
 
@@ -30,28 +31,29 @@
               <p-floatLabel>
                 <p-password inputStyleClass="w-full" styleClass="w-full" inputId="confirmPassword"
                   formControlName="confirmPassword" [toggleMask]="true" [feedback]="false"
-                  placeholder="{{'user.register.form.confirmPassword.placeholder' | translate}}" />
-                <label for="confirmPassword">{{'user.register.form.confirmPassword.label' | translate}}</label>
+                  placeholder="{{'user.register.credentials.form.confirmPassword.placeholder' | translate}}" />
+                <label for="confirmPassword">{{'user.register.credentials.form.confirmPassword.label' |
+                  translate}}</label>
               </p-floatLabel>
             </div>
           </form>
           <div class="flex pt-4 justify-content-between">
             <p-button label="{{'buttons.cancel' | translate}}" [link]="true" routerLink="/auth/login" />
-            <p-button (onClick)="nextCallback.emit()" label="{{'user.register.next' | translate}}"
+            <p-button (onClick)="nextCallback.emit()" label="{{'user.register.buttons.next' | translate}}"
               icon="pi pi-arrow-right" iconPos="right" [disabled]="!credentialsFormGroup.valid" />
           </div>
         </ng-template>
       </p-stepperPanel>
-      <p-stepperPanel header="{{'user.register.header' | translate}}">
+      <p-stepperPanel header="{{'user.register.settings.header' | translate}}">
         <ng-template pTemplate="content" let-prevCallback="prevCallback" let-index="index">
           <div class="text-center mt-3 mb-4 text-xl font-semibold">
-            {{'user.register.title' | translate}}
+            {{'user.register.settings.title' | translate}}
           </div>
           <form class="formgrid grid" [formGroup]="settingsFormGroup">
             <div class="mb-5 field col-12">
               <p-floatLabel>
                 <input pInputText class="w-full" id="currency" formControlName="currency" type="text" />
-                <label for="currency">{{'user.register.form.currency' | translate}}</label>
+                <label for="currency">{{'user.register.settings.form.currency' | translate}}</label>
               </p-floatLabel>
             </div>
           </form>
