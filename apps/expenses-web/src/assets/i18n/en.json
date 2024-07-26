@@ -20,6 +20,9 @@
     "leave": "Leave",
     "cancel": "Cancel"
   },
+  "currencyInput": {
+    "label": "Currency"
+  },
   "filter": {
     "dateRangePicker": {
       "placeholder": "Filter date range"
@@ -136,10 +139,7 @@
       },
       "settings": {
         "header": "Settings",
-        "title": "Setup your account",
-        "form": {
-          "currency": "TODO CURRENCY"
-        }
+        "title": "Setup your account"
       },
       "buttons": {
         "next": "Next",

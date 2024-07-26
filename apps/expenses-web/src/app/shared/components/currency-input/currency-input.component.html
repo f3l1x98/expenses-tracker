@@ -1,0 +1,6 @@
+<p-floatLabel>
+    <p-autoComplete inputStyleClass="w-full" class="w-full" [ngModel]="value" [suggestions]="suggestions"
+        (completeMethod)="search($event)" field="currency" [forceSelection]="true" [disabled]="disabled"
+        inputId="currency" (onSelect)="valueChanged($event.value)" />
+    <label for="currency">{{'currencyInput.label' | translate}}</label>
+</p-floatLabel>
