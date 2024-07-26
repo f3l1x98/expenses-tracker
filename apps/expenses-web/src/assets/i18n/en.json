@@ -139,10 +139,7 @@
       },
       "settings": {
         "header": "Settings",
-        "title": "Setup your account",
-        "form": {
-          "currency": "TODO CURRENCY"
-        }
+        "title": "Setup your account"
       },
       "buttons": {
         "next": "Next",
