@@ -9,7 +9,8 @@ import { EffectsModule } from '@ngrx/effects';
 import {
   HTTP_INTERCEPTORS,
   HttpClient,
-  HttpClientModule,
+  provideHttpClient,
+  withInterceptorsFromDi,
 } from '@angular/common/http';
 import { AuthInterceptor } from './core/auth/auth.interceptor';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -26,9 +27,6 @@ function HttpLoaderFactory(http: HttpClient) {
 @NgModule({
   declarations: [AppComponent],
   exports: [],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-  ],
   bootstrap: [AppComponent],
   imports: [
     AppRoutingModule,
@@ -36,7 +34,6 @@ function HttpLoaderFactory(http: HttpClient) {
     UserModule,
     CommonModule,
     BrowserModule,
-    HttpClientModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({
@@ -57,6 +54,10 @@ function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient],
       },
     }),
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    provideHttpClient(withInterceptorsFromDi()),
   ],
 })
 export class AppModule {}
