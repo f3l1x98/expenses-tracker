@@ -12,7 +12,7 @@ import { UserEntity } from '../../users/entities/user.entity';
 import { IRecurringIncome, IncomeCategory } from 'expenses-shared';
 import { RecurringType } from 'libs/expenses-shared/src/lib/shared/recurring-type.enum';
 import { Exclude, Expose } from 'class-transformer';
-import { parseExpression } from 'cron-parser';
+import { CronExpressionParser } from 'cron-parser';
 
 @Entity()
 export class RecurringIncomeEntity implements IRecurringIncome {
@@ -69,7 +69,7 @@ export class RecurringIncomeEntity implements IRecurringIncome {
   })
   @Expose()
   get nextExecution(): Date {
-    const interval = parseExpression(this.cron, {
+    const interval = CronExpressionParser.parse(this.cron, {
       currentDate: this.startDate ?? new Date(),
     });
     return new Date(interval.next().toDate().toDateString());

@@ -10,8 +10,8 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 import { UserEntity } from '../../users/entities/user.entity';
 import { ExpenseCategory, IRecurringExpense } from 'expenses-shared';
-import { RecurringType } from 'libs/expenses-shared/src/lib/shared/recurring-type.enum';
-import { parseExpression } from 'cron-parser';
+import { RecurringType } from 'expenses-shared';
+import { CronExpressionParser } from 'cron-parser';
 import { Exclude, Expose } from 'class-transformer';
 
 @Entity()
@@ -70,7 +70,7 @@ export class RecurringExpenseEntity implements IRecurringExpense {
   })
   @Expose()
   get nextExecution(): Date {
-    const interval = parseExpression(this.cron, {
+    const interval = CronExpressionParser.parse(this.cron, {
       currentDate: this.startDate ?? new Date(),
     });
     return new Date(interval.next().toDate().toDateString());
