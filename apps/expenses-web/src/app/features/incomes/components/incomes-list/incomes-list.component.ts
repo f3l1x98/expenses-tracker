@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-incomes-list',
   templateUrl: 'incomes-list.component.html',
   styleUrls: ['./incomes-list.component.scss'],
+  standalone: false,
 })
 export class IncomesListComponent implements OnInit, OnDestroy {
   actionMenuItems$: BehaviorSubject<MenuItem[]> = new BehaviorSubject(

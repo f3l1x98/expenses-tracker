@@ -11,7 +11,7 @@ import {
 } from 'class-validator';
 import { IsAfterDate } from '../../utils/is-after-date';
 import { ExpenseCategory, ICreateRecurringExpenseDto } from 'expenses-shared';
-import { RecurringType } from 'libs/expenses-shared/src/lib/shared/recurring-type.enum';
+import { RecurringType } from 'expenses-shared';
 
 export class CreateRecurringExpenseDto implements ICreateRecurringExpenseDto {
   @ApiProperty({

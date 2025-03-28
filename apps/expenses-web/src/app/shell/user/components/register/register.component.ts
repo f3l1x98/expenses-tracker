@@ -24,12 +24,11 @@ import { ConfirmationService } from 'primeng/api';
 import { PendingChangesDialogComponent } from '../../../../shared/components/pending-changes-dialog/pending-changes-dialog.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CurrencyInputComponent } from '../../../../shared/components/currency-input/currency-input.component';
-import { Currency } from 'apps/expenses-web/src/app/shared/components/currency-input/currencys';
+import { Currency } from '../../../../shared/components/currency-input/currencys';
 
 @Component({
   selector: 'app-register',
   templateUrl: 'register.component.html',
-  standalone: true,
   imports: [
     RouterModule,
     CommonModule,

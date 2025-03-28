@@ -7,8 +7,8 @@
       </span>
       <p class="mb-0">{{ message.message }}</p>
       <div class="flex align-items-center justify-content-between gap-4 mt-4">
-        <p-button label="{{'buttons.cancel' | translate}}" outlined="true" (click)="cd.reject()" />
-        <p-button label="{{'buttons.leave' | translate}}" (click)="cd.accept()" />
+        <p-button label="{{'buttons.cancel' | translate}}" outlined="true" (click)="cd.onReject()" />
+        <p-button label="{{'buttons.leave' | translate}}" (click)="cd.onAccept()" />
       </div>
     </div>
   </ng-template>

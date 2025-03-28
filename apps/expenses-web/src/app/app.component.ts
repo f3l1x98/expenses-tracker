@@ -13,6 +13,7 @@ import { SpinnerService } from './shell/spinner/spinner.service';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
+  standalone: false,
 })
 export class AppComponent implements OnInit, OnDestroy {
   private destory$ = new Subject<void>();

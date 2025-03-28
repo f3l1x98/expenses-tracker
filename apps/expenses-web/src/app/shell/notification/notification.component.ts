@@ -9,7 +9,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @Component({
   selector: 'app-notification',
   templateUrl: 'notification.component.html',
-  standalone: true,
   imports: [ToastModule, MessagesModule, BrowserAnimationsModule],
   providers: [MessageService],
 })

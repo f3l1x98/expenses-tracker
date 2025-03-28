@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-recurring-expenses-list',
   templateUrl: 'recurring-expenses-list.component.html',
   styleUrls: ['./recurring-expenses-list.component.scss'],
+  standalone: false,
 })
 export class RecurringExpensesListComponent implements OnInit, OnDestroy {
   actionMenuItems$: BehaviorSubject<MenuItem[]> = new BehaviorSubject(

@@ -11,11 +11,12 @@ import { ExpensesService } from '../../expenses.service';
 import { RecurringExpensesService } from '../../recurring-expenses.service';
 import { validateDateAfter } from '../../../../shared/validators/validate-date-after';
 import { UserService } from '../../../../shell/user/user.service';
-import { RecurringType } from 'libs/expenses-shared/src/lib/shared/recurring-type.enum';
+import { RecurringType } from 'expenses-shared';
 
 @Component({
   selector: 'app-expense-create',
   templateUrl: 'expense-create.component.html',
+  standalone: false,
 })
 export class ExpenseCreateComponent implements OnInit, OnDestroy {
   formGroup!: FormGroup;

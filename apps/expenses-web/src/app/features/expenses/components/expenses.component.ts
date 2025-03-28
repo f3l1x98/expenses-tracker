@@ -4,5 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-expenses',
   templateUrl: 'expenses.component.html',
   styleUrls: ['./expenses.component.scss'],
+  standalone: false,
 })
 export class ExpensesComponent {}

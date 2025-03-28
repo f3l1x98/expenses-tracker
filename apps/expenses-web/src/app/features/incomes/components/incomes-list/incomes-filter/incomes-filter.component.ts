@@ -22,7 +22,6 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-incomes-filter',
   templateUrl: 'incomes-filter.component.html',
-  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,

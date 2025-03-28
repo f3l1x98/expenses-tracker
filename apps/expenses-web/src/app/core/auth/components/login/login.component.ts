@@ -22,7 +22,6 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-login',
   templateUrl: 'login.component.html',
-  standalone: true,
   imports: [
     RouterModule,
     CommonModule,

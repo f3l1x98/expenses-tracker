@@ -19,6 +19,10 @@ import { NotificationComponent } from './shell/notification/notification.compone
 import { UserModule } from './shell/user/user.module';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+
+import { providePrimeNG } from 'primeng/config';
+import Aura from '@primeng/themes/aura';
 
 function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -56,6 +60,12 @@ function HttpLoaderFactory(http: HttpClient) {
     }),
   ],
   providers: [
+    provideAnimationsAsync(),
+    providePrimeNG({
+      theme: {
+        preset: Aura,
+      },
+    }),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     provideHttpClient(withInterceptorsFromDi()),
   ],

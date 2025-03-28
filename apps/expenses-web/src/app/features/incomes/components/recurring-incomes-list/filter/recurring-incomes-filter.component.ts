@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -7,8 +7,8 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { AppDateRangePickerComponent } from 'apps/expenses-web/src/app/shared/components/app-date-range-picker/app-date-range-picker.component';
-import { RecurringTypeDropdownComponent } from 'apps/expenses-web/src/app/shared/components/recurring-type-dropdown/recurring-type-dropdown.component';
+import { AppDateRangePickerComponent } from '../../../../../shared/components/app-date-range-picker/app-date-range-picker.component';
+import { RecurringTypeDropdownComponent } from '../../../../../shared/components/recurring-type-dropdown/recurring-type-dropdown.component';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { IncomeCategoryDropdownComponent } from '../../income-category-dropdown/income-category-dropdown.component';
@@ -24,7 +24,6 @@ import { RecurringIncomesService } from '../../../recurring-incomes.service';
 @Component({
   selector: 'app-recurring-incomes-filter',
   templateUrl: 'recurring-incomes-filter.component.html',
-  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -36,7 +35,7 @@ import { RecurringIncomesService } from '../../../recurring-incomes.service';
     RecurringTypeDropdownComponent,
   ],
 })
-export class RecurringIncomesFilterComponent implements OnInit {
+export class RecurringIncomesFilterComponent implements OnInit, OnDestroy {
   formGroup!: FormGroup;
 
   private destroy$ = new Subject<void>();

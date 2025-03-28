@@ -9,6 +9,7 @@ import { ConfirmationService, MenuItem } from 'primeng/api';
   selector: 'app-recurring-incomes-list',
   templateUrl: 'recurring-incomes-list.component.html',
   styleUrls: ['./recurring-incomes-list.component.scss'],
+  standalone: false,
 })
 export class RecurringIncomesListComponent implements OnInit, OnDestroy {
   actionMenuItems$: BehaviorSubject<MenuItem[]> = new BehaviorSubject(

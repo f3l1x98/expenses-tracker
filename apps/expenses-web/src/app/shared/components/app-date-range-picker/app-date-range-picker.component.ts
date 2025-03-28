@@ -19,7 +19,6 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-date-range-picker',
   templateUrl: 'app-date-range-picker.component.html',
-  standalone: true,
   imports: [
     CommonModule,
     CalendarModule,

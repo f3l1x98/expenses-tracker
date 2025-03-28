@@ -10,7 +10,7 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 import { UserEntity } from '../../users/entities/user.entity';
 import { IRecurringIncome, IncomeCategory } from 'expenses-shared';
-import { RecurringType } from 'libs/expenses-shared/src/lib/shared/recurring-type.enum';
+import { RecurringType } from 'expenses-shared';
 import { Exclude, Expose } from 'class-transformer';
 import { CronExpressionParser } from 'cron-parser';
 

@@ -12,7 +12,6 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 @Component({
   selector: 'app-expense-category-dropdown',
   templateUrl: 'expense-category-dropdown.component.html',
-  standalone: true,
   imports: [
     FloatLabelModule,
     DropdownModule,
