@@ -7,7 +7,7 @@ import { CurrentMonthDataDto } from 'expenses-shared';
 import { AppContentWrapperComponent } from '../../../shared/components/app-content-wrapper/app-content-wrapper.component';
 import { AppDateRangePickerComponent } from '../../../shared/components/app-date-range-picker/app-date-range-picker.component';
 import { Card, CardModule } from 'primeng/card';
-import { NgIf, AsyncPipe, CommonModule } from '@angular/common';
+import { NgIf, AsyncPipe } from '@angular/common';
 import { HighlightNegativeCurrencyDirective } from '../../../shared/directives/highlight-negative-currency.directive';
 import { ChartModule, UIChart } from 'primeng/chart';
 import { NoDataComponent } from './no-data/no-data.component';
@@ -55,11 +55,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--text-color');
-    const textColorSecondary = documentStyle.getPropertyValue(
-      '--text-color-secondary',
-    );
-    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+    const textColor = documentStyle.getPropertyValue('--p-text-color');
+    const surfaceBorder = documentStyle.getPropertyValue('--p-surface-700');
+
+    console.log(surfaceBorder);
 
     this.currentMonthDataData$ = this.homeService.currentMonthData$.pipe(
       takeUntil(this.destory$),
@@ -95,7 +94,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           } else {
             return {
               aspectRatio: 1.4,
-              borderColor: textColorSecondary,
+              borderColor: textColor,
               plugins: {
                 tooltip: {
                   callbacks: {
@@ -141,7 +140,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               {
                 data: data.map((entry) => entry.amount),
                 fill: false,
-                borderColor: documentStyle.getPropertyValue('--blue-500'),
+                borderColor: documentStyle.getPropertyValue('--p-blue-500'),
                 tension: 0.4,
               },
             ],
@@ -163,7 +162,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       scales: {
         x: {
           ticks: {
-            color: textColorSecondary,
+            color: textColor,
           },
           grid: {
             color: surfaceBorder,
@@ -171,7 +170,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         },
         y: {
           ticks: {
-            color: textColorSecondary,
+            color: textColor,
           },
           grid: {
             color: surfaceBorder,
