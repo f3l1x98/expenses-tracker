@@ -3,7 +3,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({
   name: 'formatCurrency',
   pure: true,
-  standalone: false,
 })
 export class FormatCurrencyPipe implements PipeTransform {
   transform(value: number, currency: string): string {

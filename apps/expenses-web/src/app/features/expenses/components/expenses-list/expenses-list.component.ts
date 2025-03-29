@@ -4,12 +4,29 @@ import { SpinnerService } from '../../../../shell/spinner/spinner.service';
 import { ExpensesService } from '../../expenses.service';
 import { ConfirmationService, MenuItem } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
+import { DataView } from 'primeng/dataview';
+import { ExpensesFilterComponent } from './expenses-filter/expenses-filter.component';
+import { NgFor, NgClass, AsyncPipe } from '@angular/common';
+import { Menu } from 'primeng/menu';
+import { Button } from 'primeng/button';
+import { FormatDatePipe } from '../../../../shared/pipes/format-date.pipe';
+import { FormatCurrencyPipe } from '../../../../shared/pipes/format-currency.pipe';
 
 @Component({
   selector: 'app-expenses-list',
   templateUrl: 'expenses-list.component.html',
   styleUrls: ['./expenses-list.component.scss'],
-  standalone: false,
+  imports: [
+    DataView,
+    ExpensesFilterComponent,
+    NgFor,
+    NgClass,
+    Menu,
+    Button,
+    AsyncPipe,
+    FormatDatePipe,
+    FormatCurrencyPipe,
+  ],
 })
 export class ExpensesListComponent implements OnInit, OnDestroy {
   actionMenuItems$: BehaviorSubject<MenuItem[]> = new BehaviorSubject(

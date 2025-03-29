@@ -3,7 +3,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({
   name: 'capitalize',
   pure: true,
-  standalone: false,
 })
 export class CapitalizePipe implements PipeTransform {
   transform(value: string): string {

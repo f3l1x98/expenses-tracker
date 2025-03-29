@@ -8,6 +8,7 @@
 
   <div class="field col-12 lg:col-2">
     <p-floatLabel>
+      <!--TODO (user$ | async)?.settings?.currency undefined for a short time-->
       <p-inputNumber styleClass="w-full" class="w-full" [min]="0" formControlName="amount" inputId="amount"
         mode="currency" [currency]="(user$ | async)?.settings?.currency" locale="en-US" />
       <label for="amount">{{'expenses.create.amount' | translate}}</label>

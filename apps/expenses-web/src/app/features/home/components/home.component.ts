@@ -4,12 +4,38 @@ import { Observable, Subject, map, of, takeUntil } from 'rxjs';
 import { DateRange } from '../../../shared/interfaces/date-range.interface';
 import { HomeService } from '../home.service';
 import { CurrentMonthDataDto } from 'expenses-shared';
+import { AppContentWrapperComponent } from '../../../shared/components/app-content-wrapper/app-content-wrapper.component';
+import { AppDateRangePickerComponent } from '../../../shared/components/app-date-range-picker/app-date-range-picker.component';
+import { Card, CardModule } from 'primeng/card';
+import { NgIf, AsyncPipe, CommonModule } from '@angular/common';
+import { HighlightNegativeCurrencyDirective } from '../../../shared/directives/highlight-negative-currency.directive';
+import { ChartModule, UIChart } from 'primeng/chart';
+import { NoDataComponent } from './no-data/no-data.component';
+import { FormatCurrencyPipe } from '../../../shared/pipes/format-currency.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { FormsModule } from '@angular/forms';
+import { CalendarModule } from 'primeng/calendar';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.component.html',
   styleUrls: ['./home.component.scss'],
-  standalone: false,
+  imports: [
+    AppContentWrapperComponent,
+    AppDateRangePickerComponent,
+    Card,
+    NgIf,
+    HighlightNegativeCurrencyDirective,
+    UIChart,
+    NoDataComponent,
+    AsyncPipe,
+    FormatCurrencyPipe,
+    TranslateModule,
+    ChartModule,
+    CardModule,
+    CalendarModule,
+    FormsModule,
+  ],
 })
 export class HomeComponent implements OnInit, OnDestroy {
   currentMonthDataData$!: Observable<CurrentMonthDataDto | undefined>;

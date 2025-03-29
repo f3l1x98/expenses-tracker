@@ -1,9 +1,6 @@
 import { AfterViewInit, Directive, ElementRef, Renderer2 } from '@angular/core';
 
-@Directive({
-  selector: '[appHighlightNegativeCurrency]',
-  standalone: false,
-})
+@Directive({ selector: '[appHighlightNegativeCurrency]' })
 export class HighlightNegativeCurrencyDirective implements AfterViewInit {
   constructor(
     private el: ElementRef,

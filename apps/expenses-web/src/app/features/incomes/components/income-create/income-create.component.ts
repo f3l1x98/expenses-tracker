@@ -4,6 +4,7 @@ import {
   FormControl,
   FormGroup,
   Validators,
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { IncomesService } from '../../incomes.service';
@@ -12,11 +13,32 @@ import { validateDateAfter } from '../../../../shared/validators/validate-date-a
 import { UserService } from '../../../../shell/user/user.service';
 import { IncomeCategory } from 'expenses-shared';
 import { RecurringType } from 'expenses-shared';
+import { FloatLabel } from 'primeng/floatlabel';
+import { InputText } from 'primeng/inputtext';
+import { InputNumber } from 'primeng/inputnumber';
+import { DropdownModule } from 'primeng/dropdown';
+import { RadioButton } from 'primeng/radiobutton';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { Calendar } from 'primeng/calendar';
+import { Button } from 'primeng/button';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-income-create',
   templateUrl: 'income-create.component.html',
-  standalone: false,
+  imports: [
+    ReactiveFormsModule,
+    FloatLabel,
+    InputText,
+    InputNumber,
+    DropdownModule,
+    RadioButton,
+    NgIf,
+    Calendar,
+    Button,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class IncomeCreateComponent implements OnInit, OnDestroy {
   formGroup!: FormGroup;

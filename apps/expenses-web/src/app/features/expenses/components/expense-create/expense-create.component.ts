@@ -4,6 +4,7 @@ import {
   FormControl,
   FormGroup,
   Validators,
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { ExpenseCategory } from 'expenses-shared';
 import { Subject } from 'rxjs';
@@ -12,11 +13,34 @@ import { RecurringExpensesService } from '../../recurring-expenses.service';
 import { validateDateAfter } from '../../../../shared/validators/validate-date-after';
 import { UserService } from '../../../../shell/user/user.service';
 import { RecurringType } from 'expenses-shared';
+import { FloatLabel } from 'primeng/floatlabel';
+import { InputText } from 'primeng/inputtext';
+import { InputNumber } from 'primeng/inputnumber';
+import { ExpenseCategoryDropdownComponent } from '../expense-category-dropdown/expense-category-dropdown.component';
+import { RadioButton } from 'primeng/radiobutton';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { DropdownModule } from 'primeng/dropdown';
+import { Calendar } from 'primeng/calendar';
+import { Button } from 'primeng/button';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-expense-create',
   templateUrl: 'expense-create.component.html',
-  standalone: false,
+  imports: [
+    ReactiveFormsModule,
+    FloatLabel,
+    InputText,
+    InputNumber,
+    ExpenseCategoryDropdownComponent,
+    RadioButton,
+    NgIf,
+    DropdownModule,
+    Calendar,
+    Button,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class ExpenseCreateComponent implements OnInit, OnDestroy {
   formGroup!: FormGroup;

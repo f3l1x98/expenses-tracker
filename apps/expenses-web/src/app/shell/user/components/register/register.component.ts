@@ -18,7 +18,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { UserService } from '../../user.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { RouterModule } from '@angular/router';
+import { RouterLinkWithHref } from '@angular/router';
 import { ComponentCanDeactivate } from '../../../../shared/guards/pending-changes.guard';
 import { ConfirmationService } from 'primeng/api';
 import { PendingChangesDialogComponent } from '../../../../shared/components/pending-changes-dialog/pending-changes-dialog.component';
@@ -30,7 +30,7 @@ import { Currency } from '../../../../shared/components/currency-input/currencys
   selector: 'app-register',
   templateUrl: 'register.component.html',
   imports: [
-    RouterModule,
+    RouterLinkWithHref,
     CommonModule,
     CardModule,
     StepperModule,
