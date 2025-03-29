@@ -8,5 +8,6 @@
 
 <ng-template [ngIf]="!label">
   <p-datepicker [(ngModel)]="calenderValue" selectionMode="range" dateFormat="dd/mm/yy" [showClear]="showClear"
-    (onSelect)="valueChanged()" inputId="dateRange" />
+    placeholder="{{'filter.dateRangePicker.placeholder' | translate}}" (onSelect)="valueChanged()"
+    inputId="dateRange" />
 </ng-template>

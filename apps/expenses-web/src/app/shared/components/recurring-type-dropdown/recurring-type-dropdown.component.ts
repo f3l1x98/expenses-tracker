@@ -1,8 +1,8 @@
 import { Component, Input, forwardRef } from '@angular/core';
 import {
   ControlValueAccessor,
+  FormsModule,
   NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { RecurringType } from 'expenses-shared';
@@ -12,12 +12,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 @Component({
   selector: 'app-recurring-type-dropdown',
   templateUrl: 'recurring-type-dropdown.component.html',
-  imports: [
-    FloatLabelModule,
-    SelectModule,
-    ReactiveFormsModule,
-    TranslateModule,
-  ],
+  imports: [FloatLabelModule, SelectModule, TranslateModule, FormsModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
