@@ -30,6 +30,7 @@ import { Currency } from '../../../../shared/components/currency-input/currencys
   selector: 'app-register',
   templateUrl: 'register.component.html',
   imports: [
+    CommonModule,
     RouterLinkWithHref,
     CommonModule,
     CardModule,
