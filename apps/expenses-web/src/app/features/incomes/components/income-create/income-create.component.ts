@@ -16,10 +16,10 @@ import { RecurringType } from 'expenses-shared';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
 import { InputNumber } from 'primeng/inputnumber';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { RadioButton } from 'primeng/radiobutton';
 import { NgIf, AsyncPipe } from '@angular/common';
-import { Calendar } from 'primeng/calendar';
+import { DatePickerModule } from 'primeng/datepicker';
 import { Button } from 'primeng/button';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -31,10 +31,10 @@ import { TranslateModule } from '@ngx-translate/core';
     FloatLabel,
     InputText,
     InputNumber,
-    DropdownModule,
+    SelectModule,
     RadioButton,
+    DatePickerModule,
     NgIf,
-    Calendar,
     Button,
     AsyncPipe,
     TranslateModule,

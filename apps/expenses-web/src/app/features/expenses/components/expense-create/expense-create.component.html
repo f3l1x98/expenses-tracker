@@ -33,7 +33,7 @@
   <ng-container *ngIf="formGroup.controls['isRecurring'].value">
     <div class="field col-12 lg:col-4">
       <p-floatLabel>
-        <p-dropdown formControlName="recurringType" styleClass="w-full" class="w-full" inputId="recurringType"
+        <p-select formControlName="recurringType" styleClass="w-full" class="w-full" inputId="recurringType"
           [options]="recurringTypeOptions" />
         <label for="recurringType">{{'expenses.create.recurringType' | translate}}</label>
       </p-floatLabel>
@@ -41,7 +41,7 @@
 
     <div class="field col-12 lg:col-4">
       <p-floatLabel>
-        <p-calendar class="w-full" styleClass="w-full" inputId="startDate" formControlName="startDate"
+        <p-datepicker class="w-full" styleClass="w-full" inputId="startDate" formControlName="startDate"
           [showIcon]="true" />
         <label for="startDate">{{'expenses.create.startDate' | translate}}</label>
       </p-floatLabel>
@@ -49,7 +49,8 @@
 
     <div class="field col-12 lg:col-4">
       <p-floatLabel>
-        <p-calendar class="w-full" styleClass="w-full" inputId="endDate" formControlName="endDate" [showIcon]="true" />
+        <p-datepicker class="w-full" styleClass="w-full" inputId="endDate" formControlName="endDate"
+          [showIcon]="true" />
         <label for="endDate">{{'expenses.create.endDate' | translate}}</label>
       </p-floatLabel>
     </div>

@@ -6,7 +6,7 @@ import {
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ExpenseCategory } from 'expenses-shared';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { FloatLabelModule } from 'primeng/floatlabel';
 
 @Component({
@@ -14,7 +14,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
   templateUrl: 'expense-category-dropdown.component.html',
   imports: [
     FloatLabelModule,
-    DropdownModule,
+    SelectModule,
     ReactiveFormsModule,
     TranslateModule,
   ],

@@ -5,7 +5,7 @@ import {
   Output,
   forwardRef,
 } from '@angular/core';
-import { CalendarModule } from 'primeng/calendar';
+import { DatePickerModule } from 'primeng/datepicker';
 import { DateRange } from '../../interfaces/date-range.interface';
 import {
   ControlValueAccessor,
@@ -21,7 +21,7 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: 'app-date-range-picker.component.html',
   imports: [
     CommonModule,
-    CalendarModule,
+    DatePickerModule,
     FormsModule,
     FloatLabelModule,
     TranslateModule,

@@ -14,7 +14,6 @@ import { NoDataComponent } from './no-data/no-data.component';
 import { FormatCurrencyPipe } from '../../../shared/pipes/format-currency.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
-import { CalendarModule } from 'primeng/calendar';
 
 @Component({
   selector: 'app-home',
@@ -33,7 +32,6 @@ import { CalendarModule } from 'primeng/calendar';
     TranslateModule,
     ChartModule,
     CardModule,
-    CalendarModule,
     FormsModule,
   ],
 })

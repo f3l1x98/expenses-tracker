@@ -1,5 +1,5 @@
 <p-floatLabel>
-  <p-dropdown styleClass="w-full" class="w-full" inputId="category" [options]="options" [disabled]="disabled"
+  <p-select styleClass="w-full" class="w-full" inputId="category" [options]="options" [disabled]="disabled"
     [showClear]="showClear" placeholder="{{'incomes.categoryInput.placeholder' | translate}}"
     (onChange)="valueChanged($event.value)" />
   <label for="category">{{'incomes.categoryInput.label' | translate}}</label>
