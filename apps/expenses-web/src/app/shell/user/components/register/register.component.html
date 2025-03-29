@@ -4,14 +4,14 @@
       (registerStatus$ | async)?.status !== 'success';
       else registrationSuccess
     ">
-    <p-stepper [linear]="true">
+    <p-stepper [value]="1" [linear]="true">
       <p-step-list>
         <p-step [value]="1">{{'user.register.credentials.header' | translate}}</p-step>
         <p-step [value]="2">{{'user.register.settings.header' | translate}}</p-step>
       </p-step-list>
       <p-step-panels>
         <p-step-panel [value]="1">
-          <ng-template #content let-nextCallback="nextCallback" let-index="index">
+          <ng-template #content let-activateCallback="activateCallback" let-index="index">
             <div class="text-center mt-3 mb-4 text-xl font-semibold">
               {{'user.register.credentials.title' | translate}}
             </div>
@@ -44,13 +44,13 @@
             </form>
             <div class="flex pt-4 justify-content-between">
               <p-button label="{{'buttons.cancel' | translate}}" [link]="true" routerLink="/auth/login" />
-              <p-button (onClick)="nextCallback.emit()" label="{{'user.register.buttons.next' | translate}}"
+              <p-button (onClick)="activateCallback(2)" label="{{'user.register.buttons.next' | translate}}"
                 icon="pi pi-arrow-right" iconPos="right" [disabled]="!credentialsFormGroup.valid" />
             </div>
           </ng-template>
         </p-step-panel>
         <p-step-panel [value]="2">
-          <ng-template #content let-prevCallback="prevCallback" let-index="index">
+          <ng-template #content let-activateCallback="activateCallback" let-index="index">
             <div class="text-center mt-3 mb-4 text-xl font-semibold">
               {{'user.register.settings.title' | translate}}
             </div>
@@ -60,7 +60,7 @@
               </div>
             </form>
             <div class="flex pt-4 justify-content-between">
-              <p-button (onClick)="prevCallback.emit()" label="{{'user.register.buttons.back' | translate}}"
+              <p-button (onClick)="activateCallback(1)" label="{{'user.register.buttons.back' | translate}}"
                 icon="pi pi-arrow-left" />
               <p-button (onClick)="register()" label="{{'user.register.buttons.register' | translate}}"
                 icon="pi pi-user-plus" iconPos="right" [disabled]="!settingsFormGroup.valid" />
