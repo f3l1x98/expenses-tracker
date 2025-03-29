@@ -32,7 +32,6 @@ import { Currency } from '../../../../shared/components/currency-input/currencys
   imports: [
     CommonModule,
     RouterLinkWithHref,
-    CommonModule,
     CardModule,
     StepperModule,
     ReactiveFormsModule,
