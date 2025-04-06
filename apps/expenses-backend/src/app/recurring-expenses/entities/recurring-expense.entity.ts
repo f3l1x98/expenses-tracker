@@ -13,6 +13,7 @@ import { ExpenseCategory, IRecurringExpense } from 'expenses-shared';
 import { RecurringType } from 'expenses-shared';
 import { CronExpressionParser } from 'cron-parser';
 import { Exclude, Expose } from 'class-transformer';
+import { NumericColumnTransformer } from '../../shared/numeric_column_transformer';
 
 @Entity()
 export class RecurringExpenseEntity implements IRecurringExpense {
@@ -30,7 +31,13 @@ export class RecurringExpenseEntity implements IRecurringExpense {
   @Column({ nullable: false })
   description: string;
 
-  @Column({ nullable: false, type: 'decimal', scale: 2, precision: 12 })
+  @Column({
+    nullable: false,
+    type: 'decimal',
+    scale: 2,
+    precision: 12,
+    transformer: new NumericColumnTransformer(),
+  })
   amount!: number;
 
   // TODO strictly speaking repeated clothing expenses make no sense

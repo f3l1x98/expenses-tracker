@@ -11,6 +11,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { RecurringIncomeEntity } from '../../recurring-incomes/entities/recurring-income.entitiy';
 import { UserEntity } from '../../users/entities/user.entity';
 import { IIncome, IncomeCategory } from 'expenses-shared';
+import { NumericColumnTransformer } from '../../shared/numeric_column_transformer';
 
 @Entity()
 export class IncomeEntity implements IIncome {
@@ -28,7 +29,13 @@ export class IncomeEntity implements IIncome {
   @Column({ nullable: false })
   description: string;
 
-  @Column({ nullable: false, type: 'decimal', scale: 2, precision: 12 })
+  @Column({
+    nullable: false,
+    type: 'decimal',
+    scale: 2,
+    precision: 12,
+    transformer: new NumericColumnTransformer(),
+  })
   amount!: number;
 
   @ApiProperty({
