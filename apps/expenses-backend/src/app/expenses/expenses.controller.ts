@@ -105,18 +105,14 @@ export class ExpensesController {
     @Param('id') id: string,
     @Req() req: Request,
     @Body() updateExpenseDto: UpdateExpenseDto,
-  ) {
-    try {
-      await this.expensesService.update(
-        id,
-        (req.user as IUser).id,
-        updateExpenseDto,
-      );
-    } catch (e) {
-      if (e instanceof ExpenseNotFoundException) {
-        throw new NotFoundException();
-      }
-      throw e;
-    }
+  ): Promise<ExpenseEntity> {
+    return this.expensesService
+      .update(id, (req.user as IUser).id, updateExpenseDto)
+      .catch((e) => {
+        if (e instanceof ExpenseNotFoundException) {
+          throw new NotFoundException();
+        }
+        throw e;
+      });
   }
 }
