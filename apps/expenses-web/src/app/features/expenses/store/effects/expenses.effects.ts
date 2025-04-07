@@ -60,6 +60,31 @@ export class ExpensesEffect {
     ),
   );
 
+  updateUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PageActions.updateRequest),
+      switchMap((action) =>
+        of(ApiActions.updateStart({ id: action.id, request: action.request })),
+      ),
+    ),
+  );
+
+  update$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ApiActions.updateStart),
+      switchMap((action) =>
+        this.apiService.update$(action.id, action.request).pipe(
+          switchMap((result) =>
+            of(ApiActions.updateSuccess({ result }), ApiActions.loadStart()),
+          ),
+          catchError((error) =>
+            of(ApiActions.updateFailure({ id: action.id, error: error })),
+          ),
+        ),
+      ),
+    ),
+  );
+
   load$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ApiActions.loadStart),

@@ -2,7 +2,10 @@ import { createFeature, createReducer, on } from '@ngrx/store';
 import { ExpensesState } from '../interfaces/expenses.state';
 import * as ApiActions from '../actions/expenses-api.actions';
 import * as PageActions from '../actions/expenses-page.actions';
-import { StoreStateStatus } from '../../../../shared/interfaces/store-state-status.interface';
+import {
+  StoreStateStatus,
+  UpdateStoreStateStatusEntry,
+} from '../../../../shared/interfaces/store-state-status.interface';
 
 export const initialState: ExpensesState = {
   expenses: [],
@@ -20,6 +23,7 @@ export const initialState: ExpensesState = {
     error: undefined,
     status: 'initial',
   },
+  updateStatus: {},
   deleteStatus: {
     error: undefined,
     status: 'initial',
@@ -38,6 +42,14 @@ export const expensesFeature = createFeature({
       ...state,
       expenses: result,
       loadStatus: { status: 'success' } as StoreStateStatus,
+      updateStatus: result
+        .map((expense) => ({
+          [expense.id]: {
+            status: 'initial',
+            isEdit: false,
+          } as UpdateStoreStateStatusEntry,
+        }))
+        .reduce((result, element) => ({ ...result, ...element })),
     })),
     on(ApiActions.loadFailure, (state, { error }) => ({
       ...state,
@@ -57,6 +69,48 @@ export const expensesFeature = createFeature({
     on(ApiActions.createFailure, (state, { error }) => ({
       ...state,
       createStatus: { status: 'error', error: error } as StoreStateStatus,
+    })),
+
+    on(PageActions.toggleIsEdit, (state, { id }) => ({
+      ...state,
+      updateStatus: {
+        ...state.updateStatus,
+        [id]: {
+          ...state.updateStatus[id],
+          isEdit: !state.updateStatus[id].isEdit,
+        } as UpdateStoreStateStatusEntry,
+      },
+    })),
+    on(ApiActions.updateStart, (state, { id }) => ({
+      ...state,
+      updateStatus: {
+        ...state.updateStatus,
+        [id]: {
+          ...state.updateStatus[id],
+          status: 'pending',
+        } as UpdateStoreStateStatusEntry,
+      },
+    })),
+    on(ApiActions.updateSuccess, (state, { result }) => ({
+      ...state,
+      updateStatus: {
+        ...state.updateStatus,
+        [result.id]: {
+          ...state.updateStatus[result.id],
+          status: 'success',
+        } as UpdateStoreStateStatusEntry,
+      },
+    })),
+    on(ApiActions.updateFailure, (state, { id, error }) => ({
+      ...state,
+      updateStatus: {
+        ...state.updateStatus,
+        [id]: {
+          ...state.updateStatus[id],
+          status: 'error',
+          error: error,
+        } as UpdateStoreStateStatusEntry,
+      },
     })),
 
     on(ApiActions.deleteStart, (state) => ({
