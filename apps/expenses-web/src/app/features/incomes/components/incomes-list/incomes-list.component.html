@@ -6,7 +6,8 @@
   </ng-template>
   <ng-template #list let-incomes>
     <div class="grid grid-nogutter">
-      <div class="col-12" *ngFor="let income of incomes; let first = first">
+      @for (income of incomes; track income.id; let first = $first) {
+      <div class="col-12">
         <div class="flex flex-column sm:flex-row sm:align-items-center p-2 gap-3"
           [ngClass]="{ 'border-top-1 surface-border': !first }">
           <div class="flex flex-column md:flex-row justify-content-between md:align-items-center flex-1 gap-4">
@@ -41,6 +42,7 @@
           </div>
         </div>
       </div>
+      }
     </div>
   </ng-template>
 </p-dataView>

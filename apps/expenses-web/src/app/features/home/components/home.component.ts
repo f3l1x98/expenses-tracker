@@ -7,7 +7,7 @@ import { CurrentMonthDataDto } from 'expenses-shared';
 import { AppContentWrapperComponent } from '../../../shared/components/app-content-wrapper/app-content-wrapper.component';
 import { AppDateRangePickerComponent } from '../../../shared/components/app-date-range-picker/app-date-range-picker.component';
 import { Card, CardModule } from 'primeng/card';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { HighlightNegativeCurrencyDirective } from '../../../shared/directives/highlight-negative-currency.directive';
 import { ChartModule, UIChart } from 'primeng/chart';
 import { NoDataComponent } from './no-data/no-data.component';
@@ -23,7 +23,6 @@ import { FormsModule } from '@angular/forms';
     AppContentWrapperComponent,
     AppDateRangePickerComponent,
     Card,
-    NgIf,
     HighlightNegativeCurrencyDirective,
     UIChart,
     NoDataComponent,

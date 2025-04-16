@@ -5,44 +5,47 @@
   </div>
   <div class="grid">
     <p-card class="col-3" [header]="'home.currentMonth.totalExpenseCard.header' | translate">
-      <div *ngIf="currentMonthDataData$ | async; let currentMonthDataData">
-        {{
-        currentMonthDataData.totalExpense
-        | formatCurrency: currentMonthDataData.currency
-        }}
-      </div>
+      @if (currentMonthDataData$ | async; as currentMonthDataData) {
+      {{
+      currentMonthDataData.totalExpense
+      | formatCurrency: currentMonthDataData.currency
+      }}
+      }
     </p-card>
     <p-card class="col-3" [header]="'home.currentMonth.totalIncomeCard.header' | translate">
-      <div *ngIf="currentMonthDataData$ | async; let currentMonthDataData">
-        {{
-        currentMonthDataData.totalIncome
-        | formatCurrency: currentMonthDataData.currency
-        }}
-      </div>
+      @if (currentMonthDataData$ | async; as currentMonthDataData) {
+      {{
+      currentMonthDataData.totalIncome
+      | formatCurrency: currentMonthDataData.currency
+      }}
+      }
     </p-card>
     <p-card class="col-3" [header]="'home.currentMonth.balanceCard.header' | translate">
-      <div *ngIf="currentMonthDataData$ | async; let currentMonthDataData" appHighlightNegativeCurrency>
+      @if (currentMonthDataData$ | async; as currentMonthDataData) {
+      <div appHighlightNegativeCurrency>
         {{
         currentMonthDataData.balance
         | formatCurrency: currentMonthDataData.currency
         }}
       </div>
+      }
     </p-card>
 
     <p-card class="col-4" [header]="'home.perCategory.header' | translate" [style]="{ height: '100%' }">
-      <p-chart *ngIf="(expensesPerCategoryData$ | async)?.datasets; else noData" type="pie"
-        [data]="expensesPerCategoryData$ | async" [options]="expensesPerCategoryOptions$ | async" />
-      <ng-template #noData>
-        <app-no-data></app-no-data>
-      </ng-template>
+      @if ((expensesPerCategoryData$ | async)?.datasets) {
+      <p-chart type="pie" [data]="expensesPerCategoryData$ | async" [options]="expensesPerCategoryOptions$ | async" />
+      }
+      @else {
+      <app-no-data></app-no-data>
+      }
     </p-card>
 
     <p-card class="col-5" [header]="'home.perMonth.header' | translate" [style]="{ height: '100%' }">
-      <p-chart *ngIf="(expensesPerMonthData$ | async)?.datasets; else noData" type="line"
-        [data]="expensesPerMonthData$ | async" [options]="expensesPerMonthOptions$ | async" />
-      <ng-template #noData>
-        <app-no-data></app-no-data>
-      </ng-template>
+      @if ((expensesPerMonthData$ | async)?.datasets) {
+      <p-chart type="line" [data]="expensesPerMonthData$ | async" [options]="expensesPerMonthOptions$ | async" />
+      } @else {
+      <app-no-data></app-no-data>
+      }
     </p-card>
   </div>
 </app-content-wrapper>

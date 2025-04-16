@@ -1,9 +1,7 @@
 <div class="flex justify-content-center align-content-center w-full h-full">
   <app-pending-changes-dialog />
-  <p-card class="w-3" *ngIf="
-      (registerStatus$ | async)?.status !== 'success';
-      else registrationSuccess
-    ">
+  @if ((registerStatus$ | async)?.status !== 'success') {
+  <p-card class="w-3">
     <p-stepper [value]="1" [linear]="true">
       <p-step-list>
         <p-step [value]="1">{{'user.register.credentials.header' | translate}}</p-step>
@@ -68,17 +66,17 @@
       </p-step-panels>
     </p-stepper>
   </p-card>
-  <ng-template #registrationSuccess>
-    <p-card class="w-3">
-      <div class="text-center mt-3 mb-4 text-xl font-semibold">
-        {{'user.register.success.title' | translate}}
-      </div>
+  } @else {
+  <p-card class="w-3">
+    <div class="text-center mt-3 mb-4 text-xl font-semibold">
+      {{'user.register.success.title' | translate}}
+    </div>
 
-      <div class="text-center mt-3 mb-4">
-        {{'user.register.success.message.text' | translate}}
-        <p-button label="{{'user.register.success.message.button' | translate}}" [link]="true" routerLink="/auth/login"
-          styleClass="p-0" />
-      </div>
-    </p-card>
-  </ng-template>
+    <div class="text-center mt-3 mb-4">
+      {{'user.register.success.message.text' | translate}}
+      <p-button label="{{'user.register.success.message.button' | translate}}" [link]="true" routerLink="/auth/login"
+        styleClass="p-0" />
+    </div>
+  </p-card>
+  }
 </div>

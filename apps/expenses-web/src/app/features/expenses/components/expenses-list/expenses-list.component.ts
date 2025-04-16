@@ -13,7 +13,7 @@ import { ConfirmationService, MenuItem } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { DataView } from 'primeng/dataview';
 import { ExpensesFilterComponent } from './expenses-filter/expenses-filter.component';
-import { NgFor, NgClass, AsyncPipe, CommonModule } from '@angular/common';
+import { NgClass, AsyncPipe, CommonModule } from '@angular/common';
 import { Menu } from 'primeng/menu';
 import { Button } from 'primeng/button';
 import { FormatDatePipe } from '../../../../shared/pipes/format-date.pipe';
@@ -38,7 +38,6 @@ import { IExpense } from 'expenses-shared';
     CommonModule,
     DataView,
     ExpensesFilterComponent,
-    NgFor,
     NgClass,
     Menu,
     Button,

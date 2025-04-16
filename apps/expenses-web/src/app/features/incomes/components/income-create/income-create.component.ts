@@ -18,7 +18,7 @@ import { InputText } from 'primeng/inputtext';
 import { InputNumber } from 'primeng/inputnumber';
 import { SelectModule } from 'primeng/select';
 import { RadioButton } from 'primeng/radiobutton';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { DatePickerModule } from 'primeng/datepicker';
 import { Button } from 'primeng/button';
 import { TranslateModule } from '@ngx-translate/core';
@@ -34,7 +34,6 @@ import { TranslateModule } from '@ngx-translate/core';
     SelectModule,
     RadioButton,
     DatePickerModule,
-    NgIf,
     Button,
     AsyncPipe,
     TranslateModule,

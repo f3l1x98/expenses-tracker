@@ -18,7 +18,7 @@ import { InputText } from 'primeng/inputtext';
 import { InputNumber } from 'primeng/inputnumber';
 import { ExpenseCategoryDropdownComponent } from '../expense-category-dropdown/expense-category-dropdown.component';
 import { RadioButton } from 'primeng/radiobutton';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
 import { Button } from 'primeng/button';
@@ -34,7 +34,6 @@ import { TranslateModule } from '@ngx-translate/core';
     InputNumber,
     ExpenseCategoryDropdownComponent,
     RadioButton,
-    NgIf,
     SelectModule,
     DatePickerModule,
     Button,

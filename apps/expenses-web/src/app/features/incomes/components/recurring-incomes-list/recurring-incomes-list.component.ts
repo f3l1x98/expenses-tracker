@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MenuItem } from 'primeng/api';
 import { DataView } from 'primeng/dataview';
 import { RecurringIncomesFilterComponent } from './filter/recurring-incomes-filter.component';
-import { NgFor, NgClass, AsyncPipe } from '@angular/common';
+import { NgClass, AsyncPipe } from '@angular/common';
 import { Menu } from 'primeng/menu';
 import { Button } from 'primeng/button';
 import { FormatDatePipe } from '../../../../shared/pipes/format-date.pipe';
@@ -20,7 +20,6 @@ import { CapitalizePipe } from '../../../../shared/pipes/capitalize.pipe';
   imports: [
     DataView,
     RecurringIncomesFilterComponent,
-    NgFor,
     NgClass,
     Menu,
     Button,
