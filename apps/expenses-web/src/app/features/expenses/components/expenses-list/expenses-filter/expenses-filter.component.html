@@ -6,10 +6,10 @@
     </p-floatLabel>
   </div>
   <div class="field col-6 lg:col-2">
-    <app-expense-category-dropdown formControlName="category"></app-expense-category-dropdown>
+    <app-expense-category-dropdown [showClear]="true" formControlName="category"></app-expense-category-dropdown>
   </div>
   <div class="field col-6 lg:col-2">
-    <app-date-range-picker formControlName="dateRange"
+    <app-date-range-picker [showClear]="true" formControlName="dateRange"
       label="{{'expenses.filter.dateRange' | translate}}"></app-date-range-picker>
   </div>
 </form>

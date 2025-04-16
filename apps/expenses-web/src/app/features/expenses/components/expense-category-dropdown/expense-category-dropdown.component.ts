@@ -1,24 +1,18 @@
 import { Component, Input, forwardRef } from '@angular/core';
 import {
   ControlValueAccessor,
+  FormsModule,
   NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ExpenseCategory } from 'expenses-shared';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { FloatLabelModule } from 'primeng/floatlabel';
 
 @Component({
   selector: 'app-expense-category-dropdown',
   templateUrl: 'expense-category-dropdown.component.html',
-  standalone: true,
-  imports: [
-    FloatLabelModule,
-    DropdownModule,
-    ReactiveFormsModule,
-    TranslateModule,
-  ],
+  imports: [FloatLabelModule, SelectModule, TranslateModule, FormsModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

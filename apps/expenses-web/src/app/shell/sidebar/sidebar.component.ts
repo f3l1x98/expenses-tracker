@@ -8,7 +8,6 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-sidebar',
   templateUrl: 'sidebar.component.html',
-  standalone: true,
   imports: [RouterModule, ButtonModule, AppHeaderComponent, TranslateModule],
 })
 export class SidebarComponent {

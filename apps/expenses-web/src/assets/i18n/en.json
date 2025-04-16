@@ -28,7 +28,6 @@
       "placeholder": "Filter date range"
     },
     "recurringTypeDropdown": {
-      "placeholder": "Recurring type",
       "label": "Recurring type"
     }
   },
@@ -71,8 +70,7 @@
       "dateRange": "Date range"
     },
     "categoryInput": {
-      "label": "Category",
-      "placeholder": "Please select a category"
+      "label": "Category"
     },
     "create": {
       "description": "Description",
@@ -90,8 +88,7 @@
     "title": "Income",
     "createHeader": "Create new",
     "categoryInput": {
-      "label": "Category",
-      "placeholder": "Please select a category"
+      "label": "Category"
     },
     "create": {
       "description": "Description",
@@ -124,16 +121,13 @@
         "title": "Create your account",
         "form": {
           "username": {
-            "label": "Username",
-            "placeholder": "Username"
+            "label": "Username"
           },
           "password": {
-            "label": "Password",
-            "placeholder": "Password"
+            "label": "Password"
           },
           "confirmPassword": {
-            "label": "Confirm Password",
-            "placeholder": "Confirm Password"
+            "label": "Confirm Password"
           }
         }
       },

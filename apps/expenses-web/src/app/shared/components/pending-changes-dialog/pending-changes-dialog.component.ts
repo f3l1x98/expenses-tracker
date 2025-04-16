@@ -6,7 +6,6 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @Component({
   selector: 'app-pending-changes-dialog',
   templateUrl: 'pending-changes-dialog.component.html',
-  standalone: true,
   imports: [ConfirmDialogModule, ButtonModule, TranslateModule],
 })
 export class PendingChangesDialogComponent {}

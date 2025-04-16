@@ -4,13 +4,11 @@ import { NotificationService } from './notification.service';
 import { MessagesModule } from 'primeng/messages';
 import { MessageService } from 'primeng/api';
 import { Subject, takeUntil } from 'rxjs';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
   selector: 'app-notification',
   templateUrl: 'notification.component.html',
-  standalone: true,
-  imports: [ToastModule, MessagesModule, BrowserAnimationsModule],
+  imports: [ToastModule, MessagesModule],
   providers: [MessageService],
 })
 export class NotificationComponent implements OnInit, OnDestroy {

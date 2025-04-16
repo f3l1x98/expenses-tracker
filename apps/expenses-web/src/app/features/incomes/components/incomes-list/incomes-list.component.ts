@@ -4,11 +4,30 @@ import { SpinnerService } from '../../../../shell/spinner/spinner.service';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { ConfirmationService, MenuItem } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
+import { DataView } from 'primeng/dataview';
+import { IncomesFilterComponent } from './incomes-filter/incomes-filter.component';
+import { NgClass, AsyncPipe } from '@angular/common';
+import { Menu } from 'primeng/menu';
+import { Button } from 'primeng/button';
+import { ConfirmDialog } from 'primeng/confirmdialog';
+import { FormatDatePipe } from '../../../../shared/pipes/format-date.pipe';
+import { FormatCurrencyPipe } from '../../../../shared/pipes/format-currency.pipe';
 
 @Component({
   selector: 'app-incomes-list',
   templateUrl: 'incomes-list.component.html',
   styleUrls: ['./incomes-list.component.scss'],
+  imports: [
+    DataView,
+    IncomesFilterComponent,
+    NgClass,
+    Menu,
+    Button,
+    ConfirmDialog,
+    AsyncPipe,
+    FormatDatePipe,
+    FormatCurrencyPipe,
+  ],
 })
 export class IncomesListComponent implements OnInit, OnDestroy {
   actionMenuItems$: BehaviorSubject<MenuItem[]> = new BehaviorSubject(

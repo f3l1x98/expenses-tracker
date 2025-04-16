@@ -101,18 +101,14 @@ export class IncomesController {
     @Param('id') id: string,
     @Req() req: Request,
     @Body() updateIncomeDto: UpdateIncomeDto,
-  ) {
-    try {
-      await this.incomesService.update(
-        id,
-        (req.user as IUser).id,
-        updateIncomeDto,
-      );
-    } catch (e) {
-      if (e instanceof IncomeNotFoundException) {
-        throw new NotFoundException();
-      }
-      throw e;
-    }
+  ): Promise<IncomeEntity> {
+    return this.incomesService
+      .update(id, (req.user as IUser).id, updateIncomeDto)
+      .catch((e) => {
+        if (e instanceof IncomeNotFoundException) {
+          throw new NotFoundException();
+        }
+        throw e;
+      });
   }
 }

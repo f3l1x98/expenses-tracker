@@ -1,6 +1,5 @@
 <p-floatLabel>
-  <p-dropdown styleClass="w-full" class="w-full" inputId="category" [options]="options" [disabled]="disabled"
-    [showClear]="showClear" placeholder="{{'expenses.categoryInput.placeholder' | translate}}"
-    (onChange)="valueChanged($event.value)" />
+  <p-select [(ngModel)]="value" styleClass="w-full" class="w-full" inputId="category" [options]="options"
+    [disabled]="disabled" [showClear]="showClear" (onChange)="valueChanged($event.value)" />
   <label for="category">{{'expenses.categoryInput.label' | translate}}</label>
 </p-floatLabel>

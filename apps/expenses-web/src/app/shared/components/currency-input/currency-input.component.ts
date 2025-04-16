@@ -1,4 +1,4 @@
-import { Component, OnInit, forwardRef } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
 import {
   ControlValueAccessor,
   FormsModule,
@@ -17,7 +17,6 @@ import { Currency, currencies } from './currencys';
   selector: 'app-currency-input',
   templateUrl: 'currency-input.component.html',
   styleUrls: ['./currency-input.component.scss'],
-  standalone: true,
   imports: [
     FloatLabelModule,
     AutoCompleteModule,

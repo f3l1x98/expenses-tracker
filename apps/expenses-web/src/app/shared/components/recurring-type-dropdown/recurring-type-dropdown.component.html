@@ -1,6 +1,5 @@
 <p-floatLabel>
-    <p-dropdown styleClass="w-full" class="w-full" inputId="recurringType" [options]="options" [disabled]="disabled"
-        [showClear]="showClear" placeholder="{{'filter.recurringTypeDropdown.placeholder' | translate}}"
-        (onChange)="valueChanged($event.value)" />
+    <p-select [(ngModel)]="value" styleClass="w-full" class="w-full" inputId="recurringType" [options]="options"
+        [disabled]="disabled" [showClear]="showClear" (onChange)="valueChanged($event.value)" />
     <label for="recurringType">{{'filter.recurringTypeDropdown.label' | translate}}</label>
 </p-floatLabel>

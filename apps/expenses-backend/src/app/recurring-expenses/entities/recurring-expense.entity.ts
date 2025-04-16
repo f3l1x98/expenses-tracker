@@ -10,9 +10,10 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 import { UserEntity } from '../../users/entities/user.entity';
 import { ExpenseCategory, IRecurringExpense } from 'expenses-shared';
-import { RecurringType } from 'libs/expenses-shared/src/lib/shared/recurring-type.enum';
-import { parseExpression } from 'cron-parser';
+import { RecurringType } from 'expenses-shared';
+import { CronExpressionParser } from 'cron-parser';
 import { Exclude, Expose } from 'class-transformer';
+import { NumericColumnTransformer } from '../../shared/numeric_column_transformer';
 
 @Entity()
 export class RecurringExpenseEntity implements IRecurringExpense {
@@ -30,7 +31,13 @@ export class RecurringExpenseEntity implements IRecurringExpense {
   @Column({ nullable: false })
   description: string;
 
-  @Column({ nullable: false, type: 'decimal', scale: 2, precision: 12 })
+  @Column({
+    nullable: false,
+    type: 'decimal',
+    scale: 2,
+    precision: 12,
+    transformer: new NumericColumnTransformer(),
+  })
   amount!: number;
 
   // TODO strictly speaking repeated clothing expenses make no sense
@@ -70,7 +77,7 @@ export class RecurringExpenseEntity implements IRecurringExpense {
   })
   @Expose()
   get nextExecution(): Date {
-    const interval = parseExpression(this.cron, {
+    const interval = CronExpressionParser.parse(this.cron, {
       currentDate: this.startDate ?? new Date(),
     });
     return new Date(interval.next().toDate().toDateString());

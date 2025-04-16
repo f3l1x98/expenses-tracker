@@ -4,11 +4,30 @@ import { SpinnerService } from '../../../../shell/spinner/spinner.service';
 import { RecurringExpensesService } from '../../recurring-expenses.service';
 import { ConfirmationService, MenuItem } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
+import { DataView } from 'primeng/dataview';
+import { RecurringExpensesFilterComponent } from './filter/recurring-expenses-filter.component';
+import { NgClass, AsyncPipe } from '@angular/common';
+import { Menu } from 'primeng/menu';
+import { Button } from 'primeng/button';
+import { FormatDatePipe } from '../../../../shared/pipes/format-date.pipe';
+import { FormatCurrencyPipe } from '../../../../shared/pipes/format-currency.pipe';
+import { CapitalizePipe } from '../../../../shared/pipes/capitalize.pipe';
 
 @Component({
   selector: 'app-recurring-expenses-list',
   templateUrl: 'recurring-expenses-list.component.html',
   styleUrls: ['./recurring-expenses-list.component.scss'],
+  imports: [
+    DataView,
+    RecurringExpensesFilterComponent,
+    NgClass,
+    Menu,
+    Button,
+    AsyncPipe,
+    FormatDatePipe,
+    FormatCurrencyPipe,
+    CapitalizePipe,
+  ],
 })
 export class RecurringExpensesListComponent implements OnInit, OnDestroy {
   actionMenuItems$: BehaviorSubject<MenuItem[]> = new BehaviorSubject(

@@ -18,21 +18,20 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { UserService } from '../../user.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { RouterModule } from '@angular/router';
+import { RouterLinkWithHref } from '@angular/router';
 import { ComponentCanDeactivate } from '../../../../shared/guards/pending-changes.guard';
 import { ConfirmationService } from 'primeng/api';
 import { PendingChangesDialogComponent } from '../../../../shared/components/pending-changes-dialog/pending-changes-dialog.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CurrencyInputComponent } from '../../../../shared/components/currency-input/currency-input.component';
-import { Currency } from 'apps/expenses-web/src/app/shared/components/currency-input/currencys';
+import { Currency } from '../../../../shared/components/currency-input/currencys';
 
 @Component({
   selector: 'app-register',
   templateUrl: 'register.component.html',
-  standalone: true,
   imports: [
-    RouterModule,
     CommonModule,
+    RouterLinkWithHref,
     CardModule,
     StepperModule,
     ReactiveFormsModule,

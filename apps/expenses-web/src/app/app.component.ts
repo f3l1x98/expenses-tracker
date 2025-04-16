@@ -6,13 +6,17 @@ import {
   RouteConfigLoadEnd,
   RouteConfigLoadStart,
   Router,
+  RouterOutlet,
 } from '@angular/router';
 import { SpinnerService } from './shell/spinner/spinner.service';
+import { SpinnerComponent } from './shell/spinner/spinner.component';
+import { NotificationComponent } from './shell/notification/notification.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
+  imports: [RouterOutlet, SpinnerComponent, NotificationComponent],
 })
 export class AppComponent implements OnInit, OnDestroy {
   private destory$ = new Subject<void>();

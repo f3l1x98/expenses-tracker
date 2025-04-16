@@ -1,4 +1,4 @@
-import { RecurringType } from 'libs/expenses-shared/src/lib/shared/recurring-type.enum';
+import { RecurringType } from 'expenses-shared';
 
 export function constructCron(cycle: RecurringType, startDate: Date): string {
   let dayOfWeek = '*';

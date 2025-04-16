@@ -22,7 +22,6 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-expenses-filter',
   templateUrl: 'expenses-filter.component.html',
-  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,

@@ -7,7 +7,6 @@ import { SpinnerService } from './spinner.service';
 @Component({
   selector: 'app-spinner',
   templateUrl: 'spinner.component.html',
-  standalone: true,
   imports: [CommonModule, BlockUIModule, ProgressSpinnerModule],
 })
 export class SpinnerComponent {

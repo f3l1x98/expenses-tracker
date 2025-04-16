@@ -108,18 +108,14 @@ export class RecurringExpensesController {
     @Param('id') id: string,
     @Req() req: Request,
     @Body() updateRecurringExpenseDto: UpdateRecurringExpenseDto,
-  ) {
-    try {
-      await this.recurringExpensesService.update(
-        id,
-        (req.user as IUser).id,
-        updateRecurringExpenseDto,
-      );
-    } catch (e) {
-      if (e instanceof RecurringExpenseNotFoundException) {
-        throw new NotFoundException();
-      }
-      throw e;
-    }
+  ): Promise<RecurringExpenseEntity> {
+    return this.recurringExpensesService
+      .update(id, (req.user as IUser).id, updateRecurringExpenseDto)
+      .catch((e) => {
+        if (e instanceof RecurringExpenseNotFoundException) {
+          throw new NotFoundException();
+        }
+        throw e;
+      });
   }
 }

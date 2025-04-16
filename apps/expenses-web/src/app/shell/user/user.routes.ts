@@ -1,13 +1,14 @@
-import { RouterModule, Routes } from '@angular/router';
-import { NgModule } from '@angular/core';
+import { Routes } from '@angular/router';
 import { RegisterComponent } from './components/register/register.component';
 import { PendingChangesGuard } from '../../shared/guards/pending-changes.guard';
+import { UserService } from './user.service';
 
-const routes: Routes = [
+export const USER_ROUTES: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
     canDeactivate: [PendingChangesGuard],
+    providers: [UserService],
   },
   {
     path: '',
@@ -15,9 +16,3 @@ const routes: Routes = [
     pathMatch: 'full',
   },
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-})
-export class UserRoutingModule {}

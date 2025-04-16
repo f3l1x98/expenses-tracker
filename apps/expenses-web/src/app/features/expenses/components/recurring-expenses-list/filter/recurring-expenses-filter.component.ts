@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -7,24 +7,23 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { AppDateRangePickerComponent } from 'apps/expenses-web/src/app/shared/components/app-date-range-picker/app-date-range-picker.component';
+import { AppDateRangePickerComponent } from '../../../../../shared/components/app-date-range-picker/app-date-range-picker.component';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { ExpenseCategoryDropdownComponent } from '../../expense-category-dropdown/expense-category-dropdown.component';
 import { RecurringExpensesService } from '../../../recurring-expenses.service';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
-import { RecurringType } from 'libs/expenses-shared/src/lib/shared/recurring-type.enum';
+import { RecurringType } from 'expenses-shared';
 import {
   ExpenseCategory,
   IDateRangeDto,
   IRecurringExpenseFilterDto,
 } from 'expenses-shared';
-import { RecurringTypeDropdownComponent } from 'apps/expenses-web/src/app/shared/components/recurring-type-dropdown/recurring-type-dropdown.component';
+import { RecurringTypeDropdownComponent } from '../../../../../shared/components/recurring-type-dropdown/recurring-type-dropdown.component';
 
 @Component({
   selector: 'app-recurring-expenses-filter',
   templateUrl: 'recurring-expenses-filter.component.html',
-  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -36,7 +35,7 @@ import { RecurringTypeDropdownComponent } from 'apps/expenses-web/src/app/shared
     RecurringTypeDropdownComponent,
   ],
 })
-export class RecurringExpensesFilterComponent implements OnInit {
+export class RecurringExpensesFilterComponent implements OnInit, OnDestroy {
   formGroup!: FormGroup;
 
   private destroy$ = new Subject<void>();

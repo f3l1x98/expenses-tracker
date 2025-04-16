@@ -10,9 +10,8 @@ import {
   IsString,
 } from 'class-validator';
 import { IsAfterDate } from '../../utils/is-after-date';
-import { IsValidCron } from '../../utils/is-valid-cron';
 import { ICreateRecurringIncomeDto, IncomeCategory } from 'expenses-shared';
-import { RecurringType } from 'libs/expenses-shared/src/lib/shared/recurring-type.enum';
+import { RecurringType } from 'expenses-shared';
 
 export class CreateRecurringIncomeDto implements ICreateRecurringIncomeDto {
   @ApiProperty({

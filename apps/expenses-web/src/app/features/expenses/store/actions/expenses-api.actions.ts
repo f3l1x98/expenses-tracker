@@ -1,5 +1,9 @@
 import { createAction, props } from '@ngrx/store';
-import { ICreateExpenseDto, IExpense } from 'expenses-shared';
+import {
+  ICreateExpenseDto,
+  IExpense,
+  IUpdateExpenseDto,
+} from 'expenses-shared';
 
 export const loadStart = createAction('[Expenses Api Actions] load start');
 export const loadSuccess = createAction(
@@ -22,6 +26,19 @@ export const createSuccess = createAction(
 export const createFailure = createAction(
   '[Expenses Api Actions] create failure',
   props<{ error: string }>(),
+);
+
+export const updateStart = createAction(
+  '[Expenses Api Actions] update start',
+  props<{ id: string; request: IUpdateExpenseDto }>(),
+);
+export const updateSuccess = createAction(
+  '[Expenses Api Actions] update success',
+  props<{ result: IExpense }>(),
+);
+export const updateFailure = createAction(
+  '[Expenses Api Actions] update failure',
+  props<{ id: string; error: string }>(),
 );
 
 export const deleteStart = createAction(

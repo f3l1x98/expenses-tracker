@@ -1,9 +1,8 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { FeaturesComponent } from './features.component';
 import { AuthGuard } from '../core/auth/auth.guard';
 
-const routes: Routes = [
+export const FEATURE_ROUTES: Routes = [
   {
     path: '',
     component: FeaturesComponent,
@@ -16,33 +15,27 @@ const routes: Routes = [
       {
         path: 'home',
         loadChildren: () =>
-          import(`./home/home.module`).then((m) => m.HomeModule),
+          import(`./home/home.routes`).then((m) => m.HOME_ROUTES),
         canActivate: [AuthGuard],
       },
       {
         path: 'income',
         loadChildren: () =>
-          import(`./incomes/incomes.module`).then((m) => m.IncomesModule),
+          import(`./incomes/incomes.routes`).then((m) => m.INCOMES_ROUTES),
         canActivate: [AuthGuard],
       },
       {
         path: 'expense',
         loadChildren: () =>
-          import(`./expenses/expenses.module`).then((m) => m.ExpensesModule),
+          import(`./expenses/expenses.routes`).then((m) => m.EXPENSES_ROUTES),
         canActivate: [AuthGuard],
       },
       {
         path: 'settings',
         loadChildren: () =>
-          import(`./settings/settings.module`).then((m) => m.SettingsModule),
+          import(`./settings/settings.routes`).then((m) => m.SETTINGS_ROUTES),
         canActivate: [AuthGuard],
       },
     ],
   },
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-})
-export class FeaturesRoutingModule {}

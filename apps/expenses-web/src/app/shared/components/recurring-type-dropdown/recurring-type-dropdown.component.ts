@@ -1,24 +1,18 @@
-import { Component, Input, OnInit, forwardRef } from '@angular/core';
+import { Component, Input, forwardRef } from '@angular/core';
 import {
   ControlValueAccessor,
+  FormsModule,
   NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { RecurringType } from 'libs/expenses-shared/src/lib/shared/recurring-type.enum';
-import { DropdownModule } from 'primeng/dropdown';
+import { RecurringType } from 'expenses-shared';
+import { SelectModule } from 'primeng/select';
 import { FloatLabelModule } from 'primeng/floatlabel';
 
 @Component({
   selector: 'app-recurring-type-dropdown',
   templateUrl: 'recurring-type-dropdown.component.html',
-  standalone: true,
-  imports: [
-    FloatLabelModule,
-    DropdownModule,
-    ReactiveFormsModule,
-    TranslateModule,
-  ],
+  imports: [FloatLabelModule, SelectModule, TranslateModule, FormsModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
