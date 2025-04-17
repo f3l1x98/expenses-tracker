@@ -4,7 +4,7 @@ import {
   HttpHeaders,
   HttpParams,
 } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Observable, catchError, throwError } from 'rxjs';
 import { NotificationService } from '../../shell/notification/notification.service';
@@ -23,15 +23,13 @@ export type RequestParams =
   providedIn: 'root',
 })
 export class BaseApiService {
+  #httpClient = inject(HttpClient);
+  #notificationService = inject(NotificationService);
+
   public readonly apiRoot: string = environment.api.baseUrl;
   private defaultHttpHeaders: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
   });
-
-  constructor(
-    private httpClient: HttpClient,
-    private notificationService: NotificationService,
-  ) {}
 
   public get<T>(url: string, params?: RequestParams): Observable<T> {
     return this.request<T>('get', url, {}, undefined, params);
@@ -48,7 +46,7 @@ export class BaseApiService {
         },
     params?: RequestParams,
   ): Observable<T> {
-    return this.httpClient
+    return this.#httpClient
       .request<T>(method, url, {
         body: body,
         headers: headers,
@@ -62,7 +60,7 @@ export class BaseApiService {
           if (err instanceof HttpErrorResponse) {
             errorMsg = err.message;
           }
-          this.notificationService.error(errorMsg);
+          this.#notificationService.error(errorMsg);
           return throwError(() => err);
         }),
       );

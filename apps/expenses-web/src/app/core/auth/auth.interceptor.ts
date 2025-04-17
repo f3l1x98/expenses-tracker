@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   HttpInterceptor,
   HttpEvent,
@@ -10,13 +10,13 @@ import { AuthStoreService } from './store/auth-store.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private auth: AuthStoreService) {}
+  #auth = inject(AuthStoreService);
 
   intercept(
     req: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
-    return this.auth.token$.pipe(
+    return this.#auth.token$.pipe(
       take(1),
       switchMap((token) => {
         const authReq = req.clone({

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -37,18 +37,16 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
 })
 export class LoginComponent implements OnInit, OnDestroy {
+  #formBuilder = inject(FormBuilder);
+  #authService = inject(AuthService);
+  #router = inject(Router);
+  #route = inject(ActivatedRoute);
+
   private destroy$ = new Subject<boolean>();
   formGroup!: FormGroup;
-  loading$ = this.authService.status$.pipe(
+  loading$ = this.#authService.status$.pipe(
     map((status) => status.value == 'running'),
   );
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private authService: AuthService,
-    private router: Router,
-    private route: ActivatedRoute,
-  ) {}
 
   ngOnDestroy(): void {
     this.destroy$.next(true);
@@ -56,17 +54,17 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.formGroup = this.formBuilder.group({
+    this.formGroup = this.#formBuilder.group({
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
     });
-    this.authService.status$
+    this.#authService.status$
       .pipe(takeUntil(this.destroy$))
       .subscribe((status) => {
         if (status.value == 'success') {
           const returnUrl =
-            this.route.snapshot.queryParams['returnUrl'] || '/features';
-          this.router.navigate([returnUrl]);
+            this.#route.snapshot.queryParams['returnUrl'] || '/features';
+          this.#router.navigate([returnUrl]);
           this.formGroup.reset();
         }
       });
@@ -75,7 +73,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   submit() {
     if (!this.formGroup.valid) return;
 
-    this.authService.login(
+    this.#authService.login(
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this.formGroup.get('username')!.value,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

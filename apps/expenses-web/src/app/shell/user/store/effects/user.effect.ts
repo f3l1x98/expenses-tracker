@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { UserApiService } from '../../api/user-api.service';
 import * as ApiActions from '../actions/user-api.actions';
@@ -7,13 +7,11 @@ import { catchError, map, of, switchMap } from 'rxjs';
 
 @Injectable()
 export class UserEffect {
-  constructor(
-    private actions$: Actions,
-    private apiService: UserApiService,
-  ) {}
+  #actions$ = inject(Actions);
+  #apiService = inject(UserApiService);
 
   createUser$ = createEffect(() =>
-    this.actions$.pipe(
+    this.#actions$.pipe(
       ofType(PageActions.register),
       switchMap((action) =>
         of(ApiActions.createStart({ request: action.request })),
@@ -22,10 +20,10 @@ export class UserEffect {
   );
 
   create$ = createEffect(() =>
-    this.actions$.pipe(
+    this.#actions$.pipe(
       ofType(ApiActions.createStart),
       switchMap((action) =>
-        this.apiService.create$(action.request).pipe(
+        this.#apiService.create$(action.request).pipe(
           map((result) => ApiActions.createSuccess({ result })),
           catchError((error) => of(ApiActions.createFailure({ error }))),
         ),
@@ -34,17 +32,17 @@ export class UserEffect {
   );
 
   loadUser$ = createEffect(() =>
-    this.actions$.pipe(
+    this.#actions$.pipe(
       ofType(PageActions.loadOwn),
       switchMap(() => of(ApiActions.loadOwnStart())),
     ),
   );
 
   load$ = createEffect(() =>
-    this.actions$.pipe(
+    this.#actions$.pipe(
       ofType(ApiActions.loadOwnStart),
       switchMap(() =>
-        this.apiService.getOwn$().pipe(
+        this.#apiService.getOwn$().pipe(
           map((result) => ApiActions.loadOwnSuccess({ result })),
           catchError((error) => of(ApiActions.loadOwnFailure({ error }))),
         ),

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -36,17 +36,15 @@ import { RecurringIncomesService } from '../../../recurring-incomes.service';
   ],
 })
 export class RecurringIncomesFilterComponent implements OnInit, OnDestroy {
+  #formBuilder = inject(FormBuilder);
+  #recurringIncomesService = inject(RecurringIncomesService);
+
   formGroup!: FormGroup;
 
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private recurringIncomesService: RecurringIncomesService,
-  ) {}
-
   ngOnInit() {
-    this.formGroup = this.formBuilder.group({
+    this.formGroup = this.#formBuilder.group({
       description: new FormControl('', {
         nonNullable: true,
       }),
@@ -87,6 +85,6 @@ export class RecurringIncomesFilterComponent implements OnInit, OnDestroy {
       ...dateRange,
       recurringType: recurringType,
     };
-    this.recurringIncomesService.updateFilter(filter);
+    this.#recurringIncomesService.updateFilter(filter);
   }
 }

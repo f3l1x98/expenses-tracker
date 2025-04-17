@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ToastModule } from 'primeng/toast';
 import { NotificationService } from './notification.service';
 import { MessagesModule } from 'primeng/messages';
@@ -12,17 +12,15 @@ import { Subject, takeUntil } from 'rxjs';
   providers: [MessageService],
 })
 export class NotificationComponent implements OnInit, OnDestroy {
+  #notificationService = inject(NotificationService);
+  #messageService = inject(MessageService);
+
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private notificationService: NotificationService,
-    private messageService: MessageService,
-  ) {}
-
   ngOnInit() {
-    this.notificationService.notifications$
+    this.#notificationService.notifications$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((notification) => this.messageService.add(notification));
+      .subscribe((notification) => this.#messageService.add(notification));
   }
 
   ngOnDestroy(): void {

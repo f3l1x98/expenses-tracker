@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -33,17 +33,15 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
 })
 export class ExpensesFilterComponent implements OnInit, OnDestroy {
+  #formBuilder = inject(FormBuilder);
+  #expensesService = inject(ExpensesService);
+
   formGroup!: FormGroup;
 
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private expensesService: ExpensesService,
-  ) {}
-
   ngOnInit() {
-    this.formGroup = this.formBuilder.group({
+    this.formGroup = this.#formBuilder.group({
       description: new FormControl('', {
         nonNullable: true,
       }),
@@ -78,6 +76,6 @@ export class ExpensesFilterComponent implements OnInit, OnDestroy {
       category: category,
       ...dateRange,
     };
-    this.expensesService.updateFilter(filter);
+    this.#expensesService.updateFilter(filter);
   }
 }

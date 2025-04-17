@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { HomeApiService } from '../../api/home-api.service';
 import * as ApiActions from '../actions/home-api.actions';
@@ -7,13 +7,11 @@ import { catchError, map, of, switchMap } from 'rxjs';
 
 @Injectable()
 export class HomeEffect {
-  constructor(
-    private actions$: Actions,
-    private homeApiService: HomeApiService,
-  ) {}
+  #actions$ = inject(Actions);
+  #homeApiService = inject(HomeApiService);
 
   enterPage$ = createEffect(() =>
-    this.actions$.pipe(
+    this.#actions$.pipe(
       ofType(PageActions.enterPage),
       switchMap(() => {
         const now = new Date();
@@ -29,7 +27,7 @@ export class HomeEffect {
   );
 
   setFilter$ = createEffect(() =>
-    this.actions$.pipe(
+    this.#actions$.pipe(
       ofType(PageActions.setDateRangeFilter),
       switchMap((action) =>
         of(
@@ -41,10 +39,10 @@ export class HomeEffect {
   );
 
   loadCurrentMonthData$ = createEffect(() =>
-    this.actions$.pipe(
+    this.#actions$.pipe(
       ofType(ApiActions.currentMonthDataLoadStart),
       switchMap(() =>
-        this.homeApiService.getCurrentMonthData$().pipe(
+        this.#homeApiService.getCurrentMonthData$().pipe(
           map((result) => ApiActions.currentMonthDataLoadSuccess({ result })),
           catchError((error) =>
             of(ApiActions.currentMonthDataLoadFailure(error)),
@@ -55,10 +53,10 @@ export class HomeEffect {
   );
 
   loadExpensesPerCategory$ = createEffect(() =>
-    this.actions$.pipe(
+    this.#actions$.pipe(
       ofType(ApiActions.expensesPerCategoryLoadStart),
       switchMap((action) =>
-        this.homeApiService
+        this.#homeApiService
           .getExpensesPerCategory$(
             action.filter.startDate,
             action.filter.endDate,
@@ -76,10 +74,10 @@ export class HomeEffect {
   );
 
   loadExpensesPerMonth$ = createEffect(() =>
-    this.actions$.pipe(
+    this.#actions$.pipe(
       ofType(ApiActions.expensesPerMonthLoadStart),
       switchMap((action) =>
-        this.homeApiService
+        this.#homeApiService
           .getExpensesPerMonth$(action.filter.startDate, action.filter.endDate)
           .pipe(
             map((result) => ApiActions.expensesPerMonthLoadSuccess({ result })),

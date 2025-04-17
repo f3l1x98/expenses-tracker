@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { AuthService } from '../../core/auth/auth.service';
@@ -11,13 +11,11 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [RouterModule, ButtonModule, AppHeaderComponent, TranslateModule],
 })
 export class SidebarComponent {
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-  ) {}
+  #authService = inject(AuthService);
+  #router = inject(Router);
 
   logout() {
-    this.authService.logout();
-    this.router.navigate(['/auth/login']);
+    this.#authService.logout();
+    this.#router.navigate(['/auth/login']);
   }
 }

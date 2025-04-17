@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -42,19 +42,17 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
 })
 export class ExpenseCreateComponent implements OnInit, OnDestroy {
+  #formBuilder = inject(FormBuilder);
+  #expensesService = inject(ExpensesService);
+  #recurringExpensesService = inject(RecurringExpensesService);
+  #userService = inject(UserService);
+
   formGroup!: FormGroup;
   recurringTypeOptions = Object.values(RecurringType);
 
-  user$ = this.userService.own$;
+  user$ = this.#userService.own$;
 
   private destory$ = new Subject<void>();
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private expensesService: ExpensesService,
-    private recurringExpensesService: RecurringExpensesService,
-    private userService: UserService,
-  ) {}
 
   ngOnDestroy(): void {
     this.destory$.next();
@@ -63,7 +61,7 @@ export class ExpenseCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const now = new Date();
-    this.formGroup = this.formBuilder.group({
+    this.formGroup = this.#formBuilder.group({
       description: new FormControl('', {
         nonNullable: true,
         validators: [Validators.required],
@@ -109,7 +107,7 @@ export class ExpenseCreateComponent implements OnInit, OnDestroy {
         ?.value as RecurringType;
       const startDate = this.formGroup.get('startDate')?.value as Date;
       const endDate = this.formGroup.get('endDate')?.value as Date | undefined;
-      this.recurringExpensesService.create({
+      this.#recurringExpensesService.create({
         description: description,
         category: category,
         amount: amount,
@@ -118,7 +116,7 @@ export class ExpenseCreateComponent implements OnInit, OnDestroy {
         endDate: endDate,
       });
     } else {
-      this.expensesService.create({
+      this.#expensesService.create({
         description: description,
         category: category,
         amount: amount,

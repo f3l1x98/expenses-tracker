@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   BehaviorSubject,
   combineLatestWith,
@@ -48,31 +48,29 @@ import { IExpense } from 'expenses-shared';
   ],
 })
 export class ExpensesListComponent implements OnInit, OnDestroy {
+  #service: ExpensesService = inject(ExpensesService);
+  #spinnerService: SpinnerService = inject(SpinnerService);
+  #confirmationService: ConfirmationService = inject(ConfirmationService);
+  #translateService: TranslateService = inject(TranslateService);
+  #userService: UserService = inject(UserService);
+  #formBuilder: FormBuilder = inject(FormBuilder);
+
   actionMenuItems$: BehaviorSubject<MenuItem[]> = new BehaviorSubject(
     [] as MenuItem[],
   );
   editFormGroups!: Map<string, FormGroup>;
-  expenses$ = this.service.expenses$;
-  updateStatus$ = this.service.updateStatus$;
+  expenses$ = this.#service.expenses$;
+  updateStatus$ = this.#service.updateStatus$;
 
-  user$ = this.userService.own$;
+  user$ = this.#userService.own$;
 
   private destory$ = new Subject<void>();
 
-  constructor(
-    private service: ExpensesService,
-    private spinnerService: SpinnerService,
-    private confirmationService: ConfirmationService,
-    private translateService: TranslateService,
-    private userService: UserService,
-    private formBuilder: FormBuilder,
-  ) {}
-
   ngOnInit() {
-    this.service.loadStatus$
+    this.#service.loadStatus$
       .pipe(takeUntil(this.destory$))
       .subscribe((status) =>
-        this.spinnerService.setState({ active: status.status === 'pending' }),
+        this.#spinnerService.setState({ active: status.status === 'pending' }),
       );
     this.load();
 
@@ -80,7 +78,7 @@ export class ExpensesListComponent implements OnInit, OnDestroy {
       this.editFormGroups = new Map(
         expenses.map((expense) => [
           expense.id,
-          this.formBuilder.group({
+          this.#formBuilder.group({
             description: new FormControl(expense.description, {
               nonNullable: true,
               validators: [Validators.required],
@@ -108,25 +106,25 @@ export class ExpensesListComponent implements OnInit, OnDestroy {
         combineLatestWith(this.updateStatus$),
         map(([_, updateStatus]) => [
           {
-            label: this.translateService.instant('actionMenu.items.edit'),
+            label: this.#translateService.instant('actionMenu.items.edit'),
             icon: 'pi pi-pencil',
             disabled: updateStatus[expense.id].isEdit,
             command: () => {
-              this.service.toggleIsEdit(expense.id);
+              this.#service.toggleIsEdit(expense.id);
             },
           },
           {
-            label: this.translateService.instant('actionMenu.items.delete'),
+            label: this.#translateService.instant('actionMenu.items.delete'),
             icon: 'pi pi-trash',
             command: () => {
-              this.confirmationService.confirm({
-                message: this.translateService.instant(
+              this.#confirmationService.confirm({
+                message: this.#translateService.instant(
                   'dialogs.delete.message',
                   {
                     item: 'this expense',
                   },
                 ),
-                header: this.translateService.instant('dialogs.delete.header'),
+                header: this.#translateService.instant('dialogs.delete.header'),
                 icon: 'pi pi-info-circle',
                 acceptButtonStyleClass: 'p-button-danger p-button-text',
                 rejectButtonStyleClass: 'p-button-text p-button-text',
@@ -134,7 +132,7 @@ export class ExpensesListComponent implements OnInit, OnDestroy {
                 rejectIcon: 'none',
 
                 accept: () => {
-                  this.service.delete(expense.id);
+                  this.#service.delete(expense.id);
                 },
               });
             },
@@ -148,22 +146,22 @@ export class ExpensesListComponent implements OnInit, OnDestroy {
   }
 
   onEditCancel(expenseId: string) {
-    this.service.toggleIsEdit(expenseId);
+    this.#service.toggleIsEdit(expenseId);
     this.editFormGroups.get(expenseId)?.reset();
   }
 
   onEditSubmit(expense: IExpense) {
     const editFormGroup = this.editFormGroups.get(expense.id);
     if (!editFormGroup?.valid) return;
-    this.service.update(expense.id, {
+    this.#service.update(expense.id, {
       ...expense,
       description: editFormGroup.get('description')?.value,
       amount: editFormGroup.get('amount')?.value,
     });
-    this.service.toggleIsEdit(expense.id);
+    this.#service.toggleIsEdit(expense.id);
   }
 
   load() {
-    this.service.load();
+    this.#service.load();
   }
 }

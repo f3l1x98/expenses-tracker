@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -40,20 +40,18 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
 })
 export class IncomeCreateComponent implements OnInit, OnDestroy {
+  #formBuilder = inject(FormBuilder);
+  #incomesService = inject(IncomesService);
+  #recurringIncomesService = inject(RecurringIncomesService);
+  #userService = inject(UserService);
+
   formGroup!: FormGroup;
   categoryOptions = Object.values(IncomeCategory);
   recurringTypeOptions = Object.values(RecurringType);
 
-  user$ = this.userService.own$;
+  user$ = this.#userService.own$;
 
   private destory$ = new Subject<void>();
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private incomesService: IncomesService,
-    private recurringIncomesService: RecurringIncomesService,
-    private userService: UserService,
-  ) {}
 
   ngOnDestroy(): void {
     this.destory$.next();
@@ -62,7 +60,7 @@ export class IncomeCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const now = new Date();
-    this.formGroup = this.formBuilder.group({
+    this.formGroup = this.#formBuilder.group({
       description: new FormControl('', {
         nonNullable: true,
         validators: [Validators.required],
@@ -108,7 +106,7 @@ export class IncomeCreateComponent implements OnInit, OnDestroy {
         ?.value as RecurringType;
       const startDate = this.formGroup.get('startDate')?.value as Date;
       const endDate = this.formGroup.get('endDate')?.value as Date | undefined;
-      this.recurringIncomesService.create({
+      this.#recurringIncomesService.create({
         description: description,
         category: category,
         amount: amount,
@@ -117,7 +115,7 @@ export class IncomeCreateComponent implements OnInit, OnDestroy {
         endDate: endDate,
       });
     } else {
-      this.incomesService.create({
+      this.#incomesService.create({
         description: description,
         category: category,
         amount: amount,

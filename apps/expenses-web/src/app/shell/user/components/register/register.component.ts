@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  OnDestroy,
+  OnInit,
+  inject,
+} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -48,19 +54,17 @@ import { Currency } from '../../../../shared/components/currency-input/currencys
 export class RegisterComponent
   implements OnInit, OnDestroy, ComponentCanDeactivate
 {
+  #formBuilder = inject(FormBuilder);
+  #userService = inject(UserService);
+  #confirmationService = inject(ConfirmationService);
+  #translateService = inject(TranslateService);
+
   credentialsFormGroup!: FormGroup;
   settingsFormGroup!: FormGroup;
 
-  registerStatus$ = this.userService.registerStatus$;
+  registerStatus$ = this.#userService.registerStatus$;
 
   private destroy$ = new Subject<void>();
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private userService: UserService,
-    private confirmationService: ConfirmationService,
-    private translateService: TranslateService,
-  ) {}
 
   @HostListener('window:beforeunload')
   canDeactivate(): boolean | Observable<boolean> {
@@ -68,9 +72,9 @@ export class RegisterComponent
       return true;
     }
     const canDeactiveSubject$ = new Subject<boolean>();
-    this.confirmationService.confirm({
-      message: this.translateService.instant('dialogs.unsafedData.message'),
-      header: this.translateService.instant('dialogs.unsafedData.header'),
+    this.#confirmationService.confirm({
+      message: this.#translateService.instant('dialogs.unsafedData.message'),
+      header: this.#translateService.instant('dialogs.unsafedData.header'),
       icon: 'pi pi-exclamation-triangle',
       acceptIcon: 'none',
       rejectIcon: 'none',
@@ -91,7 +95,7 @@ export class RegisterComponent
   }
 
   ngOnInit() {
-    this.credentialsFormGroup = this.formBuilder.group({
+    this.credentialsFormGroup = this.#formBuilder.group({
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
       confirmPassword: new FormControl('', [
@@ -99,12 +103,12 @@ export class RegisterComponent
         this.validateConfirmPassword(),
       ]),
     });
-    this.settingsFormGroup = this.formBuilder.group({
+    this.settingsFormGroup = this.#formBuilder.group({
       currency: new FormControl<Currency | undefined>(undefined, [
         Validators.required,
       ]),
     });
-    this.userService.registerStatus$
+    this.#userService.registerStatus$
       .pipe(takeUntil(this.destroy$))
       .subscribe((status) => {
         if (status.status == 'success') {
@@ -135,7 +139,7 @@ export class RegisterComponent
     const currency = this.settingsFormGroup.get('currency')?.value as
       | Currency
       | undefined;
-    this.userService.register({
+    this.#userService.register({
       password: this.credentialsFormGroup.get('password')?.value,
       username: this.credentialsFormGroup.get('username')?.value,
       settings: {

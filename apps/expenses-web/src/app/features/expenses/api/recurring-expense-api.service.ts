@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   BaseApiService,
   RequestParams,
@@ -13,31 +13,31 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class RecurringExpensesApiService {
-  constructor(private apiService: BaseApiService) {}
+  #apiService = inject(BaseApiService);
 
-  private readonly baseUrl: string = `${this.apiService.apiRoot}/recurring-expenses`;
+  private readonly baseUrl: string = `${this.#apiService.apiRoot}/recurring-expenses`;
   private readonly createUrl: string = `${this.baseUrl}/`;
   private readonly updateUrl: string = `${this.baseUrl}/`;
   private readonly getAllUrl: string = `${this.baseUrl}/`;
 
   create$(request: ICreateRecurringExpenseDto): Observable<IRecurringExpense> {
-    return this.apiService.post(this.createUrl, request);
+    return this.#apiService.post(this.createUrl, request);
   }
 
   update$(request: IUpdateRecurringExpenseDto): Observable<IRecurringExpense> {
-    return this.apiService.put(this.updateUrl, request);
+    return this.#apiService.put(this.updateUrl, request);
   }
 
   getAll$(
     filter?: IRecurringExpenseFilterDto,
   ): Observable<IRecurringExpense[]> {
-    return this.apiService.get(
+    return this.#apiService.get(
       this.getAllUrl,
       filter as unknown as RequestParams,
     );
   }
 
   delete$(id: string): Observable<void> {
-    return this.apiService.delete(`${this.baseUrl}/${id}`);
+    return this.#apiService.delete(`${this.baseUrl}/${id}`);
   }
 }

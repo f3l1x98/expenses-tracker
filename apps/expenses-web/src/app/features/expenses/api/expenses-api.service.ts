@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   BaseApiService,
   RequestParams,
@@ -13,28 +13,28 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class ExpensesApiService {
-  constructor(private apiService: BaseApiService) {}
+  #apiService = inject(BaseApiService);
 
-  private readonly baseUrl: string = `${this.apiService.apiRoot}/expenses`;
+  private readonly baseUrl: string = `${this.#apiService.apiRoot}/expenses`;
   private readonly createUrl: string = `${this.baseUrl}/`;
   private readonly getAllUrl: string = `${this.baseUrl}/`;
 
   create$(request: ICreateExpenseDto): Observable<IExpense> {
-    return this.apiService.post(this.createUrl, request);
+    return this.#apiService.post(this.createUrl, request);
   }
 
   update$(id: string, request: IUpdateExpenseDto): Observable<IExpense> {
-    return this.apiService.put(`${this.baseUrl}/${id}`, request);
+    return this.#apiService.put(`${this.baseUrl}/${id}`, request);
   }
 
   getAll$(filter?: IExpenseFilterDto): Observable<IExpense[]> {
-    return this.apiService.get(
+    return this.#apiService.get(
       this.getAllUrl,
       filter as unknown as RequestParams,
     );
   }
 
   delete$(id: string): Observable<void> {
-    return this.apiService.delete(`${this.baseUrl}/${id}`);
+    return this.#apiService.delete(`${this.baseUrl}/${id}`);
   }
 }

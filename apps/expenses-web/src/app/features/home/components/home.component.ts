@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { Observable, Subject, map, of, takeUntil } from 'rxjs';
 import { DateRange } from '../../../shared/interfaces/date-range.interface';
@@ -35,6 +35,8 @@ import { FormsModule } from '@angular/forms';
   ],
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  #homeService = inject(HomeService);
+
   currentMonthDataData$!: Observable<CurrentMonthDataDto | undefined>;
 
   expensesPerCategoryData$!: Observable<ChartData>;
@@ -44,8 +46,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   expensesPerMonthOptions$!: Observable<ChartOptions<'line'>>;
 
   private destory$ = new Subject<void>();
-
-  constructor(private homeService: HomeService) {}
 
   ngOnDestroy(): void {
     this.destory$.next();
@@ -59,11 +59,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     console.log(surfaceBorder);
 
-    this.currentMonthDataData$ = this.homeService.currentMonthData$.pipe(
+    this.currentMonthDataData$ = this.#homeService.currentMonthData$.pipe(
       takeUntil(this.destory$),
     );
 
-    this.expensesPerCategoryData$ = this.homeService.expensesPerCategory$.pipe(
+    this.expensesPerCategoryData$ = this.#homeService.expensesPerCategory$.pipe(
       takeUntil(this.destory$),
       map((event) => {
         if (event === undefined) {
@@ -85,7 +85,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       }),
     );
     this.expensesPerCategoryOptions$ =
-      this.homeService.expensesPerCategory$.pipe(
+      this.#homeService.expensesPerCategory$.pipe(
         takeUntil(this.destory$),
         map((event) => {
           if (event === undefined) {
@@ -126,7 +126,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         }),
       );
 
-    this.expensesPerMonthData$ = this.homeService.expensesPerMonth$.pipe(
+    this.expensesPerMonthData$ = this.#homeService.expensesPerMonth$.pipe(
       takeUntil(this.destory$),
       map((event) => {
         if (event === undefined) {
@@ -178,10 +178,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
     });
 
-    this.homeService.enterPage();
+    this.#homeService.enterPage();
   }
 
   onDateRangeChanged(dateRange: DateRange) {
-    this.homeService.setDateRangeFilter(dateRange);
+    this.#homeService.setDateRangeFilter(dateRange);
   }
 }

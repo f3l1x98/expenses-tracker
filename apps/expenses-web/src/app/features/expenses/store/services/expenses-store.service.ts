@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { expensesFeature } from '../features/expenses.feature';
 import * as ApiActions from '../actions/expenses-api.actions';
@@ -11,34 +11,34 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class ExpensesStoreService {
-  loadStatus$ = this.store.select(expensesFeature.selectLoadStatus);
-  expenses$ = this.store.select(expensesFeature.selectExpenses);
-  createStatus$ = this.store.select(expensesFeature.selectCreateStatus);
-  updateStatus$ = this.store.select(expensesFeature.selectUpdateStatus);
+  #store = inject(Store);
 
-  constructor(private store: Store) {}
+  loadStatus$ = this.#store.select(expensesFeature.selectLoadStatus);
+  expenses$ = this.#store.select(expensesFeature.selectExpenses);
+  createStatus$ = this.#store.select(expensesFeature.selectCreateStatus);
+  updateStatus$ = this.#store.select(expensesFeature.selectUpdateStatus);
 
   toggleIsEdit(id: string) {
-    this.store.dispatch(PageActions.toggleIsEdit({ id }));
+    this.#store.dispatch(PageActions.toggleIsEdit({ id }));
   }
 
   load() {
-    this.store.dispatch(ApiActions.loadStart());
+    this.#store.dispatch(ApiActions.loadStart());
   }
 
   updateFilter(filter: IExpenseFilterDto) {
-    this.store.dispatch(PageActions.updateFilter({ filter }));
+    this.#store.dispatch(PageActions.updateFilter({ filter }));
   }
 
   create(request: ICreateExpenseDto) {
-    this.store.dispatch(PageActions.createRequest({ request }));
+    this.#store.dispatch(PageActions.createRequest({ request }));
   }
 
   update(id: string, request: IUpdateExpenseDto) {
-    this.store.dispatch(PageActions.updateRequest({ id, request }));
+    this.#store.dispatch(PageActions.updateRequest({ id, request }));
   }
 
   delete(id: string) {
-    this.store.dispatch(PageActions.deleteRequest({ id }));
+    this.#store.dispatch(PageActions.deleteRequest({ id }));
   }
 }

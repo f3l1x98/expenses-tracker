@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { BlockUIModule } from 'primeng/blockui';
 import { CommonModule } from '@angular/common';
@@ -10,7 +10,7 @@ import { SpinnerService } from './spinner.service';
   imports: [CommonModule, BlockUIModule, ProgressSpinnerModule],
 })
 export class SpinnerComponent {
-  spinnerState$ = this.spinnerService.state$;
+  #spinnerService = inject(SpinnerService);
 
-  constructor(private spinnerService: SpinnerService) {}
+  spinnerState$ = this.#spinnerService.state$;
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { IncomesService } from '../../incomes.service';
 import { SpinnerService } from '../../../../shell/spinner/spinner.service';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
@@ -30,25 +30,23 @@ import { FormatCurrencyPipe } from '../../../../shared/pipes/format-currency.pip
   ],
 })
 export class IncomesListComponent implements OnInit, OnDestroy {
+  #service = inject(IncomesService);
+  #spinnerService = inject(SpinnerService);
+  #confirmationService = inject(ConfirmationService);
+  #translateService = inject(TranslateService);
+
   actionMenuItems$: BehaviorSubject<MenuItem[]> = new BehaviorSubject(
     [] as MenuItem[],
   );
-  incomes$ = this.service.incomes$;
+  incomes$ = this.#service.incomes$;
 
   private destory$ = new Subject<void>();
 
-  constructor(
-    private service: IncomesService,
-    private spinnerService: SpinnerService,
-    private confirmationService: ConfirmationService,
-    private translateService: TranslateService,
-  ) {}
-
   ngOnInit() {
-    this.service.loadStatus$
+    this.#service.loadStatus$
       .pipe(takeUntil(this.destory$))
       .subscribe((status) =>
-        this.spinnerService.setState({ active: status.status === 'pending' }),
+        this.#spinnerService.setState({ active: status.status === 'pending' }),
       );
     this.load();
   }
@@ -63,21 +61,21 @@ export class IncomesListComponent implements OnInit, OnDestroy {
   onMenuShow(expenseId: string) {
     this.actionMenuItems$.next([
       {
-        label: this.translateService.instant('actionMenu.items.edit'),
+        label: this.#translateService.instant('actionMenu.items.edit'),
         icon: 'pi pi-pencil',
         command() {
           console.log('TODO EDIT');
         },
       },
       {
-        label: this.translateService.instant('actionMenu.items.delete'),
+        label: this.#translateService.instant('actionMenu.items.delete'),
         icon: 'pi pi-trash',
         command: () => {
-          this.confirmationService.confirm({
-            message: this.translateService.instant('dialogs.delete.message', {
+          this.#confirmationService.confirm({
+            message: this.#translateService.instant('dialogs.delete.message', {
               item: 'this income',
             }),
-            header: this.translateService.instant('dialogs.delete.header'),
+            header: this.#translateService.instant('dialogs.delete.header'),
             icon: 'pi pi-info-circle',
             acceptButtonStyleClass: 'p-button-danger p-button-text',
             rejectButtonStyleClass: 'p-button-text p-button-text',
@@ -85,7 +83,7 @@ export class IncomesListComponent implements OnInit, OnDestroy {
             rejectIcon: 'none',
 
             accept: () => {
-              this.service.delete(expenseId);
+              this.#service.delete(expenseId);
             },
           });
         },
@@ -94,6 +92,6 @@ export class IncomesListComponent implements OnInit, OnDestroy {
   }
 
   load() {
-    this.service.load();
+    this.#service.load();
   }
 }

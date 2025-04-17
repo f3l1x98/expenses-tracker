@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { AuthService } from './core/auth/auth.service';
 import { UserService } from './shell/user/user.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -19,14 +19,12 @@ import { NotificationComponent } from './shell/notification/notification.compone
   imports: [RouterOutlet, SpinnerComponent, NotificationComponent],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  private destory$ = new Subject<void>();
+  #authService = inject(AuthService);
+  #userService = inject(UserService);
+  #router = inject(Router);
+  #spinnerService = inject(SpinnerService);
 
-  constructor(
-    private authService: AuthService,
-    private userService: UserService,
-    private router: Router,
-    private spinnerService: SpinnerService,
-  ) {}
+  private destory$ = new Subject<void>();
 
   ngOnDestroy(): void {
     this.destory$.next();
@@ -34,20 +32,20 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.authService.currentUser$
+    this.#authService.currentUser$
       .pipe(takeUntil(this.destory$))
       .subscribe((user) => {
         if (!!user && !!user.id) {
-          this.userService.loadOwn();
+          this.#userService.loadOwn();
         } else {
-          this.userService.clearOwn();
+          this.#userService.clearOwn();
         }
       });
-    this.router.events.pipe(takeUntil(this.destory$)).subscribe((event) => {
+    this.#router.events.pipe(takeUntil(this.destory$)).subscribe((event) => {
       if (event instanceof RouteConfigLoadStart) {
-        this.spinnerService.setState({ active: true });
+        this.#spinnerService.setState({ active: true });
       } else if (event instanceof RouteConfigLoadEnd) {
-        this.spinnerService.setState({ active: false });
+        this.#spinnerService.setState({ active: false });
       }
     });
   }

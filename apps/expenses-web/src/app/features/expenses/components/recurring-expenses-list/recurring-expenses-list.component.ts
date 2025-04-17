@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { SpinnerService } from '../../../../shell/spinner/spinner.service';
 import { RecurringExpensesService } from '../../recurring-expenses.service';
@@ -30,25 +30,23 @@ import { CapitalizePipe } from '../../../../shared/pipes/capitalize.pipe';
   ],
 })
 export class RecurringExpensesListComponent implements OnInit, OnDestroy {
+  #service = inject(RecurringExpensesService);
+  #spinnerService = inject(SpinnerService);
+  #confirmationService = inject(ConfirmationService);
+  #translateService = inject(TranslateService);
+
   actionMenuItems$: BehaviorSubject<MenuItem[]> = new BehaviorSubject(
     [] as MenuItem[],
   );
-  recurringExpenses$ = this.service.recurringExpenses$;
+  recurringExpenses$ = this.#service.recurringExpenses$;
 
   private destory$ = new Subject<void>();
 
-  constructor(
-    private service: RecurringExpensesService,
-    private spinnerService: SpinnerService,
-    private confirmationService: ConfirmationService,
-    private translateService: TranslateService,
-  ) {}
-
   ngOnInit() {
-    this.service.loadStatus$
+    this.#service.loadStatus$
       .pipe(takeUntil(this.destory$))
       .subscribe((status) =>
-        this.spinnerService.setState({ active: status.status === 'pending' }),
+        this.#spinnerService.setState({ active: status.status === 'pending' }),
       );
     this.load();
   }
@@ -63,7 +61,7 @@ export class RecurringExpensesListComponent implements OnInit, OnDestroy {
   onMenuShow(recurringExpenseId: string) {
     this.actionMenuItems$.next([
       {
-        label: this.translateService.instant('actionMenu.items.edit'),
+        label: this.#translateService.instant('actionMenu.items.edit'),
         icon: 'pi pi-pencil',
         command() {
           console.log('TODO EDIT');
@@ -71,14 +69,14 @@ export class RecurringExpensesListComponent implements OnInit, OnDestroy {
       },
       // TODO pause/resume (needs paused flag to change option)
       {
-        label: this.translateService.instant('actionMenu.items.delete'),
+        label: this.#translateService.instant('actionMenu.items.delete'),
         icon: 'pi pi-trash',
         command: () => {
-          this.confirmationService.confirm({
-            message: this.translateService.instant('dialogs.delete.message', {
+          this.#confirmationService.confirm({
+            message: this.#translateService.instant('dialogs.delete.message', {
               item: 'this recurring expense',
             }),
-            header: this.translateService.instant('dialogs.delete.header'),
+            header: this.#translateService.instant('dialogs.delete.header'),
             icon: 'pi pi-info-circle',
             acceptButtonStyleClass: 'p-button-danger p-button-text',
             rejectButtonStyleClass: 'p-button-text p-button-text',
@@ -86,7 +84,7 @@ export class RecurringExpensesListComponent implements OnInit, OnDestroy {
             rejectIcon: 'none',
 
             accept: () => {
-              this.service.delete(recurringExpenseId);
+              this.#service.delete(recurringExpenseId);
             },
           });
         },
@@ -95,6 +93,6 @@ export class RecurringExpensesListComponent implements OnInit, OnDestroy {
   }
 
   load() {
-    this.service.load();
+    this.#service.load();
   }
 }
