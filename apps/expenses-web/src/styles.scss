@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
-@import 'primeicons/primeicons.css';
-@import 'primeflex/primeflex.scss';
+@use 'primeicons/primeicons.css';
+@use 'primeflex/primeflex.scss';
 
 body {
   margin: 0 !important;
