@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { BlockUIModule } from 'primeng/blockui';
 import { CommonModule } from '@angular/common';
-import { SpinnerService } from './spinner.service';
+import { SpinnerStore } from './spinner.store';
 
 @Component({
   selector: 'app-spinner',
@@ -10,7 +10,8 @@ import { SpinnerService } from './spinner.service';
   imports: [CommonModule, BlockUIModule, ProgressSpinnerModule],
 })
 export class SpinnerComponent {
-  #spinnerService = inject(SpinnerService);
+  #store = inject(SpinnerStore);
 
-  spinnerState$ = this.#spinnerService.state$;
+  readonly active = this.#store.active;
+  readonly label = this.#store.label;
 }

@@ -8,9 +8,9 @@ import {
   Router,
   RouterOutlet,
 } from '@angular/router';
-import { SpinnerService } from './shell/spinner/spinner.service';
 import { SpinnerComponent } from './shell/spinner/spinner.component';
 import { NotificationComponent } from './shell/notification/notification.component';
+import { SpinnerStore } from './shell/spinner/spinner.store';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +22,7 @@ export class AppComponent implements OnInit, OnDestroy {
   #authService = inject(AuthService);
   #userService = inject(UserService);
   #router = inject(Router);
-  #spinnerService = inject(SpinnerService);
+  #spinnerStore = inject(SpinnerStore);
 
   private destory$ = new Subject<void>();
 
@@ -43,9 +43,9 @@ export class AppComponent implements OnInit, OnDestroy {
       });
     this.#router.events.pipe(takeUntil(this.destory$)).subscribe((event) => {
       if (event instanceof RouteConfigLoadStart) {
-        this.#spinnerService.setState({ active: true });
+        this.#spinnerStore.setState(true);
       } else if (event instanceof RouteConfigLoadEnd) {
-        this.#spinnerService.setState({ active: false });
+        this.#spinnerStore.setState(false);
       }
     });
   }

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { IncomesService } from '../../incomes.service';
-import { SpinnerService } from '../../../../shell/spinner/spinner.service';
+import { SpinnerStore } from '../../../../shell/spinner/spinner.store';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { ConfirmationService, MenuItem } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
@@ -31,7 +31,7 @@ import { FormatCurrencyPipe } from '../../../../shared/pipes/format-currency.pip
 })
 export class IncomesListComponent implements OnInit, OnDestroy {
   #service = inject(IncomesService);
-  #spinnerService = inject(SpinnerService);
+  #spinnerStore = inject(SpinnerStore);
   #confirmationService = inject(ConfirmationService);
   #translateService = inject(TranslateService);
 
@@ -46,7 +46,7 @@ export class IncomesListComponent implements OnInit, OnDestroy {
     this.#service.loadStatus$
       .pipe(takeUntil(this.destory$))
       .subscribe((status) =>
-        this.#spinnerService.setState({ active: status.status === 'pending' }),
+        this.#spinnerStore.setState(status.status === 'pending'),
       );
     this.load();
   }

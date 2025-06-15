@@ -7,7 +7,7 @@ import {
   take,
   takeUntil,
 } from 'rxjs';
-import { SpinnerService } from '../../../../shell/spinner/spinner.service';
+import { SpinnerStore } from '../../../../shell/spinner/spinner.store';
 import { ExpensesService } from '../../expenses.service';
 import { ConfirmationService, MenuItem } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
@@ -49,7 +49,7 @@ import { IExpense } from 'expenses-shared';
 })
 export class ExpensesListComponent implements OnInit, OnDestroy {
   #service: ExpensesService = inject(ExpensesService);
-  #spinnerService: SpinnerService = inject(SpinnerService);
+  #spinnerStore = inject(SpinnerStore);
   #confirmationService: ConfirmationService = inject(ConfirmationService);
   #translateService: TranslateService = inject(TranslateService);
   #userService: UserService = inject(UserService);
@@ -69,9 +69,11 @@ export class ExpensesListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.#service.loadStatus$
       .pipe(takeUntil(this.destory$))
-      .subscribe((status) =>
-        this.#spinnerService.setState({ active: status.status === 'pending' }),
-      );
+      .subscribe((status) => {
+        console.log('UPDATE STATE:');
+        console.log(status);
+        this.#spinnerStore.setState(status.status === 'pending');
+      });
     this.load();
 
     this.expenses$.pipe(takeUntil(this.destory$)).subscribe((expenses) => {
