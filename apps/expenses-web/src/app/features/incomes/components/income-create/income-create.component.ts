@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
 import { IncomesService } from '../../incomes.service';
 import { RecurringIncomesService } from '../../recurring-incomes.service';
 import { validateDateAfter } from '../../../../shared/validators/validate-date-after';
-import { UserService } from '../../../../shell/user/user.service';
+import { UserStore } from '../../../../shell/user/user.store';
 import { IncomeCategory } from 'expenses-shared';
 import { RecurringType } from 'expenses-shared';
 import { FloatLabel } from 'primeng/floatlabel';
@@ -18,7 +18,6 @@ import { InputText } from 'primeng/inputtext';
 import { InputNumber } from 'primeng/inputnumber';
 import { SelectModule } from 'primeng/select';
 import { RadioButton } from 'primeng/radiobutton';
-import { AsyncPipe } from '@angular/common';
 import { DatePickerModule } from 'primeng/datepicker';
 import { Button } from 'primeng/button';
 import { TranslateModule } from '@ngx-translate/core';
@@ -35,7 +34,6 @@ import { TranslateModule } from '@ngx-translate/core';
     RadioButton,
     DatePickerModule,
     Button,
-    AsyncPipe,
     TranslateModule,
   ],
 })
@@ -43,13 +41,13 @@ export class IncomeCreateComponent implements OnInit, OnDestroy {
   #formBuilder = inject(FormBuilder);
   #incomesService = inject(IncomesService);
   #recurringIncomesService = inject(RecurringIncomesService);
-  #userService = inject(UserService);
+  #userStore = inject(UserStore);
 
   formGroup!: FormGroup;
   categoryOptions = Object.values(IncomeCategory);
   recurringTypeOptions = Object.values(RecurringType);
 
-  user$ = this.#userService.own$;
+  user = this.#userStore.own;
 
   private destory$ = new Subject<void>();
 

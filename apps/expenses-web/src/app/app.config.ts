@@ -21,8 +21,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { APP_ROUTES } from './app.routes';
 import Aura from '@primeng/themes/aura';
-import { UserEffect } from './shell/user/store/effects/user.effect';
-import { userFeature } from './shell/user/store/features/user.feature';
 import { AuthEffects } from './core/auth/store/effects/auth.effects';
 import { authFeature } from './core/auth/store/feature/auth.feature';
 import { localStorageSyncReducer } from './core/auth/store/local-storage-sync.reducer';
@@ -60,8 +58,6 @@ export const appConfig: ApplicationConfig = {
         metaReducers: [localStorageSyncReducer],
       }),
       EffectsModule.forFeature([AuthEffects]),
-      StoreModule.forFeature(userFeature),
-      EffectsModule.forFeature([UserEffect]),
     ),
     provideAnimationsAsync(),
     providePrimeNG({

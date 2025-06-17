@@ -1,6 +1,6 @@
 <div class="flex justify-content-center align-content-center w-full h-full">
   <app-pending-changes-dialog />
-  @if ((registerStatus$ | async)?.status !== 'success') {
+  @if (registerStatus().status !== 'success') {
   <p-card class="w-3">
     <p-stepper [value]="1" [linear]="true">
       <p-step-list>

@@ -11,14 +11,13 @@ import { Subject } from 'rxjs';
 import { ExpensesService } from '../../expenses.service';
 import { RecurringExpensesService } from '../../recurring-expenses.service';
 import { validateDateAfter } from '../../../../shared/validators/validate-date-after';
-import { UserService } from '../../../../shell/user/user.service';
+import { UserStore } from '../../../../shell/user/user.store';
 import { RecurringType } from 'expenses-shared';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
 import { InputNumber } from 'primeng/inputnumber';
 import { ExpenseCategoryDropdownComponent } from '../expense-category-dropdown/expense-category-dropdown.component';
 import { RadioButton } from 'primeng/radiobutton';
-import { AsyncPipe } from '@angular/common';
 import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
 import { Button } from 'primeng/button';
@@ -37,7 +36,6 @@ import { TranslateModule } from '@ngx-translate/core';
     SelectModule,
     DatePickerModule,
     Button,
-    AsyncPipe,
     TranslateModule,
   ],
 })
@@ -45,12 +43,12 @@ export class ExpenseCreateComponent implements OnInit, OnDestroy {
   #formBuilder = inject(FormBuilder);
   #expensesService = inject(ExpensesService);
   #recurringExpensesService = inject(RecurringExpensesService);
-  #userService = inject(UserService);
+  #userStore = inject(UserStore);
 
   formGroup!: FormGroup;
   recurringTypeOptions = Object.values(RecurringType);
 
-  user$ = this.#userService.own$;
+  user = this.#userStore.own;
 
   private destory$ = new Subject<void>();
 

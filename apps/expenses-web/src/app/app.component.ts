@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { AuthService } from './core/auth/auth.service';
-import { UserService } from './shell/user/user.service';
+import { UserStore } from './shell/user/user.store';
 import { Subject, takeUntil } from 'rxjs';
 import {
   RouteConfigLoadEnd,
@@ -20,7 +20,7 @@ import { SpinnerStore } from './shell/spinner/spinner.store';
 })
 export class AppComponent implements OnInit, OnDestroy {
   #authService = inject(AuthService);
-  #userService = inject(UserService);
+  #userStore = inject(UserStore);
   #router = inject(Router);
   #spinnerStore = inject(SpinnerStore);
 
@@ -36,9 +36,9 @@ export class AppComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destory$))
       .subscribe((user) => {
         if (!!user && !!user.id) {
-          this.#userService.loadOwn();
+          this.#userStore.loadOwn();
         } else {
-          this.#userService.clearOwn();
+          this.#userStore.clearOwn();
         }
       });
     this.#router.events.pipe(takeUntil(this.destory$)).subscribe((event) => {

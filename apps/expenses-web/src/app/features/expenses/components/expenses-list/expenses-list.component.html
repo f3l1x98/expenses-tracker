@@ -58,7 +58,7 @@
                 </div>
               </div>
               <div class="flex flex-row align-items-center gap-2">
-                <p-inputNumber [min]="0" mode="currency" [currency]="(user$ | async)?.settings?.currency"
+                <p-inputNumber [min]="0" mode="currency" [currency]="user()?.settings?.currency"
                   formControlName="amount" locale="en-US" />
                 <p-button icon="pi pi-check" (click)="onEditSubmit(expense)" />
                 <p-button icon="pi pi-times" (click)="onEditCancel(expense.id)" />

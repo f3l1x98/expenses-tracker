@@ -19,7 +19,6 @@ import { Button } from 'primeng/button';
 import { FormatDatePipe } from '../../../../shared/pipes/format-date.pipe';
 import { FormatCurrencyPipe } from '../../../../shared/pipes/format-currency.pipe';
 import { InputNumber } from 'primeng/inputnumber';
-import { UserService } from '../../../../shell/user/user.service';
 import {
   FormBuilder,
   FormControl,
@@ -28,6 +27,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { IExpense } from 'expenses-shared';
+import { UserStore } from '../../../../shell/user/user.store';
 
 @Component({
   selector: 'app-expenses-list',
@@ -52,7 +52,7 @@ export class ExpensesListComponent implements OnInit, OnDestroy {
   #spinnerStore = inject(SpinnerStore);
   #confirmationService: ConfirmationService = inject(ConfirmationService);
   #translateService: TranslateService = inject(TranslateService);
-  #userService: UserService = inject(UserService);
+  #userStore = inject(UserStore);
   #formBuilder: FormBuilder = inject(FormBuilder);
 
   actionMenuItems$: BehaviorSubject<MenuItem[]> = new BehaviorSubject(
@@ -62,7 +62,7 @@ export class ExpensesListComponent implements OnInit, OnDestroy {
   expenses$ = this.#service.expenses$;
   updateStatus$ = this.#service.updateStatus$;
 
-  user$ = this.#userService.own$;
+  user = this.#userStore.own;
 
   private destory$ = new Subject<void>();
 
