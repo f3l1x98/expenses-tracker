@@ -21,9 +21,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { APP_ROUTES } from './app.routes';
 import Aura from '@primeng/themes/aura';
-import { AuthEffects } from './core/auth/store/effects/auth.effects';
-import { authFeature } from './core/auth/store/feature/auth.feature';
-import { localStorageSyncReducer } from './core/auth/store/local-storage-sync.reducer';
 
 function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -53,11 +50,6 @@ export const appConfig: ApplicationConfig = {
           deps: [HttpClient],
         },
       }),
-
-      StoreModule.forFeature(authFeature.name, authFeature.reducer, {
-        metaReducers: [localStorageSyncReducer],
-      }),
-      EffectsModule.forFeature([AuthEffects]),
     ),
     provideAnimationsAsync(),
     providePrimeNG({

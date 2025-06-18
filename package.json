@@ -73,6 +73,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "@angular-architects/ngrx-toolkit": "^19.1.0",
     "@angular/animations": "19.2.4",
     "@angular/common": "19.2.4",
     "@angular/compiler": "19.2.4",
