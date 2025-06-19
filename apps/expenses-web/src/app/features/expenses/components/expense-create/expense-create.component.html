@@ -20,13 +20,13 @@
   </div>
 
   <div class="col-span-12 flex justify-center gap-4">
-    <div class="field-checkbox">
+    <div>
       <p-radioButton inputId="onetime" [value]="false" formControlName="isRecurring" />
-      <label for="onetime">{{'expenses.create.type.onetime' | translate}}</label>
+      <label class="pl-2" for="onetime">{{'expenses.create.type.onetime' | translate}}</label>
     </div>
-    <div class="field-checkbox">
+    <div>
       <p-radioButton inputId="recurring" [value]="true" formControlName="isRecurring" />
-      <label for="recurring">{{'expenses.create.type.recurring' | translate}}</label>
+      <label class="pl-2" for="recurring">{{'expenses.create.type.recurring' | translate}}</label>
     </div>
   </div>
 
