@@ -1,10 +1,10 @@
 <app-content-wrapper>
-  <div slot="header" class="flex justify-content-between">
+  <div slot="header" class="flex justify-between">
     <span>{{'home.title' | translate}}</span>
     <app-date-range-picker (onChange)="onDateRangeChanged($event)"></app-date-range-picker>
   </div>
-  <div class="grid">
-    <p-card class="col-3" [header]="'home.currentMonth.totalExpenseCard.header' | translate">
+  <div class="grid grid-cols-12 gap-4">
+    <p-card class="col-span-3" [header]="'home.currentMonth.totalExpenseCard.header' | translate">
       @if (currentMonthData(); as currentMonthDataData) {
       {{
       currentMonthDataData.totalExpense
@@ -15,7 +15,7 @@
       <app-no-data></app-no-data>
       }
     </p-card>
-    <p-card class="col-3" [header]="'home.currentMonth.totalIncomeCard.header' | translate">
+    <p-card class="col-span-3" [header]="'home.currentMonth.totalIncomeCard.header' | translate">
       @if (currentMonthData(); as currentMonthDataData) {
       {{
       currentMonthDataData.totalIncome
@@ -26,7 +26,7 @@
       <app-no-data></app-no-data>
       }
     </p-card>
-    <p-card class="col-3" [header]="'home.currentMonth.balanceCard.header' | translate">
+    <p-card class="col-span-3" [header]="'home.currentMonth.balanceCard.header' | translate">
       @if (currentMonthData(); as currentMonthDataData) {
       <div appHighlightNegativeCurrency>
         {{
@@ -40,7 +40,7 @@
       }
     </p-card>
 
-    <p-card class="col-4" [header]="'home.perCategory.header' | translate" [style]="{ height: '100%' }">
+    <p-card class="col-span-4" [header]="'home.perCategory.header' | translate" [style]="{ height: '100%' }">
       @if (!expensesPerCategoryNoData()) {
       <p-chart type="pie" [data]="expensesPerCategoryData()" [options]="expensesPerCategoryOptions()" />
       }
@@ -49,7 +49,7 @@
       }
     </p-card>
 
-    <p-card class="col-5" [header]="'home.perMonth.header' | translate" [style]="{ height: '100%' }">
+    <p-card class="col-span-5" [header]="'home.perMonth.header' | translate" [style]="{ height: '100%' }">
       @if (!expensesPerMonthNoData()) {
       <p-chart type="line" [data]="expensesPerMonthData()" [options]="expensesPerMonthOptions" />
       } @else {

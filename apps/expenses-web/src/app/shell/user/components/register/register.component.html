@@ -1,7 +1,7 @@
-<div class="flex justify-content-center align-content-center w-full h-full">
+<div class="flex justify-center content-center w-full h-full">
   <app-pending-changes-dialog />
   @if (registerStatus().status !== 'success') {
-  <p-card class="w-3">
+  <p-card class="w-3/12">
     <p-stepper [value]="1" [linear]="true">
       <p-step-list>
         <p-step [value]="1">{{'user.register.credentials.header' | translate}}</p-step>
@@ -10,18 +10,18 @@
       <p-step-panels>
         <p-step-panel [value]="1">
           <ng-template #content let-activateCallback="activateCallback" let-index="index">
-            <div class="text-center mt-3 mb-4 text-xl font-semibold">
+            <div class="text-center mt-4 mb-6 text-xl font-semibold">
               {{'user.register.credentials.title' | translate}}
             </div>
-            <form class="formgrid grid" [formGroup]="credentialsFormGroup">
-              <div class="mb-5 field col-12">
+            <form class="grid grid-cols-12 gap-4" [formGroup]="credentialsFormGroup">
+              <div class="mb-8 col-span-12">
                 <p-floatLabel>
                   <input pInputText class="w-full" id="username" formControlName="username" type="text" />
                   <label for="username">{{'user.register.credentials.form.username.label' | translate}}</label>
                 </p-floatLabel>
               </div>
 
-              <div class="mb-5 field col-12">
+              <div class="mb-8 col-span-12">
                 <p-floatLabel>
                   <p-password inputStyleClass="w-full" styleClass="w-full" inputId="password" formControlName="password"
                     [toggleMask]="true" />
@@ -29,7 +29,7 @@
                 </p-floatLabel>
               </div>
 
-              <div class="mb-5 field col-12">
+              <div class="mb-8 col-span-12">
                 <p-floatLabel>
                   <p-password inputStyleClass="w-full" styleClass="w-full" inputId="confirmPassword"
                     formControlName="confirmPassword" [toggleMask]="true" [feedback]="false" />
@@ -38,7 +38,7 @@
                 </p-floatLabel>
               </div>
             </form>
-            <div class="flex pt-4 justify-content-between">
+            <div class="flex pt-6 justify-between">
               <p-button label="{{'buttons.cancel' | translate}}" [link]="true" routerLink="/auth/login" />
               <p-button (onClick)="activateCallback(2)" label="{{'user.register.buttons.next' | translate}}"
                 icon="pi pi-arrow-right" iconPos="right" [disabled]="!credentialsFormGroup.valid" />
@@ -47,15 +47,15 @@
         </p-step-panel>
         <p-step-panel [value]="2">
           <ng-template #content let-activateCallback="activateCallback" let-index="index">
-            <div class="text-center mt-3 mb-4 text-xl font-semibold">
+            <div class="text-center mt-4 mb-6 text-xl font-semibold">
               {{'user.register.settings.title' | translate}}
             </div>
-            <form class="formgrid grid" [formGroup]="settingsFormGroup">
-              <div class="mb-5 field col-12">
+            <form class="grid grid-cols-12 gap-4" [formGroup]="settingsFormGroup">
+              <div class="mb-8 col-span-12">
                 <app-currency-input formControlName="currency"></app-currency-input>
               </div>
             </form>
-            <div class="flex pt-4 justify-content-between">
+            <div class="flex pt-6 justify-between">
               <p-button (onClick)="activateCallback(1)" label="{{'user.register.buttons.back' | translate}}"
                 icon="pi pi-arrow-left" />
               <p-button (onClick)="register()" label="{{'user.register.buttons.register' | translate}}"
@@ -67,12 +67,12 @@
     </p-stepper>
   </p-card>
   } @else {
-  <p-card class="w-3">
-    <div class="text-center mt-3 mb-4 text-xl font-semibold">
+  <p-card class="w-3/12">
+    <div class="text-center mt-4 mb-6 text-xl font-semibold">
       {{'user.register.success.title' | translate}}
     </div>
 
-    <div class="text-center mt-3 mb-4">
+    <div class="text-center mt-4 mb-6">
       {{'user.register.success.message.text' | translate}}
       <p-button label="{{'user.register.success.message.button' | translate}}" [link]="true" routerLink="/auth/login"
         styleClass="p-0" />

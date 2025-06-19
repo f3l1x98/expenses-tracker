@@ -1,18 +1,18 @@
-<form [formGroup]="formGroup" class="formgrid grid">
-    <div class="field col-12 lg:col-6">
-        <p-floatLabel>
-            <input pInputText class="w-full" formControlName="description" type="text" />
-            <label for="description">{{'incomes.filter.description' | translate}}</label>
-        </p-floatLabel>
-    </div>
-    <div class="field col-4 lg:col-2">
-        <app-income-category-dropdown formControlName="category" [showClear]="true"></app-income-category-dropdown>
-    </div>
-    <div class="field col-4 lg:col-2">
-        <app-recurring-type-dropdown formControlName="recurringType" [showClear]="true"></app-recurring-type-dropdown>
-    </div>
-    <div class="field col-4 lg:col-2">
-        <app-date-range-picker formControlName="dateRange" [showClear]="true"
-            label="{{'incomes.filter.dateRange' | translate}}"></app-date-range-picker>
-    </div>
+<form [formGroup]="formGroup" class="grid grid-cols-12 gap-4">
+  <div class="col-span-12 lg:col-span-6">
+    <p-floatLabel>
+      <input pInputText class="w-full" formControlName="description" type="text" />
+      <label for="description">{{'incomes.filter.description' | translate}}</label>
+    </p-floatLabel>
+  </div>
+  <div class="col-span-4 lg:col-span-2">
+    <app-income-category-dropdown formControlName="category" [showClear]="true"></app-income-category-dropdown>
+  </div>
+  <div class="col-span-4 lg:col-span-2">
+    <app-recurring-type-dropdown formControlName="recurringType" [showClear]="true"></app-recurring-type-dropdown>
+  </div>
+  <div class="col-span-4 lg:col-span-2">
+    <app-date-range-picker formControlName="dateRange" [showClear]="true"
+      label="{{'incomes.filter.dateRange' | translate}}"></app-date-range-picker>
+  </div>
 </form>
