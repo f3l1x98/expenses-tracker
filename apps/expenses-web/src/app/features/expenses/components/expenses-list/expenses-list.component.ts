@@ -58,7 +58,7 @@ export class ExpensesListComponent implements OnInit, OnDestroy {
   actionMenuItems$: BehaviorSubject<MenuItem[]> = new BehaviorSubject(
     [] as MenuItem[],
   );
-  editFormGroups!: Map<string, FormGroup>;
+  editFormGroup!: FormGroup;
   expenses$ = this.#service.expenses$;
   updateStatus$ = this.#service.updateStatus$;
 
@@ -76,22 +76,15 @@ export class ExpensesListComponent implements OnInit, OnDestroy {
       });
     this.load();
 
-    this.expenses$.pipe(takeUntil(this.destory$)).subscribe((expenses) => {
-      this.editFormGroups = new Map(
-        expenses.map((expense) => [
-          expense.id,
-          this.#formBuilder.group({
-            description: new FormControl(expense.description, {
-              nonNullable: true,
-              validators: [Validators.required],
-            }),
-            amount: new FormControl(expense.amount, {
-              nonNullable: true,
-              validators: [Validators.required, Validators.min(0)],
-            }),
-          }),
-        ]),
-      );
+    this.editFormGroup = this.#formBuilder.group({
+      description: new FormControl<string | null>(null, {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
+      amount: new FormControl<number | null>(null, {
+        nonNullable: true,
+        validators: [Validators.required, Validators.min(0)],
+      }),
     });
   }
 
@@ -110,8 +103,12 @@ export class ExpensesListComponent implements OnInit, OnDestroy {
           {
             label: this.#translateService.instant('actionMenu.items.edit'),
             icon: 'pi pi-pencil',
-            disabled: updateStatus[expense.id].isEdit,
+            disabled: updateStatus.isEdit,
             command: () => {
+              this.editFormGroup.patchValue({
+                description: expense.description,
+                amount: expense.amount,
+              });
               this.#service.toggleIsEdit(expense.id);
             },
           },
@@ -149,16 +146,15 @@ export class ExpensesListComponent implements OnInit, OnDestroy {
 
   onEditCancel(expenseId: string) {
     this.#service.toggleIsEdit(expenseId);
-    this.editFormGroups.get(expenseId)?.reset();
+    this.editFormGroup.reset();
   }
 
   onEditSubmit(expense: IExpense) {
-    const editFormGroup = this.editFormGroups.get(expense.id);
-    if (!editFormGroup?.valid) return;
+    if (!this.editFormGroup?.valid) return;
     this.#service.update(expense.id, {
       ...expense,
-      description: editFormGroup.get('description')?.value,
-      amount: editFormGroup.get('amount')?.value,
+      description: this.editFormGroup.get('description')?.value,
+      amount: this.editFormGroup.get('amount')?.value,
     });
     this.#service.toggleIsEdit(expense.id);
   }

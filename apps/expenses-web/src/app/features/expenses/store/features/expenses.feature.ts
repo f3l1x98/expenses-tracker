@@ -4,7 +4,7 @@ import * as ApiActions from '../actions/expenses-api.actions';
 import * as PageActions from '../actions/expenses-page.actions';
 import {
   StoreStateStatus,
-  UpdateStoreStateStatusEntry,
+  UpdateStoreStateStatus,
 } from '../../../../shared/interfaces/store-state-status.interface';
 
 export const initialState: ExpensesState = {
@@ -23,7 +23,12 @@ export const initialState: ExpensesState = {
     error: undefined,
     status: 'initial',
   },
-  updateStatus: {},
+  updateStatus: {
+    status: 'initial',
+    error: undefined,
+    isEdit: false,
+    editingId: undefined,
+  },
   deleteStatus: {
     error: undefined,
     status: 'initial',
@@ -42,14 +47,6 @@ export const expensesFeature = createFeature({
       ...state,
       expenses: result,
       loadStatus: { status: 'success' } as StoreStateStatus,
-      updateStatus: result
-        .map((expense) => ({
-          [expense.id]: {
-            status: 'initial',
-            isEdit: false,
-          } as UpdateStoreStateStatusEntry,
-        }))
-        .reduce((result, element) => ({ ...result, ...element })),
     })),
     on(ApiActions.loadFailure, (state, { error }) => ({
       ...state,
@@ -75,42 +72,31 @@ export const expensesFeature = createFeature({
       ...state,
       updateStatus: {
         ...state.updateStatus,
-        [id]: {
-          ...state.updateStatus[id],
-          isEdit: !state.updateStatus[id].isEdit,
-        } as UpdateStoreStateStatusEntry,
+        isEdit: !state.updateStatus.isEdit,
+        editingId: state.updateStatus.isEdit ? undefined : id,
       },
     })),
-    on(ApiActions.updateStart, (state, { id }) => ({
+    on(ApiActions.updateStart, (state) => ({
       ...state,
       updateStatus: {
         ...state.updateStatus,
-        [id]: {
-          ...state.updateStatus[id],
-          status: 'pending',
-        } as UpdateStoreStateStatusEntry,
-      },
+        status: 'pending',
+      } as UpdateStoreStateStatus,
     })),
-    on(ApiActions.updateSuccess, (state, { result }) => ({
+    on(ApiActions.updateSuccess, (state) => ({
       ...state,
       updateStatus: {
         ...state.updateStatus,
-        [result.id]: {
-          ...state.updateStatus[result.id],
-          status: 'success',
-        } as UpdateStoreStateStatusEntry,
-      },
+        status: 'success',
+      } as UpdateStoreStateStatus,
     })),
-    on(ApiActions.updateFailure, (state, { id, error }) => ({
+    on(ApiActions.updateFailure, (state, { error }) => ({
       ...state,
       updateStatus: {
         ...state.updateStatus,
-        [id]: {
-          ...state.updateStatus[id],
-          status: 'error',
-          error: error,
-        } as UpdateStoreStateStatusEntry,
-      },
+        status: 'error',
+        error: error,
+      } as UpdateStoreStateStatus,
     })),
 
     on(ApiActions.deleteStart, (state) => ({
