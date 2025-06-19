@@ -129,7 +129,22 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
 
     this.createRecurringExpenseCronJob(recurringExpenseEntity);
 
-    return recurringExpenseEntity;
+    return this.findByIdForUser(recurringExpenseEntity.id, userId);
+  }
+
+  // TODO unsure if return undefined or throw RecurringExpenseNotFoundException
+  async findByIdForUser(
+    recurringExpenseId: string,
+    userId: string,
+  ): Promise<RecurringExpenseEntity | null> {
+    const query = this.recurringExpensesRepository
+      .createQueryBuilder('recurringExpense')
+      .innerJoinAndSelect('recurringExpense.user', 'user')
+      .where('recurringExpense.id = :recurringExpenseId', {
+        recurringExpenseId,
+      })
+      .andWhere('user.id = :userId', { userId });
+    return query.getOne();
   }
 
   async findAllForUser(

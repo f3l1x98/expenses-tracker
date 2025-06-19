@@ -27,7 +27,21 @@ export class ExpensesService {
     expense.user = userId as unknown as UserEntity;
     expense.recurringExpense = createExpenseDto.recurringExpense;
 
-    return this.expensesRepository.save(expense);
+    const savedEntity = await this.expensesRepository.save(expense);
+    return this.findByIdForUser(savedEntity.id, userId);
+  }
+
+  // TODO unsure if return undefined or throw ExpenseNotFoundException
+  async findByIdForUser(
+    expenseId: string,
+    userId: string,
+  ): Promise<ExpenseEntity | null> {
+    const query = this.expensesRepository
+      .createQueryBuilder('expense')
+      .innerJoinAndSelect('expense.user', 'user')
+      .where('expense.id = :expenseId', { expenseId })
+      .andWhere('user.id = :userId', { userId });
+    return query.getOne();
   }
 
   async findAllForUser(

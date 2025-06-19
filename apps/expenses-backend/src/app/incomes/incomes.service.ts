@@ -27,7 +27,21 @@ export class IncomesService {
     income.user = userId as unknown as UserEntity;
     income.recurringIncome = createIncomeDto.recurringIncome;
 
-    return this.incomesRepository.save(income);
+    const savedEntity = await this.incomesRepository.save(income);
+    return this.findByIdForUser(savedEntity.id, userId);
+  }
+
+  // TODO unsure if return undefined or throw IncomeNotFoundException
+  async findByIdForUser(
+    incomeId: string,
+    userId: string,
+  ): Promise<IncomeEntity | null> {
+    const query = this.incomesRepository
+      .createQueryBuilder('income')
+      .innerJoinAndSelect('income.user', 'user')
+      .where('income.id = :incomeId', { incomeId })
+      .andWhere('user.id = :userId', { userId });
+    return query.getOne();
   }
 
   async findAllForUser(

@@ -127,7 +127,22 @@ export class RecurringIncomesService implements OnApplicationBootstrap {
 
     this.createRecurringIncomeCronJob(recurringIncomeEntity);
 
-    return recurringIncomeEntity;
+    return this.findByIdForUser(recurringIncomeEntity.id, userId);
+  }
+
+  // TODO unsure if return undefined or throw RecurringIncomeNotFoundException
+  async findByIdForUser(
+    recurringIncomeId: string,
+    userId: string,
+  ): Promise<RecurringIncomeEntity | null> {
+    const query = this.recurringIncomesRepository
+      .createQueryBuilder('recurringIncome')
+      .innerJoinAndSelect('recurringIncome.user', 'user')
+      .where('recurringIncome.id = :recurringIncomeId', {
+        recurringIncomeId,
+      })
+      .andWhere('user.id = :userId', { userId });
+    return query.getOne();
   }
 
   async findAllForUser(
