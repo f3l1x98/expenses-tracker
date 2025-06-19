@@ -5,23 +5,29 @@
   </div>
   <div class="grid">
     <p-card class="col-3" [header]="'home.currentMonth.totalExpenseCard.header' | translate">
-      @if (currentMonthDataData$ | async; as currentMonthDataData) {
+      @if (currentMonthData(); as currentMonthDataData) {
       {{
       currentMonthDataData.totalExpense
       | formatCurrency: currentMonthDataData.currency
       }}
       }
+      @else {
+      <app-no-data></app-no-data>
+      }
     </p-card>
     <p-card class="col-3" [header]="'home.currentMonth.totalIncomeCard.header' | translate">
-      @if (currentMonthDataData$ | async; as currentMonthDataData) {
+      @if (currentMonthData(); as currentMonthDataData) {
       {{
       currentMonthDataData.totalIncome
       | formatCurrency: currentMonthDataData.currency
       }}
       }
+      @else {
+      <app-no-data></app-no-data>
+      }
     </p-card>
     <p-card class="col-3" [header]="'home.currentMonth.balanceCard.header' | translate">
-      @if (currentMonthDataData$ | async; as currentMonthDataData) {
+      @if (currentMonthData(); as currentMonthDataData) {
       <div appHighlightNegativeCurrency>
         {{
         currentMonthDataData.balance
@@ -29,11 +35,14 @@
         }}
       </div>
       }
+      @else {
+      <app-no-data></app-no-data>
+      }
     </p-card>
 
     <p-card class="col-4" [header]="'home.perCategory.header' | translate" [style]="{ height: '100%' }">
-      @if ((expensesPerCategoryData$ | async)?.datasets) {
-      <p-chart type="pie" [data]="expensesPerCategoryData$ | async" [options]="expensesPerCategoryOptions$ | async" />
+      @if (!expensesPerCategoryNoData()) {
+      <p-chart type="pie" [data]="expensesPerCategoryData()" [options]="expensesPerCategoryOptions()" />
       }
       @else {
       <app-no-data></app-no-data>
@@ -41,8 +50,8 @@
     </p-card>
 
     <p-card class="col-5" [header]="'home.perMonth.header' | translate" [style]="{ height: '100%' }">
-      @if ((expensesPerMonthData$ | async)?.datasets) {
-      <p-chart type="line" [data]="expensesPerMonthData$ | async" [options]="expensesPerMonthOptions$ | async" />
+      @if (!expensesPerMonthNoData()) {
+      <p-chart type="line" [data]="expensesPerMonthData()" [options]="expensesPerMonthOptions" />
       } @else {
       <app-no-data></app-no-data>
       }
