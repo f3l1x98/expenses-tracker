@@ -1,18 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { AppDateRangePickerComponent } from '../../../../../shared/components/app-date-range-picker/app-date-range-picker.component';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { ExpenseCategoryDropdownComponent } from '../../expense-category-dropdown/expense-category-dropdown.component';
-import { RecurringExpensesService } from '../../../recurring-expenses.service';
-import { Subject, debounceTime, takeUntil } from 'rxjs';
+import { RecurringExpensesStore } from '../../../recurring-expenses.store';
+import { debounceTime } from 'rxjs';
 import { RecurringType } from 'expenses-shared';
 import {
   ExpenseCategory,
@@ -20,6 +15,7 @@ import {
   IRecurringExpenseFilterDto,
 } from 'expenses-shared';
 import { RecurringTypeDropdownComponent } from '../../../../../shared/components/recurring-type-dropdown/recurring-type-dropdown.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-recurring-expenses-filter',
@@ -35,38 +31,28 @@ import { RecurringTypeDropdownComponent } from '../../../../../shared/components
     RecurringTypeDropdownComponent,
   ],
 })
-export class RecurringExpensesFilterComponent implements OnInit, OnDestroy {
-  #formBuilder = inject(FormBuilder);
-  #recurringExpensesService = inject(RecurringExpensesService);
+export class RecurringExpensesFilterComponent {
+  #recurringExpensesStore = inject(RecurringExpensesStore);
 
-  formGroup!: FormGroup;
+  formGroup: FormGroup = new FormGroup({
+    description: new FormControl('', {
+      nonNullable: true,
+    }),
+    category: new FormControl<ExpenseCategory | undefined>(undefined, {
+      nonNullable: true,
+    }),
+    dateRange: new FormControl<IDateRangeDto | undefined>(undefined, {
+      nonNullable: true,
+    }),
+    recurringType: new FormControl<RecurringType | undefined>(undefined, {
+      nonNullable: true,
+    }),
+  });
 
-  private destroy$ = new Subject<void>();
-
-  ngOnInit() {
-    this.formGroup = this.#formBuilder.group({
-      description: new FormControl('', {
-        nonNullable: true,
-      }),
-      category: new FormControl<ExpenseCategory | undefined>(undefined, {
-        nonNullable: true,
-      }),
-      dateRange: new FormControl<IDateRangeDto | undefined>(undefined, {
-        nonNullable: true,
-      }),
-      recurringType: new FormControl<RecurringType | undefined>(undefined, {
-        nonNullable: true,
-      }),
-    });
-
+  constructor() {
     this.formGroup.valueChanges
-      .pipe(takeUntil(this.destroy$), debounceTime(300))
+      .pipe(takeUntilDestroyed(), debounceTime(300))
       .subscribe(() => this.applyFilter());
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   applyFilter() {
@@ -85,6 +71,6 @@ export class RecurringExpensesFilterComponent implements OnInit, OnDestroy {
       ...dateRange,
       recurringType: recurringType,
     };
-    this.#recurringExpensesService.updateFilter(filter);
+    this.#recurringExpensesStore.updateFilter(filter);
   }
 }

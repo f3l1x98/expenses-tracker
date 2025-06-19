@@ -1,12 +1,18 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
-import { SpinnerService } from '../../../../shell/spinner/spinner.service';
-import { RecurringIncomesService } from '../../recurring-incomes.service';
+import {
+  Component,
+  inject,
+  WritableSignal,
+  signal,
+  effect,
+  ChangeDetectionStrategy,
+} from '@angular/core';
+import { SpinnerStore } from '../../../../shell/spinner/spinner.store';
+import { RecurringIncomesStore } from '../../recurring-incomes.store';
 import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MenuItem } from 'primeng/api';
 import { DataView } from 'primeng/dataview';
 import { RecurringIncomesFilterComponent } from './filter/recurring-incomes-filter.component';
-import { NgClass, AsyncPipe } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Menu } from 'primeng/menu';
 import { Button } from 'primeng/button';
 import { FormatDatePipe } from '../../../../shared/pipes/format-date.pipe';
@@ -23,43 +29,37 @@ import { CapitalizePipe } from '../../../../shared/pipes/capitalize.pipe';
     NgClass,
     Menu,
     Button,
-    AsyncPipe,
     FormatDatePipe,
     FormatCurrencyPipe,
     CapitalizePipe,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RecurringIncomesListComponent implements OnInit, OnDestroy {
-  #service = inject(RecurringIncomesService);
-  #spinnerService = inject(SpinnerService);
+export class RecurringIncomesListComponent {
+  #store = inject(RecurringIncomesStore);
+  #spinnerStore = inject(SpinnerStore);
   #confirmationService = inject(ConfirmationService);
   #translateService = inject(TranslateService);
 
-  actionMenuItems$: BehaviorSubject<MenuItem[]> = new BehaviorSubject(
-    [] as MenuItem[],
-  );
-  recurringIncomes$ = this.#service.recurringIncomes$;
+  actionMenuItems: WritableSignal<MenuItem[]> = signal([]);
+  recurringIncomes = this.#store.entities;
 
-  private destory$ = new Subject<void>();
-
-  ngOnInit() {
-    this.#service.loadStatus$
-      .pipe(takeUntil(this.destory$))
-      .subscribe((status) =>
-        this.#spinnerService.setState({ active: status.status === 'pending' }),
-      );
-    this.load();
-  }
-
-  ngOnDestroy(): void {
-    this.destory$.next();
-    this.destory$.complete();
+  constructor() {
+    effect(() => {
+      const loadStatus = this.#store.loadStatus();
+      this.#spinnerStore.setState(loadStatus.status === 'pending');
+    });
+    effect(() => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const filters = this.#store.filter();
+      this.#store.loadRecurringIncomes();
+    });
   }
 
   // Workaround as described in https://github.com/primefaces/primeng/issues/13934#issuecomment-1887208083
   // due to issue still not resolved
   onMenuShow(recurringIncomeId: string) {
-    this.actionMenuItems$.next([
+    this.actionMenuItems.set([
       {
         label: this.#translateService.instant('actionMenu.items.edit'),
         icon: 'pi pi-pencil',
@@ -84,15 +84,11 @@ export class RecurringIncomesListComponent implements OnInit, OnDestroy {
             rejectIcon: 'none',
 
             accept: () => {
-              this.#service.delete(recurringIncomeId);
+              this.#store.deleteRecurringIncome(recurringIncomeId);
             },
           });
         },
       },
     ]);
-  }
-
-  load() {
-    this.#service.load();
   }
 }

@@ -1,11 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   IDateRangeDto,
   IIncomeFilterDto,
@@ -13,11 +8,12 @@ import {
 } from 'expenses-shared';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { Subject, debounceTime, takeUntil } from 'rxjs';
+import { debounceTime } from 'rxjs';
 import { AppDateRangePickerComponent } from '../../../../../shared/components/app-date-range-picker/app-date-range-picker.component';
 import { IncomeCategoryDropdownComponent } from '../../income-category-dropdown/income-category-dropdown.component';
-import { IncomesService } from '../../../incomes.service';
+import { IncomesStore } from '../../../incomes.store';
 import { TranslateModule } from '@ngx-translate/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-incomes-filter',
@@ -32,35 +28,25 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule,
   ],
 })
-export class IncomesFilterComponent implements OnInit, OnDestroy {
-  #formBuilder = inject(FormBuilder);
-  #incomesService = inject(IncomesService);
+export class IncomesFilterComponent {
+  #incomesStore = inject(IncomesStore);
 
-  formGroup!: FormGroup;
+  formGroup: FormGroup = new FormGroup({
+    description: new FormControl('', {
+      nonNullable: true,
+    }),
+    category: new FormControl<IncomeCategory | undefined>(undefined, {
+      nonNullable: true,
+    }),
+    dateRange: new FormControl<IDateRangeDto | undefined>(undefined, {
+      nonNullable: true,
+    }),
+  });
 
-  private destroy$ = new Subject<void>();
-
-  ngOnInit() {
-    this.formGroup = this.#formBuilder.group({
-      description: new FormControl('', {
-        nonNullable: true,
-      }),
-      category: new FormControl<IncomeCategory | undefined>(undefined, {
-        nonNullable: true,
-      }),
-      dateRange: new FormControl<IDateRangeDto | undefined>(undefined, {
-        nonNullable: true,
-      }),
-    });
-
+  constructor() {
     this.formGroup.valueChanges
-      .pipe(takeUntil(this.destroy$), debounceTime(300))
+      .pipe(takeUntilDestroyed(), debounceTime(300))
       .subscribe(() => this.applyFilter());
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   applyFilter() {
@@ -76,6 +62,6 @@ export class IncomesFilterComponent implements OnInit, OnDestroy {
       category: category,
       ...dateRange,
     };
-    this.#incomesService.updateFilter(filter);
+    this.#incomesStore.updateFilter(filter);
   }
 }

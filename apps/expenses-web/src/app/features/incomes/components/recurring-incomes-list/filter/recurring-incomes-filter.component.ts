@@ -1,11 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { AppDateRangePickerComponent } from '../../../../../shared/components/app-date-range-picker/app-date-range-picker.component';
 import { RecurringTypeDropdownComponent } from '../../../../../shared/components/recurring-type-dropdown/recurring-type-dropdown.component';
@@ -18,8 +13,9 @@ import {
   IncomeCategory,
   RecurringType,
 } from 'expenses-shared';
-import { Subject, takeUntil, debounceTime } from 'rxjs';
-import { RecurringIncomesService } from '../../../recurring-incomes.service';
+import { debounceTime } from 'rxjs';
+import { RecurringIncomesStore } from '../../../recurring-incomes.store';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-recurring-incomes-filter',
@@ -34,39 +30,30 @@ import { RecurringIncomesService } from '../../../recurring-incomes.service';
     TranslateModule,
     RecurringTypeDropdownComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RecurringIncomesFilterComponent implements OnInit, OnDestroy {
-  #formBuilder = inject(FormBuilder);
-  #recurringIncomesService = inject(RecurringIncomesService);
+export class RecurringIncomesFilterComponent {
+  #recurringIncomesService = inject(RecurringIncomesStore);
 
-  formGroup!: FormGroup;
+  formGroup: FormGroup = new FormGroup({
+    description: new FormControl('', {
+      nonNullable: true,
+    }),
+    category: new FormControl<IncomeCategory | undefined>(undefined, {
+      nonNullable: true,
+    }),
+    dateRange: new FormControl<IDateRangeDto | undefined>(undefined, {
+      nonNullable: true,
+    }),
+    recurringType: new FormControl<RecurringType | undefined>(undefined, {
+      nonNullable: true,
+    }),
+  });
 
-  private destroy$ = new Subject<void>();
-
-  ngOnInit() {
-    this.formGroup = this.#formBuilder.group({
-      description: new FormControl('', {
-        nonNullable: true,
-      }),
-      category: new FormControl<IncomeCategory | undefined>(undefined, {
-        nonNullable: true,
-      }),
-      dateRange: new FormControl<IDateRangeDto | undefined>(undefined, {
-        nonNullable: true,
-      }),
-      recurringType: new FormControl<RecurringType | undefined>(undefined, {
-        nonNullable: true,
-      }),
-    });
-
+  constructor() {
     this.formGroup.valueChanges
-      .pipe(takeUntil(this.destroy$), debounceTime(300))
+      .pipe(takeUntilDestroyed(), debounceTime(300))
       .subscribe(() => this.applyFilter());
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   applyFilter() {

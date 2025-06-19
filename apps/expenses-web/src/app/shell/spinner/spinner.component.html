@@ -1,5 +1,5 @@
-@if(spinnerState$ | async; as spinnerState) {
-<p-blockUI [blocked]="spinnerState.active">
+@if(active()) {
+<p-blockUI [blocked]="active()">
   <p-progressSpinner></p-progressSpinner>
 </p-blockUI>
 }

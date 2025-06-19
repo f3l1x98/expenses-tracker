@@ -1,16 +1,16 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { AuthService } from './core/auth/auth.service';
-import { UserService } from './shell/user/user.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Component, effect, inject } from '@angular/core';
+import { AuthStore } from './core/auth/auth.store';
+import { UserStore } from './shell/user/user.store';
 import {
   RouteConfigLoadEnd,
   RouteConfigLoadStart,
   Router,
   RouterOutlet,
 } from '@angular/router';
-import { SpinnerService } from './shell/spinner/spinner.service';
 import { SpinnerComponent } from './shell/spinner/spinner.component';
 import { NotificationComponent } from './shell/notification/notification.component';
+import { SpinnerStore } from './shell/spinner/spinner.store';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-root',
@@ -18,34 +18,28 @@ import { NotificationComponent } from './shell/notification/notification.compone
   styleUrl: './app.component.scss',
   imports: [RouterOutlet, SpinnerComponent, NotificationComponent],
 })
-export class AppComponent implements OnInit, OnDestroy {
-  #authService = inject(AuthService);
-  #userService = inject(UserService);
+export class AppComponent {
+  #authStore = inject(AuthStore);
+  #userStore = inject(UserStore);
   #router = inject(Router);
-  #spinnerService = inject(SpinnerService);
+  #spinnerStore = inject(SpinnerStore);
 
-  private destory$ = new Subject<void>();
+  constructor() {
+    effect(() => {
+      const user = this.#authStore.user();
+      if (!!user && !!user.id) {
+        this.#userStore.loadOwn();
+      } else {
+        this.#userStore.clearOwn();
+      }
+    });
 
-  ngOnDestroy(): void {
-    this.destory$.next();
-    this.destory$.complete();
-  }
-
-  ngOnInit(): void {
-    this.#authService.currentUser$
-      .pipe(takeUntil(this.destory$))
-      .subscribe((user) => {
-        if (!!user && !!user.id) {
-          this.#userService.loadOwn();
-        } else {
-          this.#userService.clearOwn();
-        }
-      });
-    this.#router.events.pipe(takeUntil(this.destory$)).subscribe((event) => {
+    // Done like this instead of using toSignal and effect, due to that version not receiving all events
+    this.#router.events.pipe(takeUntilDestroyed()).subscribe((event) => {
       if (event instanceof RouteConfigLoadStart) {
-        this.#spinnerService.setState({ active: true });
+        this.#spinnerStore.setState(true);
       } else if (event instanceof RouteConfigLoadEnd) {
-        this.#spinnerService.setState({ active: false });
+        this.#spinnerStore.setState(false);
       }
     });
   }

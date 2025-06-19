@@ -1,4 +1,4 @@
-<p-dataView [value]="(expenses$ | async) ?? undefined" [rows]="12" [paginator]="true">
+<p-dataView [value]="expenses()" [rows]="12" [paginator]="true">
   <ng-template #header>
     <div class="flex flex-column md:flex-row md:justify-content-between">
       <app-expenses-filter class="w-full"></app-expenses-filter>
@@ -10,7 +10,7 @@
       <div class="col-12">
         <div class="flex flex-column sm:flex-row sm:align-items-center p-2 gap-3"
           [ngClass]="{ 'border-top-1 surface-border': !first }">
-          @if (!((updateStatus$ | async) ?? {})[expense.id].isEdit) {
+          @if (!isEdit() || editingId() !== expense.id) {
           <div class="flex flex-column md:flex-row justify-content-between md:align-items-center flex-1 gap-4">
             <div class="flex flex-row md:flex-column justify-content-between align-items-start gap-2">
               <div>
@@ -35,14 +35,14 @@
                 </span>
               </div>
               <div>
-                <p-menu #menu [model]="(actionMenuItems$ | async)!" [popup]="true" appendTo="body"
+                <p-menu #menu [model]="actionMenuItems()" [popup]="true" appendTo="body"
                   (onShow)="onMenuShow(expense)" />
                 <p-button [text]="true" (click)="menu.toggle($event)" icon="pi pi-ellipsis-v" />
               </div>
             </div>
           </div>
           } @else {
-          <form [formGroup]="editFormGroups.get(expense.id)!" class="w-full">
+          <form [formGroup]="editFormGroup" class="w-full">
             <div class="flex flex-column md:flex-row justify-content-between md:align-items-center flex-1 gap-4">
               <div class="flex flex-row md:flex-column justify-content-between align-items-start gap-2">
                 <div>
@@ -58,10 +58,10 @@
                 </div>
               </div>
               <div class="flex flex-row align-items-center gap-2">
-                <p-inputNumber [min]="0" mode="currency" [currency]="(user$ | async)?.settings?.currency"
+                <p-inputNumber [min]="0" mode="currency" [currency]="user()?.settings?.currency"
                   formControlName="amount" locale="en-US" />
                 <p-button icon="pi pi-check" (click)="onEditSubmit(expense)" />
-                <p-button icon="pi pi-times" (click)="onEditCancel(expense.id)" />
+                <p-button icon="pi pi-times" (click)="onEditCancel(expenses.id)" />
               </div>
             </div>
           </form>

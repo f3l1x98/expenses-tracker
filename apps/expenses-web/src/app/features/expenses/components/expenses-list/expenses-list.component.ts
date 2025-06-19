@@ -1,33 +1,31 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
-  BehaviorSubject,
-  combineLatestWith,
-  map,
-  Subject,
-  take,
-  takeUntil,
-} from 'rxjs';
-import { SpinnerService } from '../../../../shell/spinner/spinner.service';
-import { ExpensesService } from '../../expenses.service';
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  signal,
+  WritableSignal,
+} from '@angular/core';
+import { SpinnerStore } from '../../../../shell/spinner/spinner.store';
 import { ConfirmationService, MenuItem } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { DataView } from 'primeng/dataview';
 import { ExpensesFilterComponent } from './expenses-filter/expenses-filter.component';
-import { NgClass, AsyncPipe, CommonModule } from '@angular/common';
+import { NgClass, CommonModule } from '@angular/common';
 import { Menu } from 'primeng/menu';
 import { Button } from 'primeng/button';
 import { FormatDatePipe } from '../../../../shared/pipes/format-date.pipe';
 import { FormatCurrencyPipe } from '../../../../shared/pipes/format-currency.pipe';
 import { InputNumber } from 'primeng/inputnumber';
-import { UserService } from '../../../../shell/user/user.service';
 import {
-  FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { IExpense } from 'expenses-shared';
+import { UserStore } from '../../../../shell/user/user.store';
+import { ExpensesStore } from '../../expenses.store';
 
 @Component({
   selector: 'app-expenses-list',
@@ -41,127 +39,103 @@ import { IExpense } from 'expenses-shared';
     NgClass,
     Menu,
     Button,
-    AsyncPipe,
     FormatDatePipe,
     FormatCurrencyPipe,
     InputNumber,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExpensesListComponent implements OnInit, OnDestroy {
-  #service: ExpensesService = inject(ExpensesService);
-  #spinnerService: SpinnerService = inject(SpinnerService);
+export class ExpensesListComponent {
+  #spinnerStore = inject(SpinnerStore);
   #confirmationService: ConfirmationService = inject(ConfirmationService);
   #translateService: TranslateService = inject(TranslateService);
-  #userService: UserService = inject(UserService);
-  #formBuilder: FormBuilder = inject(FormBuilder);
+  #userStore = inject(UserStore);
+  #store = inject(ExpensesStore);
 
-  actionMenuItems$: BehaviorSubject<MenuItem[]> = new BehaviorSubject(
-    [] as MenuItem[],
-  );
-  editFormGroups!: Map<string, FormGroup>;
-  expenses$ = this.#service.expenses$;
-  updateStatus$ = this.#service.updateStatus$;
+  actionMenuItems: WritableSignal<MenuItem[]> = signal([]);
+  editFormGroup: FormGroup = new FormGroup({
+    description: new FormControl<string | null>(null, {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    amount: new FormControl<number | null>(null, {
+      nonNullable: true,
+      validators: [Validators.required, Validators.min(0)],
+    }),
+  });
+  expenses = this.#store.entities;
+  isEdit = this.#store.updateStatus.isEdit;
+  editingId = this.#store.updateStatus.editingId;
 
-  user$ = this.#userService.own$;
+  user = this.#userStore.own;
 
-  private destory$ = new Subject<void>();
-
-  ngOnInit() {
-    this.#service.loadStatus$
-      .pipe(takeUntil(this.destory$))
-      .subscribe((status) =>
-        this.#spinnerService.setState({ active: status.status === 'pending' }),
-      );
-    this.load();
-
-    this.expenses$.pipe(takeUntil(this.destory$)).subscribe((expenses) => {
-      this.editFormGroups = new Map(
-        expenses.map((expense) => [
-          expense.id,
-          this.#formBuilder.group({
-            description: new FormControl(expense.description, {
-              nonNullable: true,
-              validators: [Validators.required],
-            }),
-            amount: new FormControl(expense.amount, {
-              nonNullable: true,
-              validators: [Validators.required, Validators.min(0)],
-            }),
-          }),
-        ]),
-      );
+  constructor() {
+    effect(() => {
+      const loadStatus = this.#store.loadStatus();
+      this.#spinnerStore.setState(loadStatus.status === 'pending');
     });
-  }
-
-  ngOnDestroy(): void {
-    this.destory$.next();
-    this.destory$.complete();
+    effect(() => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const filters = this.#store.filter();
+      this.#store.loadExpenses();
+    });
   }
 
   // Workaround as described in https://github.com/primefaces/primeng/issues/13934#issuecomment-1887208083
   // due to issue still not resolved
   onMenuShow(expense: IExpense) {
-    this.actionMenuItems$
-      .pipe(
-        combineLatestWith(this.updateStatus$),
-        map(([_, updateStatus]) => [
-          {
-            label: this.#translateService.instant('actionMenu.items.edit'),
-            icon: 'pi pi-pencil',
-            disabled: updateStatus[expense.id].isEdit,
-            command: () => {
-              this.#service.toggleIsEdit(expense.id);
-            },
-          },
-          {
-            label: this.#translateService.instant('actionMenu.items.delete'),
-            icon: 'pi pi-trash',
-            command: () => {
-              this.#confirmationService.confirm({
-                message: this.#translateService.instant(
-                  'dialogs.delete.message',
-                  {
-                    item: 'this expense',
-                  },
-                ),
-                header: this.#translateService.instant('dialogs.delete.header'),
-                icon: 'pi pi-info-circle',
-                acceptButtonStyleClass: 'p-button-danger p-button-text',
-                rejectButtonStyleClass: 'p-button-text p-button-text',
-                acceptIcon: 'none',
-                rejectIcon: 'none',
+    this.actionMenuItems.set([
+      {
+        label: this.#translateService.instant('actionMenu.items.edit'),
+        icon: 'pi pi-pencil',
+        disabled: this.#store.updateStatus()?.isEdit ?? false,
+        command: () => {
+          this.editFormGroup.patchValue({
+            description: expense.description,
+            amount: expense.amount,
+          });
+          this.#store.toggleIsEdit(expense.id);
+        },
+      },
+      {
+        label: this.#translateService.instant('actionMenu.items.delete'),
+        icon: 'pi pi-trash',
+        command: () => {
+          this.#confirmationService.confirm({
+            message: this.#translateService.instant('dialogs.delete.message', {
+              item: 'this expense',
+            }),
+            header: this.#translateService.instant('dialogs.delete.header'),
+            icon: 'pi pi-info-circle',
+            acceptButtonStyleClass: 'p-button-danger p-button-text',
+            rejectButtonStyleClass: 'p-button-text p-button-text',
+            acceptIcon: 'none',
+            rejectIcon: 'none',
 
-                accept: () => {
-                  this.#service.delete(expense.id);
-                },
-              });
+            accept: () => {
+              this.#store.deleteExpense(expense.id);
             },
-          },
-        ]),
-        take(1),
-      )
-      .subscribe((menuItems) => {
-        this.actionMenuItems$.next(menuItems);
-      });
+          });
+        },
+      },
+    ]);
   }
 
   onEditCancel(expenseId: string) {
-    this.#service.toggleIsEdit(expenseId);
-    this.editFormGroups.get(expenseId)?.reset();
+    this.#store.toggleIsEdit(expenseId);
+    this.editFormGroup.reset();
   }
 
   onEditSubmit(expense: IExpense) {
-    const editFormGroup = this.editFormGroups.get(expense.id);
-    if (!editFormGroup?.valid) return;
-    this.#service.update(expense.id, {
-      ...expense,
-      description: editFormGroup.get('description')?.value,
-      amount: editFormGroup.get('amount')?.value,
+    if (!this.editFormGroup?.valid) return;
+    this.#store.updateExpense({
+      id: expense.id,
+      dto: {
+        ...expense,
+        description: this.editFormGroup.get('description')?.value,
+        amount: this.editFormGroup.get('amount')?.value,
+      },
     });
-    this.#service.toggleIsEdit(expense.id);
-  }
-
-  load() {
-    this.#service.load();
+    this.#store.toggleIsEdit(expense.id);
   }
 }

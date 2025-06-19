@@ -1,4 +1,4 @@
-<p-dataView [value]="(incomes$ | async) ?? undefined" [rows]="12" [paginator]="true">
+<p-dataView [value]="incomes()" [rows]="12" [paginator]="true">
   <ng-template #header>
     <div class="flex flex-column md:flex-row md:justify-content-between">
       <app-incomes-filter class="w-full"></app-incomes-filter>
@@ -34,7 +34,7 @@
                 </span>
               </div>
               <div>
-                <p-menu #menu [model]="(actionMenuItems$ | async)!" [popup]="true" appendTo="body"
+                <p-menu #menu [model]="actionMenuItems()" [popup]="true" appendTo="body"
                   (onShow)="onMenuShow(income.id)" />
                 <p-button [text]="true" (click)="menu.toggle($event)" icon="pi pi-ellipsis-v" />
               </div>

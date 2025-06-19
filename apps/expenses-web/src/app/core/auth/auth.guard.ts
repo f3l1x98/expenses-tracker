@@ -1,7 +1,8 @@
 import { inject } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { CanActivateFn, Router } from '@angular/router';
 import { map } from 'rxjs';
-import { AuthService } from './auth.service';
+import { AuthStore } from './auth.store';
 
 function tokenExpired(token: string) {
   const expiry = JSON.parse(atob(token.split('.')[1])).exp;
@@ -9,13 +10,13 @@ function tokenExpired(token: string) {
 }
 
 export const AuthGuard: CanActivateFn = (route, state) => {
-  const authService = inject(AuthService);
+  const store = inject(AuthStore);
   const router = inject(Router);
-  return authService.token$.pipe(
+  return toObservable(store.token).pipe(
     map((token) => {
       if (!token || tokenExpired(token)) {
         const returnUrl = state.url;
-        authService.logout();
+        store.logout();
         router.navigate(['/auth/login'], { queryParams: { returnUrl } });
         return false;
       } else {

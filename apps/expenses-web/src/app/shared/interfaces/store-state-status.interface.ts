@@ -3,10 +3,7 @@ export interface StoreStateStatus {
   status: 'initial' | 'error' | 'pending' | 'success';
 }
 
-export type UpdateStoreStateStatus = {
-  [expenseId: string]: UpdateStoreStateStatusEntry;
-};
-
-export type UpdateStoreStateStatusEntry = StoreStateStatus & {
+export type UpdateStoreStateStatus = StoreStateStatus & {
   isEdit: boolean;
+  editingId: string | undefined; // Id of entity that is currently being edited
 };

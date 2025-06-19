@@ -1,6 +1,11 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {
-  FormBuilder,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+} from '@angular/core';
+import {
   FormControl,
   FormGroup,
   FormsModule,
@@ -11,9 +16,8 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
-import { Subject, map, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../auth.service';
+import { AuthStore } from '../../auth.store';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { AppHeaderComponent } from '../../../../shared/components/app-header/app-header.component';
@@ -35,49 +39,39 @@ import { TranslateModule } from '@ngx-translate/core';
     FloatLabelModule,
     TranslateModule,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent implements OnInit, OnDestroy {
-  #formBuilder = inject(FormBuilder);
-  #authService = inject(AuthService);
+export class LoginComponent {
+  #store = inject(AuthStore);
   #router = inject(Router);
   #route = inject(ActivatedRoute);
 
-  private destroy$ = new Subject<boolean>();
-  formGroup!: FormGroup;
-  loading$ = this.#authService.status$.pipe(
-    map((status) => status.value == 'running'),
-  );
+  loginForm: FormGroup = new FormGroup({
+    username: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required]),
+  });
+  loading = computed(() => this.#store.status().value === 'running');
 
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
-  }
-
-  ngOnInit() {
-    this.formGroup = this.#formBuilder.group({
-      username: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required]),
+  constructor() {
+    effect(() => {
+      const status = this.#store.status();
+      if (status.value == 'success') {
+        const returnUrl =
+          this.#route.snapshot.queryParams['returnUrl'] || '/features';
+        this.#router.navigate([returnUrl]);
+        this.loginForm.reset();
+      }
     });
-    this.#authService.status$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((status) => {
-        if (status.value == 'success') {
-          const returnUrl =
-            this.#route.snapshot.queryParams['returnUrl'] || '/features';
-          this.#router.navigate([returnUrl]);
-          this.formGroup.reset();
-        }
-      });
   }
 
   submit() {
-    if (!this.formGroup.valid) return;
+    if (!this.loginForm.valid) return;
 
-    this.#authService.login(
+    this.#store.login({
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      this.formGroup.get('username')!.value,
+      username: this.loginForm.get('username')!.value,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      this.formGroup.get('password')!.value,
-    );
+      password: this.loginForm.get('password')!.value,
+    });
   }
 }

@@ -1,14 +1,7 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  HostListener,
-  OnDestroy,
-  OnInit,
-  inject,
-} from '@angular/core';
+import { Component, HostListener, effect, inject } from '@angular/core';
 import {
   AbstractControl,
-  FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -22,8 +15,7 @@ import { PasswordModule } from 'primeng/password';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { UserService } from '../../user.service';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { RouterLinkWithHref } from '@angular/router';
 import { ComponentCanDeactivate } from '../../../../shared/guards/pending-changes.guard';
 import { ConfirmationService } from 'primeng/api';
@@ -31,6 +23,7 @@ import { PendingChangesDialogComponent } from '../../../../shared/components/pen
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CurrencyInputComponent } from '../../../../shared/components/currency-input/currency-input.component';
 import { Currency } from '../../../../shared/components/currency-input/currencys';
+import { UserStore } from '../../user.store';
 
 @Component({
   selector: 'app-register',
@@ -51,20 +44,37 @@ import { Currency } from '../../../../shared/components/currency-input/currencys
   ],
   providers: [ConfirmationService],
 })
-export class RegisterComponent
-  implements OnInit, OnDestroy, ComponentCanDeactivate
-{
-  #formBuilder = inject(FormBuilder);
-  #userService = inject(UserService);
+export class RegisterComponent implements ComponentCanDeactivate {
+  #store = inject(UserStore);
   #confirmationService = inject(ConfirmationService);
   #translateService = inject(TranslateService);
 
-  credentialsFormGroup!: FormGroup;
-  settingsFormGroup!: FormGroup;
+  registerStatus = this.#store.createStatus;
 
-  registerStatus$ = this.#userService.registerStatus$;
+  credentialsFormGroup: FormGroup = new FormGroup({
+    username: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required]),
+    confirmPassword: new FormControl('', [
+      Validators.required,
+      this.validateConfirmPassword(),
+    ]),
+  });
+  settingsFormGroup: FormGroup = new FormGroup({
+    currency: new FormControl<Currency | undefined>(undefined, [
+      Validators.required,
+    ]),
+  });
 
-  private destroy$ = new Subject<void>();
+  constructor() {
+    effect(() => {
+      const createStatus = this.#store.createStatus();
+
+      if (createStatus.status == 'success') {
+        this.credentialsFormGroup.reset();
+        this.settingsFormGroup.reset();
+      }
+    });
+  }
 
   @HostListener('window:beforeunload')
   canDeactivate(): boolean | Observable<boolean> {
@@ -89,35 +99,6 @@ export class RegisterComponent
     return canDeactiveSubject$;
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  ngOnInit() {
-    this.credentialsFormGroup = this.#formBuilder.group({
-      username: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required]),
-      confirmPassword: new FormControl('', [
-        Validators.required,
-        this.validateConfirmPassword(),
-      ]),
-    });
-    this.settingsFormGroup = this.#formBuilder.group({
-      currency: new FormControl<Currency | undefined>(undefined, [
-        Validators.required,
-      ]),
-    });
-    this.#userService.registerStatus$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((status) => {
-        if (status.status == 'success') {
-          this.credentialsFormGroup.reset();
-          this.settingsFormGroup.reset();
-        }
-      });
-  }
-
   private validateConfirmPassword(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const formGroup = control.root as FormGroup;
@@ -139,7 +120,7 @@ export class RegisterComponent
     const currency = this.settingsFormGroup.get('currency')?.value as
       | Currency
       | undefined;
-    this.#userService.register({
+    this.#store.createUser({
       password: this.credentialsFormGroup.get('password')?.value,
       username: this.credentialsFormGroup.get('username')?.value,
       settings: {
