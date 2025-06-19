@@ -1,12 +1,18 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { IncomesService } from '../../incomes.service';
+import {
+  Component,
+  inject,
+  ChangeDetectionStrategy,
+  WritableSignal,
+  signal,
+  effect,
+} from '@angular/core';
+import { IncomesStore } from '../../incomes.store';
 import { SpinnerStore } from '../../../../shell/spinner/spinner.store';
-import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { ConfirmationService, MenuItem } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { DataView } from 'primeng/dataview';
 import { IncomesFilterComponent } from './incomes-filter/incomes-filter.component';
-import { NgClass, AsyncPipe } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Menu } from 'primeng/menu';
 import { Button } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
@@ -24,42 +30,36 @@ import { FormatCurrencyPipe } from '../../../../shared/pipes/format-currency.pip
     Menu,
     Button,
     ConfirmDialog,
-    AsyncPipe,
     FormatDatePipe,
     FormatCurrencyPipe,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class IncomesListComponent implements OnInit, OnDestroy {
-  #service = inject(IncomesService);
+export class IncomesListComponent {
+  #store = inject(IncomesStore);
   #spinnerStore = inject(SpinnerStore);
   #confirmationService = inject(ConfirmationService);
   #translateService = inject(TranslateService);
 
-  actionMenuItems$: BehaviorSubject<MenuItem[]> = new BehaviorSubject(
-    [] as MenuItem[],
-  );
-  incomes$ = this.#service.incomes$;
+  actionMenuItems: WritableSignal<MenuItem[]> = signal([]);
+  incomes = this.#store.entities;
 
-  private destory$ = new Subject<void>();
-
-  ngOnInit() {
-    this.#service.loadStatus$
-      .pipe(takeUntil(this.destory$))
-      .subscribe((status) =>
-        this.#spinnerStore.setState(status.status === 'pending'),
-      );
-    this.load();
-  }
-
-  ngOnDestroy(): void {
-    this.destory$.next();
-    this.destory$.complete();
+  constructor() {
+    effect(() => {
+      const loadStatus = this.#store.loadStatus();
+      this.#spinnerStore.setState(loadStatus.status === 'pending');
+    });
+    effect(() => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const filters = this.#store.filter();
+      this.#store.loadIncomes();
+    });
   }
 
   // Workaround as described in https://github.com/primefaces/primeng/issues/13934#issuecomment-1887208083
   // due to issue still not resolved
-  onMenuShow(expenseId: string) {
-    this.actionMenuItems$.next([
+  onMenuShow(incomeId: string) {
+    this.actionMenuItems.set([
       {
         label: this.#translateService.instant('actionMenu.items.edit'),
         icon: 'pi pi-pencil',
@@ -83,15 +83,11 @@ export class IncomesListComponent implements OnInit, OnDestroy {
             rejectIcon: 'none',
 
             accept: () => {
-              this.#service.delete(expenseId);
+              this.#store.deleteIncome(incomeId);
             },
           });
         },
       },
     ]);
-  }
-
-  load() {
-    this.#service.load();
   }
 }

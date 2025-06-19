@@ -1,14 +1,12 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
-  FormBuilder,
   FormControl,
   FormGroup,
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { IncomesService } from '../../incomes.service';
-import { RecurringIncomesService } from '../../recurring-incomes.service';
+import { IncomesStore } from '../../incomes.store';
+import { RecurringIncomesStore } from '../../recurring-incomes.store';
 import { validateDateAfter } from '../../../../shared/validators/validate-date-after';
 import { UserStore } from '../../../../shell/user/user.store';
 import { IncomeCategory } from 'expenses-shared';
@@ -36,59 +34,50 @@ import { TranslateModule } from '@ngx-translate/core';
     Button,
     TranslateModule,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class IncomeCreateComponent implements OnInit, OnDestroy {
-  #formBuilder = inject(FormBuilder);
-  #incomesService = inject(IncomesService);
-  #recurringIncomesService = inject(RecurringIncomesService);
+export class IncomeCreateComponent {
+  #incomesStore = inject(IncomesStore);
+  #recurringIncomesStore = inject(RecurringIncomesStore);
   #userStore = inject(UserStore);
 
-  formGroup!: FormGroup;
+  formGroup: FormGroup = new FormGroup({
+    description: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    category: new FormControl<IncomeCategory>(IncomeCategory.SALARY, {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    isRecurring: new FormControl<boolean>(false, {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    amount: new FormControl(0, {
+      nonNullable: true,
+      validators: [Validators.required, Validators.min(0)],
+    }),
+    recurringType: new FormControl<RecurringType>(RecurringType.MONTHLY, {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    startDate: new FormControl<Date>(new Date(), {
+      nonNullable: true,
+      validators: [
+        Validators.required,
+        validateDateAfter({ value: new Date() }),
+      ],
+    }),
+    endDate: new FormControl<Date | undefined>(undefined, {
+      nonNullable: true,
+      validators: [validateDateAfter({ formControlName: 'startDate' })],
+    }),
+  });
   categoryOptions = Object.values(IncomeCategory);
   recurringTypeOptions = Object.values(RecurringType);
 
   user = this.#userStore.own;
-
-  private destory$ = new Subject<void>();
-
-  ngOnDestroy(): void {
-    this.destory$.next();
-    this.destory$.complete();
-  }
-
-  ngOnInit() {
-    const now = new Date();
-    this.formGroup = this.#formBuilder.group({
-      description: new FormControl('', {
-        nonNullable: true,
-        validators: [Validators.required],
-      }),
-      category: new FormControl<IncomeCategory>(IncomeCategory.SALARY, {
-        nonNullable: true,
-        validators: [Validators.required],
-      }),
-      isRecurring: new FormControl<boolean>(false, {
-        nonNullable: true,
-        validators: [Validators.required],
-      }),
-      amount: new FormControl(0, {
-        nonNullable: true,
-        validators: [Validators.required, Validators.min(0)],
-      }),
-      recurringType: new FormControl<RecurringType>(RecurringType.MONTHLY, {
-        nonNullable: true,
-        validators: [Validators.required],
-      }),
-      startDate: new FormControl<Date>(now, {
-        nonNullable: true,
-        validators: [Validators.required, validateDateAfter({ value: now })],
-      }),
-      endDate: new FormControl<Date | undefined>(undefined, {
-        nonNullable: true,
-        validators: [validateDateAfter({ formControlName: 'startDate' })],
-      }),
-    });
-  }
 
   submit() {
     if (!this.formGroup.valid) return;
@@ -104,7 +93,7 @@ export class IncomeCreateComponent implements OnInit, OnDestroy {
         ?.value as RecurringType;
       const startDate = this.formGroup.get('startDate')?.value as Date;
       const endDate = this.formGroup.get('endDate')?.value as Date | undefined;
-      this.#recurringIncomesService.create({
+      this.#recurringIncomesStore.createRecurringIncome({
         description: description,
         category: category,
         amount: amount,
@@ -113,7 +102,7 @@ export class IncomeCreateComponent implements OnInit, OnDestroy {
         endDate: endDate,
       });
     } else {
-      this.#incomesService.create({
+      this.#incomesStore.createIncome({
         description: description,
         category: category,
         amount: amount,

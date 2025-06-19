@@ -17,15 +17,17 @@ export class RecurringIncomesApiService {
 
   private readonly baseUrl: string = `${this.#apiService.apiRoot}/recurring-incomes`;
   private readonly createUrl: string = `${this.baseUrl}/`;
-  private readonly updateUrl: string = `${this.baseUrl}/`;
   private readonly getAllUrl: string = `${this.baseUrl}/`;
 
   create$(request: ICreateRecurringIncomeDto): Observable<IRecurringIncome> {
     return this.#apiService.post(this.createUrl, request);
   }
 
-  update$(request: IUpdateRecurringIncomeDto): Observable<IRecurringIncome> {
-    return this.#apiService.put(this.updateUrl, request);
+  update$(
+    id: string,
+    request: IUpdateRecurringIncomeDto,
+  ): Observable<IRecurringIncome> {
+    return this.#apiService.put(`${this.baseUrl}/${id}`, request);
   }
 
   getAll$(filter?: IRecurringIncomeFilterDto): Observable<IRecurringIncome[]> {

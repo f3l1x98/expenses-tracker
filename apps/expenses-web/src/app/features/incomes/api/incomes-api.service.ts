@@ -17,15 +17,14 @@ export class IncomesApiService {
 
   private readonly baseUrl: string = `${this.#apiService.apiRoot}/incomes`;
   private readonly createUrl: string = `${this.baseUrl}/`;
-  private readonly updateUrl: string = `${this.baseUrl}/`;
   private readonly getAllUrl: string = `${this.baseUrl}/`;
 
   create$(request: ICreateIncomeDto): Observable<IIncome> {
     return this.#apiService.post(this.createUrl, request);
   }
 
-  update$(request: IUpdateIncomeDto): Observable<IIncome> {
-    return this.#apiService.put(this.updateUrl, request);
+  update$(id: string, request: IUpdateIncomeDto): Observable<IIncome> {
+    return this.#apiService.put(`${this.baseUrl}/${id}`, request);
   }
 
   getAll$(filter?: IIncomeFilterDto): Observable<IIncome[]> {
