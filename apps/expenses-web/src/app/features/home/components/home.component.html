@@ -1,7 +1,9 @@
 <app-content-wrapper>
   <div slot="header" class="flex justify-between">
     <span>{{'home.title' | translate}}</span>
-    <app-date-range-picker (onChange)="onDateRangeChanged($event)"></app-date-range-picker>
+    <app-date-range-picker style="font-weight: initial; font-size: initial; line-height: initial;"
+      (onChange)="onDateRangeChanged($event)">
+    </app-date-range-picker>
   </div>
   <div class="grid grid-cols-12 gap-4">
     <p-card class="col-span-3" [header]="'home.currentMonth.totalExpenseCard.header' | translate">
