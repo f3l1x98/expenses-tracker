@@ -1,13 +1,13 @@
 <app-content-wrapper>
   <span slot="header">{{'expenses.title' | translate}}</span>
-  <div class="grid m-0">
-    <p-card class="col-12" header="{{'expenses.createHeader' | translate}}">
+  <div class="grid grid-cols-12 gap-4 m-0">
+    <p-card class="col-span-12" header="{{'expenses.createHeader' | translate}}">
       <app-expense-create></app-expense-create>
     </p-card>
-    <p-card class="col-7">
+    <p-card class="col-span-7">
       <app-expenses-list></app-expenses-list>
     </p-card>
-    <p-card class="col-5">
+    <p-card class="col-span-5">
       <app-recurring-expenses-list></app-recurring-expenses-list>
     </p-card>
   </div>

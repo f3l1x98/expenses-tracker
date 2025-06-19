@@ -1,22 +1,22 @@
 <p-dataView [value]="recurringIncomes()" [rows]="12" [paginator]="true">
   <ng-template #header>
-    <div class="flex flex-column md:flex-row md:justify-content-between">
+    <div class="flex flex-col md:flex-row md:justify-between">
       <app-recurring-incomes-filter class="w-full"></app-recurring-incomes-filter>
     </div>
   </ng-template>
   <ng-template #list let-recurringIncomes>
-    <div class="grid grid-nogutter">
+    <div class="grid grid-cols-12 gap-4 grid-nogutter">
       @for (recurringIncome of recurringIncomes; track recurringIncome.id; let first = $first) {
-      <div class="col-12">
-        <div class="flex flex-column sm:flex-row sm:align-items-center p-2 gap-3"
-          [ngClass]="{ 'border-top-1 surface-border': !first }">
-          <div class="flex flex-column md:flex-row justify-content-between md:align-items-center flex-1 gap-4">
-            <div class="flex flex-row md:flex-column justify-content-between align-items-start gap-2">
+      <div class="col-span-12">
+        <div class="flex flex-col sm:flex-row sm:items-center p-2 gap-4"
+          [ngClass]="{ 'border-t border-surface-200 dark:border-surface-700': !first }">
+          <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
+            <div class="flex flex-row md:flex-col justify-between items-start gap-2">
               <div>
                 <span class="font-medium text-secondary text-sm">
                   {{ recurringIncome.category | capitalize }}
                 </span>
-                <div class="text-lg font-medium text-900">
+                <div class="text-lg font-medium text-surface-900 dark:text-surface-0">
                   {{ recurringIncome.description }}
                 </div>
                 <span class="font-medium text-secondary text-sm">
@@ -28,9 +28,9 @@
                 </span>
               </div>
             </div>
-            <div class="flex flex-row align-items-center gap-2">
+            <div class="flex flex-row items-center gap-2">
               <div>
-                <span class="text-xl font-semibold text-900">
+                <span class="text-xl font-semibold text-surface-900 dark:text-surface-0">
                   {{
                   recurringIncome.amount
                   | formatCurrency: recurringIncome.user.settings.currency
