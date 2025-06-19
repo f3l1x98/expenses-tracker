@@ -1,15 +1,13 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, computed, inject, Signal } from '@angular/core';
 import {
-  FormBuilder,
   FormControl,
   FormGroup,
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
 import { ExpenseCategory } from 'expenses-shared';
-import { Subject } from 'rxjs';
-import { ExpensesService } from '../../expenses.service';
-import { RecurringExpensesService } from '../../recurring-expenses.service';
+import { ExpensesStore } from '../../expenses.store';
+import { RecurringExpensesStore } from '../../recurring-expenses.store';
 import { validateDateAfter } from '../../../../shared/validators/validate-date-after';
 import { UserStore } from '../../../../shell/user/user.store';
 import { RecurringType } from 'expenses-shared';
@@ -38,58 +36,53 @@ import { TranslateModule } from '@ngx-translate/core';
     Button,
     TranslateModule,
   ],
+  // TODO ACTIVATE AFTER SWITCH TO SIGNALS changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExpenseCreateComponent implements OnInit, OnDestroy {
-  #formBuilder = inject(FormBuilder);
-  #expensesService = inject(ExpensesService);
-  #recurringExpensesService = inject(RecurringExpensesService);
+export class ExpenseCreateComponent {
+  #expensesStore = inject(ExpensesStore);
+  #recurringExpensesStore = inject(RecurringExpensesStore);
   #userStore = inject(UserStore);
 
-  formGroup!: FormGroup;
+  formGroup: FormGroup = new FormGroup({
+    description: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    category: new FormControl<ExpenseCategory>(ExpenseCategory.MISC, {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    isRecurring: new FormControl<boolean>(false, {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    amount: new FormControl(0, {
+      nonNullable: true,
+      validators: [Validators.required, Validators.min(0)],
+    }),
+    recurringType: new FormControl<RecurringType>(RecurringType.MONTHLY, {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    startDate: new FormControl<Date>(new Date(), {
+      nonNullable: true,
+      validators: [
+        Validators.required,
+        validateDateAfter({ value: new Date() }),
+      ],
+    }),
+    endDate: new FormControl<Date | undefined>(undefined, {
+      nonNullable: true,
+      validators: [validateDateAfter({ formControlName: 'startDate' })],
+    }),
+  });
   recurringTypeOptions = Object.values(RecurringType);
 
-  user = this.#userStore.own;
+  currency: Signal<string> = computed(
+    () => this.#userStore.own()?.settings.currency ?? 'EUR',
+  );
 
-  private destory$ = new Subject<void>();
-
-  ngOnDestroy(): void {
-    this.destory$.next();
-    this.destory$.complete();
-  }
-
-  ngOnInit() {
-    const now = new Date();
-    this.formGroup = this.#formBuilder.group({
-      description: new FormControl('', {
-        nonNullable: true,
-        validators: [Validators.required],
-      }),
-      category: new FormControl<ExpenseCategory>(ExpenseCategory.MISC, {
-        nonNullable: true,
-        validators: [Validators.required],
-      }),
-      isRecurring: new FormControl<boolean>(false, {
-        nonNullable: true,
-        validators: [Validators.required],
-      }),
-      amount: new FormControl(0, {
-        nonNullable: true,
-        validators: [Validators.required, Validators.min(0)],
-      }),
-      recurringType: new FormControl<RecurringType>(RecurringType.MONTHLY, {
-        nonNullable: true,
-        validators: [Validators.required],
-      }),
-      startDate: new FormControl<Date>(now, {
-        nonNullable: true,
-        validators: [Validators.required, validateDateAfter({ value: now })],
-      }),
-      endDate: new FormControl<Date | undefined>(undefined, {
-        nonNullable: true,
-        validators: [validateDateAfter({ formControlName: 'startDate' })],
-      }),
-    });
-  }
+  //user = this.#userStore.own;
 
   submit() {
     if (!this.formGroup.valid) return;
@@ -105,7 +98,7 @@ export class ExpenseCreateComponent implements OnInit, OnDestroy {
         ?.value as RecurringType;
       const startDate = this.formGroup.get('startDate')?.value as Date;
       const endDate = this.formGroup.get('endDate')?.value as Date | undefined;
-      this.#recurringExpensesService.create({
+      this.#recurringExpensesStore.createRecurringExpense({
         description: description,
         category: category,
         amount: amount,
@@ -114,7 +107,7 @@ export class ExpenseCreateComponent implements OnInit, OnDestroy {
         endDate: endDate,
       });
     } else {
-      this.#expensesService.create({
+      this.#expensesStore.createExpense({
         description: description,
         category: category,
         amount: amount,
