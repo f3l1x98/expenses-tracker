@@ -29,7 +29,11 @@ type HomeState = {
 
 const initialState: HomeState = {
   filter: {
-    startDate: new Date(),
+    startDate: new Date(
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      new Date().getDate(),
+    ),
     endDate: undefined,
   },
   currentMonthData: {
