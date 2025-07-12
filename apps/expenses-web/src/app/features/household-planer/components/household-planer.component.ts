@@ -32,8 +32,10 @@ export class HouseholdPlanerComponent {
   #store = inject(HouseholdPlanerStore);
   #spinnerStore = inject(SpinnerStore);
 
-  readonly householdIncomes = this.#store.householdIncomes;
-  readonly householdExpenses = this.#store.householdExpenses;
+  readonly householdIncomes = this.#store.householdIncomes.data;
+  readonly householdIncomeCurrency = this.#store.householdIncomes.currency;
+  readonly householdExpenses = this.#store.householdExpenses.data;
+  readonly householdExpenseCurrency = this.#store.householdExpenses.currency;
 
   constructor() {
     effect(() => {

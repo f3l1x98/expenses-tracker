@@ -44,24 +44,24 @@
             <!-- TODO make currency user dependant -->
             <td class="text-right">
               @if (income.recurringType === 'monthly') {
-              {{income.amount | formatCurrency: 'EUR'}}
+              {{income.amount | formatCurrency: householdIncomeCurrency()}}
               }
             </td>
             <td class="text-right">
               @if (income.recurringType === 'quarterly') {
-              {{income.amount | formatCurrency: 'EUR'}}
+              {{income.amount | formatCurrency: householdIncomeCurrency()}}
               }
             </td>
             <td class="text-right">
               @if (income.recurringType === 'yearly') {
-              {{income.amount | formatCurrency: 'EUR'}}
+              {{income.amount | formatCurrency: householdIncomeCurrency()}}
               }
             </td>
             <td class="text-right" [ngClass]="{'font-bold': !income.category}">
-              {{income.monthlyAmount | formatCurrency: 'EUR'}}
+              {{income.monthlyAmount | formatCurrency: householdIncomeCurrency()}}
             </td>
             <td class="text-right" [ngClass]="{'font-bold': !income.category}">
-              {{income.yearlyAmount | formatCurrency: 'EUR'}}
+              {{income.yearlyAmount | formatCurrency: householdIncomeCurrency()}}
             </td>
           </tr>
         </ng-template>
@@ -109,24 +109,24 @@
             <!-- TODO make currency user dependant -->
             <td class="text-right">
               @if (expense.recurringType === 'monthly') {
-              {{expense.amount | formatCurrency: 'EUR'}}
+              {{expense.amount | formatCurrency: householdExpenseCurrency()}}
               }
             </td>
             <td class="text-right">
               @if (expense.recurringType === 'quarterly') {
-              {{expense.amount | formatCurrency: 'EUR'}}
+              {{expense.amount | formatCurrency: householdExpenseCurrency()}}
               }
             </td>
             <td class="text-right">
               @if (expense.recurringType === 'yearly') {
-              {{expense.amount | formatCurrency: 'EUR'}}
+              {{expense.amount | formatCurrency: householdExpenseCurrency()}}
               }
             </td>
             <td class="text-right" [ngClass]="{'font-bold': !expense.category}">
-              {{expense.monthlyAmount | formatCurrency: 'EUR'}}
+              {{expense.monthlyAmount | formatCurrency: householdExpenseCurrency()}}
             </td>
             <td class="text-right" [ngClass]="{'font-bold': !expense.category}">
-              {{expense.yearlyAmount | formatCurrency: 'EUR'}}
+              {{expense.yearlyAmount | formatCurrency: householdExpenseCurrency()}}
             </td>
           </tr>
         </ng-template>

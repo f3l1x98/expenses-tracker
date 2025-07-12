@@ -7,8 +7,13 @@ import {
 } from '@nestjs/swagger';
 import { Request } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { IHouseholdExpense, IHouseholdIncome, IUser } from 'expenses-shared';
+import {
+  IHouseholdExpenseResponse,
+  IHouseholdIncomeResponse,
+  IUser,
+} from 'expenses-shared';
 import { HouseholdPlanerService } from './household-planer.service';
+import { UsersService } from '../users/users.service';
 
 @ApiTags('household-planer')
 @ApiBearerAuth()
@@ -19,7 +24,10 @@ import { HouseholdPlanerService } from './household-planer.service';
   version: '1',
 })
 export class HouseholdPlanerController {
-  constructor(private householdPlanerService: HouseholdPlanerService) {}
+  constructor(
+    private householdPlanerService: HouseholdPlanerService,
+    private usersService: UsersService,
+  ) {}
 
   @ApiOperation({
     summary: 'Returns expenses for household planer.',
@@ -27,10 +35,17 @@ export class HouseholdPlanerController {
   @Get('expenses')
   async findHouseholdPlanerExpenses(
     @Req() req: Request,
-  ): Promise<IHouseholdExpense[]> {
-    return this.householdPlanerService.findHouseholdPlanerExpensesForUser(
-      (req.user as IUser).id,
-    );
+  ): Promise<IHouseholdExpenseResponse> {
+    const userId = (req.user as IUser).id;
+    const householdExpenses =
+      await this.householdPlanerService.findHouseholdPlanerExpensesForUser(
+        userId,
+      );
+    const user = await this.usersService.findById(userId);
+    return {
+      data: householdExpenses,
+      currency: user.settings.currency,
+    };
   }
 
   @ApiOperation({
@@ -39,9 +54,16 @@ export class HouseholdPlanerController {
   @Get('incomes')
   async findHouseholdPlanerIncomes(
     @Req() req: Request,
-  ): Promise<IHouseholdIncome[]> {
-    return this.householdPlanerService.findHouseholdPlanerIncomesForUser(
-      (req.user as IUser).id,
-    );
+  ): Promise<IHouseholdIncomeResponse> {
+    const userId = (req.user as IUser).id;
+    const householdIncomes =
+      await this.householdPlanerService.findHouseholdPlanerIncomesForUser(
+        userId,
+      );
+    const user = await this.usersService.findById(userId);
+    return {
+      data: householdIncomes,
+      currency: user.settings.currency,
+    };
   }
 }

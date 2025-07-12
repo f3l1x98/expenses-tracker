@@ -1,6 +1,9 @@
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { StoreStateStatus } from '../../shared/interfaces/store-state-status.interface';
-import { IHouseholdExpense, IHouseholdIncome } from 'expenses-shared';
+import {
+  IHouseholdExpenseResponse,
+  IHouseholdIncomeResponse,
+} from 'expenses-shared';
 import { inject } from '@angular/core';
 import { catchError, EMPTY, pipe, switchMap, tap } from 'rxjs';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
@@ -8,8 +11,8 @@ import { HouseholdPlanerApiService } from './api/household-planer-api.service';
 
 export type HouseholdPlanerState = {
   loadStatus: StoreStateStatus;
-  householdExpenses: Array<IHouseholdExpense>;
-  householdIncomes: Array<IHouseholdIncome>;
+  householdExpenses: IHouseholdExpenseResponse;
+  householdIncomes: IHouseholdIncomeResponse;
 };
 
 const initialState: HouseholdPlanerState = {
@@ -17,8 +20,14 @@ const initialState: HouseholdPlanerState = {
     error: undefined,
     status: 'initial',
   },
-  householdExpenses: [],
-  householdIncomes: [],
+  householdExpenses: {
+    currency: '',
+    data: [],
+  },
+  householdIncomes: {
+    currency: '',
+    data: [],
+  },
 };
 
 export const HouseholdPlanerStore = signalStore(
@@ -44,7 +53,10 @@ export const HouseholdPlanerStore = signalStore(
               console.error(e);
               patchState(store, {
                 loadStatus: { status: 'error', error: e },
-                householdExpenses: [],
+                householdExpenses: {
+                  currency: '',
+                  data: [],
+                },
               });
               return EMPTY;
             }),
@@ -72,7 +84,10 @@ export const HouseholdPlanerStore = signalStore(
               console.error(e);
               patchState(store, {
                 loadStatus: { status: 'error', error: e },
-                householdIncomes: [],
+                householdIncomes: {
+                  currency: '',
+                  data: [],
+                },
               });
               return EMPTY;
             }),
