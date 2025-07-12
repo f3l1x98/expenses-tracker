@@ -19,6 +19,14 @@ export const FEATURE_ROUTES: Routes = [
         canActivate: [AuthGuard],
       },
       {
+        path: 'household',
+        loadChildren: () =>
+          import(`./household-planer/household-planer.routes`).then(
+            (m) => m.HOUSEHOLD_PLANER_ROUTES,
+          ),
+        canActivate: [AuthGuard],
+      },
+      {
         path: 'income',
         loadChildren: () =>
           import(`./incomes/incomes.routes`).then((m) => m.INCOMES_ROUTES),

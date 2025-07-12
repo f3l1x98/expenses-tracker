@@ -3,6 +3,7 @@
   "sidebar": {
     "items": {
       "home": "Home",
+      "householdPlaner": "Household-Planer",
       "expenses": "Expense",
       "incomes": "Income",
       "settings": "Settings"
@@ -60,6 +61,19 @@
     },
     "perMonth": {
       "header": "Expenses per month"
+    }
+  },
+  "householdPlaner": {
+    "title": "Household-Planer",
+    "expenses": "Expenses",
+    "incomes": "Incomes",
+    "columns": {
+      "description": "Description",
+      "monthlyAmount": "Monthly",
+      "quarterlyAmount": "Quarterly",
+      "yearlyAmount": "Yearly",
+      "sumMonthly": "Sum Monthly",
+      "sumYearly": "Sum Yearly"
     }
   },
   "expenses": {
