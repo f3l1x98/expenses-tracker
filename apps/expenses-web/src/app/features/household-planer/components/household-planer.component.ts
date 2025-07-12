@@ -1,18 +1,25 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   inject,
 } from '@angular/core';
 import { AppContentWrapperComponent } from '../../../shared/components/app-content-wrapper/app-content-wrapper.component';
 import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
+import { ChartModule } from 'primeng/chart';
 import { TranslateModule } from '@ngx-translate/core';
 import { HouseholdPlanerStore } from '../household-planer.store';
 import { SpinnerStore } from '../../../shell/spinner/spinner.store';
 import { FormatCurrencyPipe } from '../../../shared/pipes/format-currency.pipe';
 import { SortEvent } from 'primeng/api';
 import { CommonModule } from '@angular/common';
+import { ChartData, ChartOptions } from 'chart.js';
+import {
+  getExpenseCategoryColor,
+  getIncomeCategoryColor,
+} from 'expenses-shared';
 
 @Component({
   selector: 'app-household-planer',
@@ -21,6 +28,7 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
     AppContentWrapperComponent,
+    ChartModule,
     TableModule,
     PanelModule,
     TranslateModule,
@@ -37,6 +45,147 @@ export class HouseholdPlanerComponent {
   readonly householdExpenses = this.#store.householdExpenses.data;
   readonly householdExpenseCurrency = this.#store.householdExpenses.currency;
 
+  readonly householdExpensesPerCategoryData = computed<ChartData | undefined>(
+    () => {
+      const documentStyle = getComputedStyle(document.documentElement);
+      const response = this.#store.householdExpensesOverview();
+      if (response === undefined || response.data.length == 0) {
+        return undefined;
+      } else {
+        const data = response.data;
+        return {
+          labels: data.map((entries) => entries.category),
+          datasets: [
+            {
+              data: data.map((entries) => entries.monthlyAmount),
+              backgroundColor: data.map((entries) =>
+                documentStyle.getPropertyValue(
+                  getExpenseCategoryColor(entries.category),
+                ),
+              ),
+            },
+          ],
+        };
+      }
+    },
+  );
+  readonly householdExpensesPerCategoryNoData = computed<boolean>(() => {
+    const response = this.#store.householdExpensesOverview();
+    return response === undefined || response.data.length == 0;
+  });
+  readonly householdExpensesPerCategoryOptions = computed<ChartOptions<'pie'>>(
+    () => {
+      const documentStyle = getComputedStyle(document.documentElement);
+      const textColor = documentStyle.getPropertyValue('--p-text-color');
+      const response = this.#store.householdExpensesOverview();
+      if (response === undefined) {
+        return {};
+      } else {
+        return {
+          aspectRatio: 1.4,
+          borderColor: textColor,
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: (context) => {
+                  let label = context.dataset.label || '';
+
+                  if (label) {
+                    label += '';
+                  }
+                  if (context.parsed !== null) {
+                    label += new Intl.NumberFormat('en-US', {
+                      style: 'currency',
+                      currency: response.currency,
+                    }).format(context.parsed);
+                  }
+                  return label;
+                },
+              },
+            },
+            legend: {
+              position: 'right',
+              labels: {
+                usePointStyle: true,
+                color: textColor,
+              },
+            },
+          },
+        };
+      }
+    },
+  );
+  readonly householdIncomesPerCategoryData = computed<ChartData | undefined>(
+    () => {
+      const documentStyle = getComputedStyle(document.documentElement);
+      const response = this.#store.householdIncomesOverview();
+      if (response === undefined || response.data.length == 0) {
+        return undefined;
+      } else {
+        const data = response.data;
+        return {
+          labels: data.map((entries) => entries.category),
+          datasets: [
+            {
+              data: data.map((entries) => entries.monthlyAmount),
+              backgroundColor: data.map((entries) =>
+                documentStyle.getPropertyValue(
+                  getIncomeCategoryColor(entries.category),
+                ),
+              ),
+            },
+          ],
+        };
+      }
+    },
+  );
+  readonly householdIncomePerCategoryNoData = computed<boolean>(() => {
+    const response = this.#store.householdIncomesOverview();
+    return response === undefined || response.data.length == 0;
+  });
+  readonly householdIncomesPerCategoryOptions = computed<ChartOptions<'pie'>>(
+    () => {
+      const documentStyle = getComputedStyle(document.documentElement);
+      const textColor = documentStyle.getPropertyValue('--p-text-color');
+      const response = this.#store.householdIncomesOverview();
+      if (response === undefined) {
+        return {};
+      } else {
+        return {
+          aspectRatio: 1.4,
+          borderColor: textColor,
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: (context) => {
+                  let label = context.dataset.label || '';
+
+                  if (label) {
+                    label += '';
+                  }
+                  if (context.parsed !== null) {
+                    label += new Intl.NumberFormat('en-US', {
+                      style: 'currency',
+                      currency: response.currency,
+                    }).format(context.parsed);
+                  }
+                  return label;
+                },
+              },
+            },
+            legend: {
+              position: 'right',
+              labels: {
+                usePointStyle: true,
+                color: textColor,
+              },
+            },
+          },
+        };
+      }
+    },
+  );
+
   constructor() {
     effect(() => {
       const loadStatus = this.#store.loadStatus();
@@ -44,6 +193,8 @@ export class HouseholdPlanerComponent {
     });
     this.#store.loadHouseholdExpenses();
     this.#store.loadHouseholdIncomes();
+    this.#store.loadHouseholdExpensesOverview();
+    this.#store.loadHouseholdIncomesOverivew();
   }
 
   public sortNullCategoryLast(event: SortEvent) {

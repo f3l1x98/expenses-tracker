@@ -1,6 +1,22 @@
 <app-content-wrapper>
   <span slot="header">{{'householdPlaner.title' | translate}}</span>
   <div class="grid grid-cols-1 gap-4 m-0">
+    <p-panel header="{{'householdPlaner.overview' | translate}}" [toggleable]="true" [collapsed]="true">
+      <div class="grid grid-cols-10 gap-4 m-0">
+        <div class="col-start-3 col-span-2">
+          @if (!householdExpensesPerCategoryNoData()) {
+          <p-chart type="pie" [data]="householdExpensesPerCategoryData()"
+            [options]="householdExpensesPerCategoryOptions()" />
+          }
+        </div>
+        <div class="col-start-7 col-span-2">
+          @if (!householdIncomePerCategoryNoData()) {
+          <p-chart type="pie" [data]="householdIncomesPerCategoryData()"
+            [options]="householdIncomesPerCategoryOptions()" />
+          }
+        </div>
+      </div>
+    </p-panel>
     <p-panel header="{{'householdPlaner.incomes' | translate}}">
       <p-table id="incomes" [value]="householdIncomes()" [scrollable]="true" [tableStyle]="{'min-width': '60rem'}"
         rowGroupMode="subheader" groupRowsBy="category" [customSort]="true"

@@ -67,6 +67,7 @@
     "title": "Household-Planer",
     "expenses": "Expenses",
     "incomes": "Incomes",
+    "overview": "Overview",
     "columns": {
       "description": "Description",
       "monthlyAmount": "Monthly",

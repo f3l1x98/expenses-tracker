@@ -1,7 +1,9 @@
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { StoreStateStatus } from '../../shared/interfaces/store-state-status.interface';
 import {
+  IHouseholdExpensePerCategoryResponse,
   IHouseholdExpenseResponse,
+  IHouseholdIncomePerCategoryResponse,
   IHouseholdIncomeResponse,
 } from 'expenses-shared';
 import { inject } from '@angular/core';
@@ -13,6 +15,8 @@ export type HouseholdPlanerState = {
   loadStatus: StoreStateStatus;
   householdExpenses: IHouseholdExpenseResponse;
   householdIncomes: IHouseholdIncomeResponse;
+  householdExpensesOverview: IHouseholdExpensePerCategoryResponse;
+  householdIncomesOverview: IHouseholdIncomePerCategoryResponse;
 };
 
 const initialState: HouseholdPlanerState = {
@@ -25,6 +29,14 @@ const initialState: HouseholdPlanerState = {
     data: [],
   },
   householdIncomes: {
+    currency: '',
+    data: [],
+  },
+  householdExpensesOverview: {
+    currency: '',
+    data: [],
+  },
+  householdIncomesOverview: {
     currency: '',
     data: [],
   },
@@ -85,6 +97,69 @@ export const HouseholdPlanerStore = signalStore(
               patchState(store, {
                 loadStatus: { status: 'error', error: e },
                 householdIncomes: {
+                  currency: '',
+                  data: [],
+                },
+              });
+              return EMPTY;
+            }),
+          ),
+        ),
+      ),
+    ),
+
+    loadHouseholdExpensesOverview: rxMethod<void>(
+      pipe(
+        tap(() =>
+          patchState(store, {
+            loadStatus: { status: 'pending', error: undefined },
+          }),
+        ),
+        switchMap(() =>
+          client.getHouseholdExpensesOverview$().pipe(
+            tap((result) => {
+              patchState(store, {
+                loadStatus: { status: 'success', error: undefined },
+                householdExpensesOverview: result,
+              });
+            }),
+            catchError((e) => {
+              // TODO
+              console.error(e);
+              patchState(store, {
+                loadStatus: { status: 'error', error: e },
+                householdExpensesOverview: {
+                  currency: '',
+                  data: [],
+                },
+              });
+              return EMPTY;
+            }),
+          ),
+        ),
+      ),
+    ),
+    loadHouseholdIncomesOverivew: rxMethod<void>(
+      pipe(
+        tap(() =>
+          patchState(store, {
+            loadStatus: { status: 'pending', error: undefined },
+          }),
+        ),
+        switchMap(() =>
+          client.getHouseholdIncomesOverview$().pipe(
+            tap((result) => {
+              patchState(store, {
+                loadStatus: { status: 'success', error: undefined },
+                householdIncomesOverview: result,
+              });
+            }),
+            catchError((e) => {
+              // TODO
+              console.error(e);
+              patchState(store, {
+                loadStatus: { status: 'error', error: e },
+                householdIncomesOverview: {
                   currency: '',
                   data: [],
                 },
