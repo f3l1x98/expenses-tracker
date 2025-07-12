@@ -12,12 +12,14 @@ import { HouseholdPlanerStore } from '../household-planer.store';
 import { SpinnerStore } from '../../../shell/spinner/spinner.store';
 import { FormatCurrencyPipe } from '../../../shared/pipes/format-currency.pipe';
 import { SortEvent } from 'primeng/api';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-household-planer',
   templateUrl: 'household-planer.component.html',
   styleUrls: ['./household-planer.component.scss'],
   imports: [
+    CommonModule,
     AppContentWrapperComponent,
     TableModule,
     PanelModule,

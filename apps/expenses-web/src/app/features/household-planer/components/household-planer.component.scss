@@ -1,3 +1,6 @@
 :host ::ng-deep .p-datatable-tbody tr:last-child td {
   border-top-width: 2px;
 }
+:host ::ng-deep tr.p-datatable-row-group-header td {
+  padding-top: 2em;
+}

@@ -57,8 +57,12 @@
               {{income.amount | formatCurrency: 'EUR'}}
               }
             </td>
-            <td class="text-right">{{income.monthlyAmount | formatCurrency: 'EUR'}}</td>
-            <td class="text-right">{{income.yearlyAmount | formatCurrency: 'EUR'}}</td>
+            <td class="text-right" [ngClass]="{'font-bold': !income.category}">
+              {{income.monthlyAmount | formatCurrency: 'EUR'}}
+            </td>
+            <td class="text-right" [ngClass]="{'font-bold': !income.category}">
+              {{income.yearlyAmount | formatCurrency: 'EUR'}}
+            </td>
           </tr>
         </ng-template>
       </p-table>
@@ -118,8 +122,12 @@
               {{expense.amount | formatCurrency: 'EUR'}}
               }
             </td>
-            <td class="text-right">{{expense.monthlyAmount | formatCurrency: 'EUR'}}</td>
-            <td class="text-right">{{expense.yearlyAmount | formatCurrency: 'EUR'}}</td>
+            <td class="text-right" [ngClass]="{'font-bold': !expense.category}">
+              {{expense.monthlyAmount | formatCurrency: 'EUR'}}
+            </td>
+            <td class="text-right" [ngClass]="{'font-bold': !expense.category}">
+              {{expense.yearlyAmount | formatCurrency: 'EUR'}}
+            </td>
           </tr>
         </ng-template>
       </p-table>
