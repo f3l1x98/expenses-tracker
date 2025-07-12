@@ -8,7 +8,9 @@ import {
 import { Request } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
+  IHouseholdExpensePerCategoryResponse,
   IHouseholdExpenseResponse,
+  IHouseholdIncomePerCategoryResponse,
   IHouseholdIncomeResponse,
   IUser,
 } from 'expenses-shared';
@@ -63,6 +65,44 @@ export class HouseholdPlanerController {
     const user = await this.usersService.findById(userId);
     return {
       data: householdIncomes,
+      currency: user.settings.currency,
+    };
+  }
+
+  @ApiOperation({
+    summary: 'Returns expenses per category overview for household planer.',
+  })
+  @Get('expenses/overview')
+  async findHouseholdPlanerExpensesPerCategory(
+    @Req() req: Request,
+  ): Promise<IHouseholdExpensePerCategoryResponse> {
+    const userId = (req.user as IUser).id;
+    const expensesPerCategory =
+      await this.householdPlanerService.getHouseholdExpensesPerCategoryForUser(
+        userId,
+      );
+    const user = await this.usersService.findById(userId);
+    return {
+      data: expensesPerCategory,
+      currency: user.settings.currency,
+    };
+  }
+
+  @ApiOperation({
+    summary: 'Returns incomes per category overview for household planer.',
+  })
+  @Get('incomes/overview')
+  async findHouseholdPlanerIncomesPerCategory(
+    @Req() req: Request,
+  ): Promise<IHouseholdIncomePerCategoryResponse> {
+    const userId = (req.user as IUser).id;
+    const incomesPerCategory =
+      await this.householdPlanerService.getHouseholdIncomesPerCategoryForUser(
+        userId,
+      );
+    const user = await this.usersService.findById(userId);
+    return {
+      data: incomesPerCategory,
       currency: user.settings.currency,
     };
   }
