@@ -47,7 +47,7 @@
           @if (income.category) {
           <tr pRowGroupHeader>
             <td colspan="6" class="font-bold">
-              {{income.category}}
+              {{income.category | titlecase}}
             </td>
           </tr>
           }
@@ -114,7 +114,7 @@
           @if (expense.category) {
           <tr pRowGroupHeader>
             <td colspan="6" class="font-bold">
-              {{expense.category}}
+              {{expense.category | titlecase}}
             </td>
           </tr>
           }

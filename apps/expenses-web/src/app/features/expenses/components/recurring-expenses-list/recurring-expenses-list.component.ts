@@ -12,12 +12,11 @@ import { ConfirmationService, MenuItem } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { DataView } from 'primeng/dataview';
 import { RecurringExpensesFilterComponent } from './filter/recurring-expenses-filter.component';
-import { NgClass } from '@angular/common';
+import { NgClass, TitleCasePipe } from '@angular/common';
 import { Menu } from 'primeng/menu';
 import { Button } from 'primeng/button';
 import { FormatDatePipe } from '../../../../shared/pipes/format-date.pipe';
 import { FormatCurrencyPipe } from '../../../../shared/pipes/format-currency.pipe';
-import { CapitalizePipe } from '../../../../shared/pipes/capitalize.pipe';
 
 @Component({
   selector: 'app-recurring-expenses-list',
@@ -31,7 +30,7 @@ import { CapitalizePipe } from '../../../../shared/pipes/capitalize.pipe';
     Button,
     FormatDatePipe,
     FormatCurrencyPipe,
-    CapitalizePipe,
+    TitleCasePipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
