@@ -50,7 +50,7 @@ export class RecurringExpenseEntity implements IRecurringExpense {
     nullable: false,
     type: 'enum',
     enum: ExpenseCategory,
-    default: ExpenseCategory.INVOICE,
+    default: ExpenseCategory.MISC,
   })
   category!: ExpenseCategory;
 
