@@ -1,12 +1,17 @@
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import {
+  patchState,
+  signalStore,
+  withComputed,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
 import { StoreStateStatus } from '../../shared/interfaces/store-state-status.interface';
 import {
-  IHouseholdExpensePerCategoryResponse,
   IHouseholdExpenseResponse,
-  IHouseholdIncomePerCategoryResponse,
   IHouseholdIncomeResponse,
+  IHouseholdOverview,
 } from 'expenses-shared';
-import { inject } from '@angular/core';
+import { computed, inject } from '@angular/core';
 import { catchError, EMPTY, pipe, switchMap, tap } from 'rxjs';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { HouseholdPlanerApiService } from './api/household-planer-api.service';
@@ -15,8 +20,7 @@ export type HouseholdPlanerState = {
   loadStatus: StoreStateStatus;
   householdExpenses: IHouseholdExpenseResponse;
   householdIncomes: IHouseholdIncomeResponse;
-  householdExpensesOverview: IHouseholdExpensePerCategoryResponse;
-  householdIncomesOverview: IHouseholdIncomePerCategoryResponse;
+  householdOverview: IHouseholdOverview;
 };
 
 const initialState: HouseholdPlanerState = {
@@ -32,18 +36,31 @@ const initialState: HouseholdPlanerState = {
     currency: '',
     data: [],
   },
-  householdExpensesOverview: {
+  householdOverview: {
     currency: '',
-    data: [],
-  },
-  householdIncomesOverview: {
-    currency: '',
-    data: [],
+    expensesPerCategory: [],
+    totalExpense: {
+      monthlyAmount: 0.0,
+      quarterlyAmount: 0.0,
+      yearlyAmount: 0.0,
+    },
+    totalIncome: {
+      monthlyAmount: 0.0,
+      quarterlyAmount: 0.0,
+      yearlyAmount: 0.0,
+    },
   },
 };
 
 export const HouseholdPlanerStore = signalStore(
   withState(initialState),
+  withComputed(({ householdOverview }) => ({
+    householdOverviewMonthlyLeftOver: computed(() => {
+      const totalExpense = householdOverview.totalExpense();
+      const totalIncome = householdOverview.totalIncome();
+      return totalIncome.monthlyAmount - totalExpense.monthlyAmount;
+    }),
+  })),
   withMethods((store, client = inject(HouseholdPlanerApiService)) => ({
     loadHouseholdExpenses: rxMethod<void>(
       pipe(
@@ -108,7 +125,7 @@ export const HouseholdPlanerStore = signalStore(
       ),
     ),
 
-    loadHouseholdExpensesOverview: rxMethod<void>(
+    loadHouseholdOverview: rxMethod<void>(
       pipe(
         tap(() =>
           patchState(store, {
@@ -116,11 +133,11 @@ export const HouseholdPlanerStore = signalStore(
           }),
         ),
         switchMap(() =>
-          client.getHouseholdExpensesOverview$().pipe(
+          client.getHouseholdOverview$().pipe(
             tap((result) => {
               patchState(store, {
                 loadStatus: { status: 'success', error: undefined },
-                householdExpensesOverview: result,
+                householdOverview: result,
               });
             }),
             catchError((e) => {
@@ -128,40 +145,19 @@ export const HouseholdPlanerStore = signalStore(
               console.error(e);
               patchState(store, {
                 loadStatus: { status: 'error', error: e },
-                householdExpensesOverview: {
+                householdOverview: {
                   currency: '',
-                  data: [],
-                },
-              });
-              return EMPTY;
-            }),
-          ),
-        ),
-      ),
-    ),
-    loadHouseholdIncomesOverivew: rxMethod<void>(
-      pipe(
-        tap(() =>
-          patchState(store, {
-            loadStatus: { status: 'pending', error: undefined },
-          }),
-        ),
-        switchMap(() =>
-          client.getHouseholdIncomesOverview$().pipe(
-            tap((result) => {
-              patchState(store, {
-                loadStatus: { status: 'success', error: undefined },
-                householdIncomesOverview: result,
-              });
-            }),
-            catchError((e) => {
-              // TODO
-              console.error(e);
-              patchState(store, {
-                loadStatus: { status: 'error', error: e },
-                householdIncomesOverview: {
-                  currency: '',
-                  data: [],
+                  expensesPerCategory: [],
+                  totalExpense: {
+                    monthlyAmount: 0.0,
+                    quarterlyAmount: 0.0,
+                    yearlyAmount: 0.0,
+                  },
+                  totalIncome: {
+                    monthlyAmount: 0.0,
+                    quarterlyAmount: 0.0,
+                    yearlyAmount: 0.0,
+                  },
                 },
               });
               return EMPTY;

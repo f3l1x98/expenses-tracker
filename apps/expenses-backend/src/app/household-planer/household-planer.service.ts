@@ -7,7 +7,7 @@ import {
   ExpenseCategory,
   RecurringType,
   IncomeCategory,
-  AmountPerInterval,
+  IntervalAmounts,
 } from 'expenses-shared';
 import { DataSource } from 'typeorm';
 
@@ -225,7 +225,7 @@ export class HouseholdPlanerService {
 
   async getTotalHouseholdExpenseForUser(
     userId: string,
-  ): Promise<AmountPerInterval> {
+  ): Promise<IntervalAmounts> {
     const sql = `
       SELECT COALESCE(SUM("monthlyAmount"), 0.0) AS "monthlyAmount",
     		COALESCE(SUM("quarterlyAmount"), 0.0) AS "quarterlyAmount",
@@ -275,7 +275,7 @@ export class HouseholdPlanerService {
   }
   async getTotalHouseholdIncomeForUser(
     userId: string,
-  ): Promise<AmountPerInterval> {
+  ): Promise<IntervalAmounts> {
     const sql = `
       SELECT COALESCE(SUM("monthlyAmount"), 0.0) AS "monthlyAmount",
     		COALESCE(SUM("quarterlyAmount"), 0.0) AS "quarterlyAmount",

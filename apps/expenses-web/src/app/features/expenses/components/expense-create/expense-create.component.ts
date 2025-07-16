@@ -66,10 +66,7 @@ export class ExpenseCreateComponent {
     }),
     startDate: new FormControl<Date>(new Date(), {
       nonNullable: true,
-      validators: [
-        Validators.required,
-        validateDateAfter({ value: new Date() }),
-      ],
+      validators: [Validators.required],
     }),
     endDate: new FormControl<Date | undefined>(undefined, {
       nonNullable: true,

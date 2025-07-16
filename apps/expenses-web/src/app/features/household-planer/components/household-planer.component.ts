@@ -15,11 +15,11 @@ import { SpinnerStore } from '../../../shell/spinner/spinner.store';
 import { FormatCurrencyPipe } from '../../../shared/pipes/format-currency.pipe';
 import { SortEvent } from 'primeng/api';
 import { CommonModule } from '@angular/common';
-import { ChartData, ChartOptions } from 'chart.js';
-import {
-  getExpenseCategoryColor,
-  getIncomeCategoryColor,
-} from 'expenses-shared';
+import { ChartData, ChartDataset, ChartOptions } from 'chart.js';
+import { getExpenseCategoryColor } from 'expenses-shared';
+import { NoDataComponent } from '../../../shared/components/no-data/no-data.component';
+
+type OverviewChartData = { value: number; displayTooltip: boolean };
 
 @Component({
   selector: 'app-household-planer',
@@ -33,6 +33,7 @@ import {
     PanelModule,
     TranslateModule,
     FormatCurrencyPipe,
+    NoDataComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -45,146 +46,128 @@ export class HouseholdPlanerComponent {
   readonly householdExpenses = this.#store.householdExpenses.data;
   readonly householdExpenseCurrency = this.#store.householdExpenses.currency;
 
-  readonly householdExpensesPerCategoryData = computed<ChartData | undefined>(
-    () => {
-      const documentStyle = getComputedStyle(document.documentElement);
-      const response = this.#store.householdExpensesOverview();
-      if (response === undefined || response.data.length == 0) {
-        return undefined;
-      } else {
-        const data = response.data;
-        return {
-          labels: data.map((entries) => entries.category),
-          datasets: [
-            {
-              data: data.map((entries) => entries.monthlyAmount),
-              backgroundColor: data.map((entries) =>
-                documentStyle.getPropertyValue(
-                  getExpenseCategoryColor(entries.category),
-                ),
-              ),
-            },
-          ],
-        };
-      }
-    },
-  );
-  readonly householdExpensesPerCategoryNoData = computed<boolean>(() => {
-    const response = this.#store.householdExpensesOverview();
-    return response === undefined || response.data.length == 0;
+  readonly householdOverviewData = computed<ChartData | undefined>(() => {
+    const documentStyle = getComputedStyle(document.documentElement);
+    const expensesPerCategory =
+      this.#store.householdOverview.expensesPerCategory();
+    const totalExpense = this.#store.householdOverview.totalExpense();
+    const monthlyLeftOver = this.#store.householdOverviewMonthlyLeftOver();
+    if (expensesPerCategory === undefined || expensesPerCategory.length == 0) {
+      return undefined;
+    }
+    const datasets: ChartDataset<'doughnut', OverviewChartData[]>[] = [
+      {
+        data: expensesPerCategory.map((entries) => ({
+          value: entries.monthlyAmount,
+          displayTooltip: true,
+        })),
+        backgroundColor: expensesPerCategory.map((entries) =>
+          documentStyle.getPropertyValue(
+            getExpenseCategoryColor(entries.category),
+          ),
+        ),
+        label: 'expense',
+      },
+    ];
+    if (monthlyLeftOver < 0) {
+      // defficit
+      datasets.push({
+        data: [
+          {
+            value: totalExpense.monthlyAmount - monthlyLeftOver,
+            displayTooltip: false,
+          },
+          { value: monthlyLeftOver, displayTooltip: true },
+        ],
+        backgroundColor: ['transparent', 'red'],
+        label: 'difference',
+      });
+    } else if (monthlyLeftOver > 0) {
+      // leftover
+      datasets.push({
+        data: [
+          { value: monthlyLeftOver, displayTooltip: true },
+          {
+            value: totalExpense.monthlyAmount - monthlyLeftOver,
+            displayTooltip: false,
+          },
+        ],
+        backgroundColor: ['green', 'transparent'],
+        label: 'difference',
+      });
+    }
+    return {
+      labels: [...expensesPerCategory.map((entries) => entries.category)],
+      datasets: datasets as unknown as ChartDataset<
+        'doughnut',
+        (number | [number, number] | null)[]
+      >[],
+      parsing: {
+        key: 'value',
+      },
+    };
   });
-  readonly householdExpensesPerCategoryOptions = computed<ChartOptions<'pie'>>(
-    () => {
-      const documentStyle = getComputedStyle(document.documentElement);
-      const textColor = documentStyle.getPropertyValue('--p-text-color');
-      const response = this.#store.householdExpensesOverview();
-      if (response === undefined) {
-        return {};
-      } else {
-        return {
-          aspectRatio: 1.4,
-          borderColor: textColor,
-          plugins: {
-            tooltip: {
-              callbacks: {
-                label: (context) => {
-                  let label = context.dataset.label || '';
-
-                  if (label) {
-                    label += '';
-                  }
-                  if (context.parsed !== null) {
-                    label += new Intl.NumberFormat('en-US', {
-                      style: 'currency',
-                      currency: response.currency,
-                    }).format(context.parsed);
-                  }
-                  return label;
-                },
-              },
-            },
-            legend: {
-              position: 'right',
-              labels: {
-                usePointStyle: true,
-                color: textColor,
-              },
+  readonly householdOverviewNoData = computed<boolean>(() => {
+    const response = this.#store.householdOverview.expensesPerCategory();
+    return response === undefined || response.length == 0;
+  });
+  readonly householdOverviewOptions = computed<ChartOptions<'doughnut'>>(() => {
+    return {
+      cutout: '20%',
+      aspectRatio: 1.4,
+      borderColor: 'transparent',
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Household Finance Overview',
+          color: getComputedStyle(document.documentElement).getPropertyValue(
+            '--p-text-color',
+          ),
+          font: {
+            size: 24,
+            weight: 'bolder',
+          },
+        },
+        tooltip: {
+          enabled: (context, _) => {
+            if (!context.tooltipItems || context.tooltipItems.length == 0) {
+              return true;
+            }
+            const dataIndex = context.tooltipItems[0].dataIndex;
+            const data = context.tooltipItems[0].dataset.data[
+              dataIndex
+            ] as unknown as OverviewChartData;
+            return data.displayTooltip;
+          },
+          callbacks: {
+            label: (context) => {
+              // TODO atm this displays the wrong label for second dataset
+              //  -> would require separate labels for each DS
+              //   -> as of now not supported by chart.js for doughnut charts
+              let label = '';
+              if (context.parsed !== null) {
+                label += new Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: 'EUR',
+                }).format(context.parsed);
+              }
+              return label;
             },
           },
-        };
-      }
-    },
-  );
-  readonly householdIncomesPerCategoryData = computed<ChartData | undefined>(
-    () => {
-      const documentStyle = getComputedStyle(document.documentElement);
-      const response = this.#store.householdIncomesOverview();
-      if (response === undefined || response.data.length == 0) {
-        return undefined;
-      } else {
-        const data = response.data;
-        return {
-          labels: data.map((entries) => entries.category),
-          datasets: [
-            {
-              data: data.map((entries) => entries.monthlyAmount),
-              backgroundColor: data.map((entries) =>
-                documentStyle.getPropertyValue(
-                  getIncomeCategoryColor(entries.category),
-                ),
-              ),
-            },
-          ],
-        };
-      }
-    },
-  );
-  readonly householdIncomePerCategoryNoData = computed<boolean>(() => {
-    const response = this.#store.householdIncomesOverview();
-    return response === undefined || response.data.length == 0;
-  });
-  readonly householdIncomesPerCategoryOptions = computed<ChartOptions<'pie'>>(
-    () => {
-      const documentStyle = getComputedStyle(document.documentElement);
-      const textColor = documentStyle.getPropertyValue('--p-text-color');
-      const response = this.#store.householdIncomesOverview();
-      if (response === undefined) {
-        return {};
-      } else {
-        return {
-          aspectRatio: 1.4,
-          borderColor: textColor,
-          plugins: {
-            tooltip: {
-              callbacks: {
-                label: (context) => {
-                  let label = context.dataset.label || '';
-
-                  if (label) {
-                    label += '';
-                  }
-                  if (context.parsed !== null) {
-                    label += new Intl.NumberFormat('en-US', {
-                      style: 'currency',
-                      currency: response.currency,
-                    }).format(context.parsed);
-                  }
-                  return label;
-                },
-              },
-            },
-            legend: {
-              position: 'right',
-              labels: {
-                usePointStyle: true,
-                color: textColor,
-              },
-            },
+        },
+        legend: {
+          position: 'bottom',
+          labels: {
+            usePointStyle: true,
+            color: getComputedStyle(document.documentElement).getPropertyValue(
+              '--p-text-color',
+            ),
           },
-        };
-      }
-    },
-  );
+        },
+      },
+    };
+  });
 
   constructor() {
     effect(() => {
@@ -193,8 +176,7 @@ export class HouseholdPlanerComponent {
     });
     this.#store.loadHouseholdExpenses();
     this.#store.loadHouseholdIncomes();
-    this.#store.loadHouseholdExpensesOverview();
-    this.#store.loadHouseholdIncomesOverivew();
+    this.#store.loadHouseholdOverview();
   }
 
   public sortNullCategoryLast(event: SortEvent) {
