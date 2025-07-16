@@ -8,10 +8,9 @@ import {
 import { Request } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
-  IHouseholdExpensePerCategoryResponse,
   IHouseholdExpenseResponse,
-  IHouseholdIncomePerCategoryResponse,
   IHouseholdIncomeResponse,
+  IHouseholdOverview,
   IUser,
 } from 'expenses-shared';
 import { HouseholdPlanerService } from './household-planer.service';
@@ -72,37 +71,24 @@ export class HouseholdPlanerController {
   @ApiOperation({
     summary: 'Returns expenses per category overview for household planer.',
   })
-  @Get('expenses/overview')
+  @Get('overview')
   async findHouseholdPlanerExpensesPerCategory(
     @Req() req: Request,
-  ): Promise<IHouseholdExpensePerCategoryResponse> {
+  ): Promise<IHouseholdOverview> {
     const userId = (req.user as IUser).id;
     const expensesPerCategory =
       await this.householdPlanerService.getHouseholdExpensesPerCategoryForUser(
         userId,
       );
+    const totalExpense =
+      await this.householdPlanerService.getTotalHouseholdExpenseForUser(userId);
+    const totalIncome =
+      await this.householdPlanerService.getTotalHouseholdIncomeForUser(userId);
     const user = await this.usersService.findById(userId);
     return {
-      data: expensesPerCategory,
-      currency: user.settings.currency,
-    };
-  }
-
-  @ApiOperation({
-    summary: 'Returns incomes per category overview for household planer.',
-  })
-  @Get('incomes/overview')
-  async findHouseholdPlanerIncomesPerCategory(
-    @Req() req: Request,
-  ): Promise<IHouseholdIncomePerCategoryResponse> {
-    const userId = (req.user as IUser).id;
-    const incomesPerCategory =
-      await this.householdPlanerService.getHouseholdIncomesPerCategoryForUser(
-        userId,
-      );
-    const user = await this.usersService.findById(userId);
-    return {
-      data: incomesPerCategory,
+      expensesPerCategory: expensesPerCategory,
+      totalExpense: totalExpense,
+      totalIncome: totalIncome,
       currency: user.settings.currency,
     };
   }

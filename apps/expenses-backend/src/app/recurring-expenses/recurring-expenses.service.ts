@@ -12,6 +12,7 @@ import { CreateExpenseDto } from '../expenses/dto/create-expense.dto';
 import { UpdateRecurringExpenseDto } from './dto/update-recurring-expense.dto';
 import { constructCron } from '../utils/cron-utils';
 import { RecurringExpensesFilterDto } from './dto/filter.dto';
+import CronExpressionParser from 'cron-parser';
 
 @Injectable()
 export class RecurringExpensesService implements OnApplicationBootstrap {
@@ -127,9 +128,63 @@ export class RecurringExpensesService implements OnApplicationBootstrap {
     const recurringExpenseEntity =
       await this.recurringExpensesRepository.save(recurringExpense);
 
+    if (
+      recurringExpense.startDate &&
+      !this.isDateBeforeOrEqualDate(new Date(), recurringExpense.startDate)
+    ) {
+      this.handlePastStartDate(recurringExpense);
+    }
+
     this.createRecurringExpenseCronJob(recurringExpenseEntity);
 
     return this.findByIdForUser(recurringExpenseEntity.id, userId);
+  }
+
+  /**
+   * Returns true if date1 is before or equal to date2 IGNORING THE TIME!
+   * @param date1
+   * @param date2
+   * @returns
+   */
+  private isDateBeforeOrEqualDate(date1: Date, date2: Date) {
+    return (
+      date1.getFullYear() <= date2.getFullYear() ||
+      date1.getMonth() <= date2.getMonth() ||
+      date1.getDay() <= date2.getDay()
+    );
+  }
+  private async handlePastStartDate(recurringExpense: RecurringExpenseEntity) {
+    let prevExecutionDate = new Date(
+      CronExpressionParser.parse(recurringExpense.cron, {
+        currentDate: recurringExpense.startDate ?? new Date(),
+      })
+        .prev()
+        .toDate()
+        .toDateString(),
+    );
+    while (
+      this.isDateBeforeOrEqualDate(
+        recurringExpense.startDate,
+        prevExecutionDate,
+      )
+    ) {
+      const expenseDto = new CreateExpenseDto();
+      expenseDto.description = recurringExpense.description;
+      expenseDto.category = recurringExpense.category;
+      expenseDto.amount = recurringExpense.amount;
+      expenseDto.recurringExpense = recurringExpense;
+
+      await this.expensesService.create(recurringExpense.user.id, expenseDto);
+
+      prevExecutionDate = new Date(
+        CronExpressionParser.parse(recurringExpense.cron, {
+          currentDate: prevExecutionDate,
+        })
+          .prev()
+          .toDate()
+          .toDateString(),
+      );
+    }
   }
 
   // TODO unsure if return undefined or throw RecurringExpenseNotFoundException
