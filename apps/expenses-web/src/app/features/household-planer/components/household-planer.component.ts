@@ -83,7 +83,7 @@ export class HouseholdPlanerComponent {
       datasets.push({
         data: [
           {
-            value: totalExpense.monthlyAmount - monthlyLeftOver,
+            value: totalExpense.monthlyAmount + monthlyLeftOver,
             displayTooltip: false,
           },
           { value: monthlyLeftOver, title: 'Defficit', displayTooltip: true },

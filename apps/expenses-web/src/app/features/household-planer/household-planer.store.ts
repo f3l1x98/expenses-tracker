@@ -29,15 +29,15 @@ const initialState: HouseholdPlanerState = {
     status: 'initial',
   },
   householdExpenses: {
-    currency: '',
+    currency: 'EUR',
     data: [],
   },
   householdIncomes: {
-    currency: '',
+    currency: 'EUR',
     data: [],
   },
   householdOverview: {
-    currency: '',
+    currency: 'EUR',
     expensesPerCategory: [],
     totalExpense: {
       monthlyAmount: 0.0,
