@@ -88,7 +88,7 @@ export const HouseholdPlanerStore = signalStore(
               patchState(store, {
                 loadStatus: { status: 'error', error: e },
                 householdExpenses: {
-                  currency: '',
+                  currency: 'EUR',
                   data: [],
                 },
               });
@@ -119,7 +119,7 @@ export const HouseholdPlanerStore = signalStore(
               patchState(store, {
                 loadStatus: { status: 'error', error: e },
                 householdIncomes: {
-                  currency: '',
+                  currency: 'EUR',
                   data: [],
                 },
               });
@@ -129,7 +129,6 @@ export const HouseholdPlanerStore = signalStore(
         ),
       ),
     ),
-
     loadHouseholdOverview: rxMethod<void>(
       pipe(
         tap(() =>
@@ -151,7 +150,7 @@ export const HouseholdPlanerStore = signalStore(
               patchState(store, {
                 loadStatus: { status: 'error', error: e },
                 householdOverview: {
-                  currency: '',
+                  currency: 'EUR',
                   expensesPerCategory: [],
                   totalExpense: {
                     monthlyAmount: 0.0,

@@ -24,7 +24,7 @@ const categoryColors: { [key in ExpenseCategory]: string } = {
   [ExpenseCategory.HOUSING]: '--p-stone-500',
   [ExpenseCategory.INSURANCE]: '--p-gray-500',
   [ExpenseCategory.MEMBERSHIP]: '--p-cyan-500',
-  [ExpenseCategory.MISC]: '--p-red-500',
+  [ExpenseCategory.MISC]: '--p-amber-800',
   [ExpenseCategory.SAVINGS]: '--p-lime-500',
   [ExpenseCategory.SUBSCRIPTION]: '--p-pink-500',
   [ExpenseCategory.TRANSPORTATION]: '--p-blue-500',

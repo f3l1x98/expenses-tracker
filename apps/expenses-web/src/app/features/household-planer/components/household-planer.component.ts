@@ -105,10 +105,11 @@ export class HouseholdPlanerComponent {
         label: 'difference',
       });
     }
+    const titleCasePipe = new TitleCasePipe();
     return {
       labels: [
         ...expensesPerCategory.map((entries) =>
-          new TitleCasePipe().transform(entries.category),
+          titleCasePipe.transform(entries.category),
         ),
       ],
       datasets: datasets as unknown as ChartDataset<
