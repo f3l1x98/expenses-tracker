@@ -1,8 +1,140 @@
 <app-content-wrapper>
   <span slot="header">{{'householdPlaner.title' | translate}}</span>
-  <div class="grid grid-cols-1 gap-4 m-0">
-    <p-panel header="{{'householdPlaner.overview' | translate}}" [toggleable]="true" [collapsed]="true">
-      <div class="grid grid-cols-3 gap-4 m-0">
+  <div class="grid grid-cols-12 gap-4 m-0">
+    <div class="col-span-8 grid grid-cols-1 gap-4 m-0">
+      <p-panel header="{{'householdPlaner.incomes' | translate}}">
+        <p-table id="incomes" [value]="householdIncomes()" [scrollable]="true" [tableStyle]="{'min-width': '60rem'}"
+          rowGroupMode="subheader" groupRowsBy="category" [customSort]="true"
+          (sortFunction)="sortNullCategoryLast($event)">
+          <ng-template #header>
+            <tr>
+              <th class="font-bold" style="width:50%">
+                {{'householdPlaner.columns.description' | translate}}
+              </th>
+              <th class="text-center font-bold" style="width:10%">
+                {{'householdPlaner.columns.monthlyAmount' | translate}}
+              </th>
+              <th class="text-center font-bold" style="width:10%">
+                {{'householdPlaner.columns.quarterlyAmount' | translate}}
+              </th>
+              <th class="text-center font-bold" style="width:10%">
+                {{'householdPlaner.columns.yearlyAmount' | translate}}
+              </th>
+              <th class="text-center font-bold" style="width:10%">
+                {{'householdPlaner.columns.sumMonthly' | translate}}
+              </th>
+              <th class="text-center font-bold" style="width:10%">
+                {{'householdPlaner.columns.sumYearly' | translate}}
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template #groupheader let-income>
+            @if (income.category) {
+            <tr pRowGroupHeader>
+              <td colspan="6" class="font-bold">
+                {{income.category | titlecase}}
+              </td>
+            </tr>
+            }
+          </ng-template>
+          <ng-template #body let-income let-rowIndex="rowIndex">
+            <tr>
+              <td>
+                {{income.description}}
+              </td>
+              <td class="text-right">
+                @if (income.recurringType === 'monthly') {
+                {{income.amount | formatCurrency: householdIncomeCurrency()}}
+                }
+              </td>
+              <td class="text-right">
+                @if (income.recurringType === 'quarterly') {
+                {{income.amount | formatCurrency: householdIncomeCurrency()}}
+                }
+              </td>
+              <td class="text-right">
+                @if (income.recurringType === 'yearly') {
+                {{income.amount | formatCurrency: householdIncomeCurrency()}}
+                }
+              </td>
+              <td class="text-right" [ngClass]="{'font-bold': !income.category}">
+                {{income.monthlyAmount | formatCurrency: householdIncomeCurrency()}}
+              </td>
+              <td class="text-right" [ngClass]="{'font-bold': !income.category}">
+                {{income.yearlyAmount | formatCurrency: householdIncomeCurrency()}}
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-panel>
+
+      <p-panel header="{{'householdPlaner.expenses' | translate}}">
+        <p-table id="expenses" [value]="householdExpenses()" [scrollable]="true" [tableStyle]="{'min-width': '60rem'}"
+          rowGroupMode="subheader" groupRowsBy="category" [customSort]="true"
+          (sortFunction)="sortNullCategoryLast($event)">
+          <ng-template #header>
+            <tr>
+              <th class="font-bold" style="width:50%">
+                {{'householdPlaner.columns.description' | translate}}
+              </th>
+              <th class="text-center font-bold" style="width:10%">
+                {{'householdPlaner.columns.monthlyAmount' | translate}}
+              </th>
+              <th class="text-center font-bold" style="width:10%">
+                {{'householdPlaner.columns.quarterlyAmount' | translate}}
+              </th>
+              <th class="text-center font-bold" style="width:10%">
+                {{'householdPlaner.columns.yearlyAmount' | translate}}
+              </th>
+              <th class="text-center font-bold" style="width:10%">
+                {{'householdPlaner.columns.sumMonthly' | translate}}
+              </th>
+              <th class="text-center font-bold" style="width:10%">
+                {{'householdPlaner.columns.sumYearly' | translate}}
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template #groupheader let-expense>
+            @if (expense.category) {
+            <tr pRowGroupHeader>
+              <td colspan="6" class="font-bold">
+                {{expense.category | titlecase}}
+              </td>
+            </tr>
+            }
+          </ng-template>
+          <ng-template #body let-expense let-rowIndex="rowIndex">
+            <tr>
+              <td>{{expense.description}}</td>
+              <td class="text-right">
+                @if (expense.recurringType === 'monthly') {
+                {{expense.amount | formatCurrency: householdExpenseCurrency()}}
+                }
+              </td>
+              <td class="text-right">
+                @if (expense.recurringType === 'quarterly') {
+                {{expense.amount | formatCurrency: householdExpenseCurrency()}}
+                }
+              </td>
+              <td class="text-right">
+                @if (expense.recurringType === 'yearly') {
+                {{expense.amount | formatCurrency: householdExpenseCurrency()}}
+                }
+              </td>
+              <td class="text-right" [ngClass]="{'font-bold': !expense.category}">
+                {{expense.monthlyAmount | formatCurrency: householdExpenseCurrency()}}
+              </td>
+              <td class="text-right" [ngClass]="{'font-bold': !expense.category}">
+                {{expense.yearlyAmount | formatCurrency: householdExpenseCurrency()}}
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-panel>
+    </div>
+
+    <p-panel header="{{'householdPlaner.overview' | translate}}" class="col-span-4">
+      <div>
         @if (!householdOverviewNoData()) {
         <p-chart class="col-start-2" type="pie" [data]="householdOverviewData()"
           [options]="householdOverviewOptions()" />
@@ -10,135 +142,6 @@
         <app-no-data></app-no-data>
         }
       </div>
-    </p-panel>
-    <p-panel header="{{'householdPlaner.incomes' | translate}}">
-      <p-table id="incomes" [value]="householdIncomes()" [scrollable]="true" [tableStyle]="{'min-width': '60rem'}"
-        rowGroupMode="subheader" groupRowsBy="category" [customSort]="true"
-        (sortFunction)="sortNullCategoryLast($event)">
-        <ng-template #header>
-          <tr>
-            <th class="font-bold" style="width:50%">
-              {{'householdPlaner.columns.description' | translate}}
-            </th>
-            <th class="text-center font-bold" style="width:10%">
-              {{'householdPlaner.columns.monthlyAmount' | translate}}
-            </th>
-            <th class="text-center font-bold" style="width:10%">
-              {{'householdPlaner.columns.quarterlyAmount' | translate}}
-            </th>
-            <th class="text-center font-bold" style="width:10%">
-              {{'householdPlaner.columns.yearlyAmount' | translate}}
-            </th>
-            <th class="text-center font-bold" style="width:10%">
-              {{'householdPlaner.columns.sumMonthly' | translate}}
-            </th>
-            <th class="text-center font-bold" style="width:10%">
-              {{'householdPlaner.columns.sumYearly' | translate}}
-            </th>
-          </tr>
-        </ng-template>
-        <ng-template #groupheader let-income>
-          @if (income.category) {
-          <tr pRowGroupHeader>
-            <td colspan="6" class="font-bold">
-              {{income.category | titlecase}}
-            </td>
-          </tr>
-          }
-        </ng-template>
-        <ng-template #body let-income let-rowIndex="rowIndex">
-          <tr>
-            <td>
-              {{income.description}}
-            </td>
-            <td class="text-right">
-              @if (income.recurringType === 'monthly') {
-              {{income.amount | formatCurrency: householdIncomeCurrency()}}
-              }
-            </td>
-            <td class="text-right">
-              @if (income.recurringType === 'quarterly') {
-              {{income.amount | formatCurrency: householdIncomeCurrency()}}
-              }
-            </td>
-            <td class="text-right">
-              @if (income.recurringType === 'yearly') {
-              {{income.amount | formatCurrency: householdIncomeCurrency()}}
-              }
-            </td>
-            <td class="text-right" [ngClass]="{'font-bold': !income.category}">
-              {{income.monthlyAmount | formatCurrency: householdIncomeCurrency()}}
-            </td>
-            <td class="text-right" [ngClass]="{'font-bold': !income.category}">
-              {{income.yearlyAmount | formatCurrency: householdIncomeCurrency()}}
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </p-panel>
-
-    <p-panel header="{{'householdPlaner.expenses' | translate}}">
-      <p-table id="expenses" [value]="householdExpenses()" [scrollable]="true" [tableStyle]="{'min-width': '60rem'}"
-        rowGroupMode="subheader" groupRowsBy="category" [customSort]="true"
-        (sortFunction)="sortNullCategoryLast($event)">
-        <ng-template #header>
-          <tr>
-            <th class="font-bold" style="width:50%">
-              {{'householdPlaner.columns.description' | translate}}
-            </th>
-            <th class="text-center font-bold" style="width:10%">
-              {{'householdPlaner.columns.monthlyAmount' | translate}}
-            </th>
-            <th class="text-center font-bold" style="width:10%">
-              {{'householdPlaner.columns.quarterlyAmount' | translate}}
-            </th>
-            <th class="text-center font-bold" style="width:10%">
-              {{'householdPlaner.columns.yearlyAmount' | translate}}
-            </th>
-            <th class="text-center font-bold" style="width:10%">
-              {{'householdPlaner.columns.sumMonthly' | translate}}
-            </th>
-            <th class="text-center font-bold" style="width:10%">
-              {{'householdPlaner.columns.sumYearly' | translate}}
-            </th>
-          </tr>
-        </ng-template>
-        <ng-template #groupheader let-expense>
-          @if (expense.category) {
-          <tr pRowGroupHeader>
-            <td colspan="6" class="font-bold">
-              {{expense.category | titlecase}}
-            </td>
-          </tr>
-          }
-        </ng-template>
-        <ng-template #body let-expense let-rowIndex="rowIndex">
-          <tr>
-            <td>{{expense.description}}</td>
-            <td class="text-right">
-              @if (expense.recurringType === 'monthly') {
-              {{expense.amount | formatCurrency: householdExpenseCurrency()}}
-              }
-            </td>
-            <td class="text-right">
-              @if (expense.recurringType === 'quarterly') {
-              {{expense.amount | formatCurrency: householdExpenseCurrency()}}
-              }
-            </td>
-            <td class="text-right">
-              @if (expense.recurringType === 'yearly') {
-              {{expense.amount | formatCurrency: householdExpenseCurrency()}}
-              }
-            </td>
-            <td class="text-right" [ngClass]="{'font-bold': !expense.category}">
-              {{expense.monthlyAmount | formatCurrency: householdExpenseCurrency()}}
-            </td>
-            <td class="text-right" [ngClass]="{'font-bold': !expense.category}">
-              {{expense.yearlyAmount | formatCurrency: householdExpenseCurrency()}}
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
     </p-panel>
   </div>
 </app-content-wrapper>
