@@ -51,7 +51,6 @@
             <td>
               {{income.description}}
             </td>
-            <!-- TODO make currency user dependant -->
             <td class="text-right">
               @if (income.recurringType === 'monthly') {
               {{income.amount | formatCurrency: householdIncomeCurrency()}}
@@ -116,7 +115,6 @@
         <ng-template #body let-expense let-rowIndex="rowIndex">
           <tr>
             <td>{{expense.description}}</td>
-            <!-- TODO make currency user dependant -->
             <td class="text-right">
               @if (expense.recurringType === 'monthly') {
               {{expense.amount | formatCurrency: householdExpenseCurrency()}}

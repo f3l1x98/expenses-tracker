@@ -14,12 +14,16 @@ import { HouseholdPlanerStore } from '../household-planer.store';
 import { SpinnerStore } from '../../../shell/spinner/spinner.store';
 import { FormatCurrencyPipe } from '../../../shared/pipes/format-currency.pipe';
 import { SortEvent } from 'primeng/api';
-import { CommonModule } from '@angular/common';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import { ChartData, ChartDataset, ChartOptions } from 'chart.js';
 import { getExpenseCategoryColor } from 'expenses-shared';
 import { NoDataComponent } from '../../../shared/components/no-data/no-data.component';
 
-type OverviewChartData = { value: number; displayTooltip: boolean };
+type OverviewChartData = {
+  value: number;
+  title?: string;
+  displayTooltip: boolean;
+};
 
 @Component({
   selector: 'app-household-planer',
@@ -77,7 +81,7 @@ export class HouseholdPlanerComponent {
             value: totalExpense.monthlyAmount - monthlyLeftOver,
             displayTooltip: false,
           },
-          { value: monthlyLeftOver, displayTooltip: true },
+          { value: monthlyLeftOver, title: 'Defficit', displayTooltip: true },
         ],
         backgroundColor: ['transparent', 'red'],
         label: 'difference',
@@ -86,7 +90,7 @@ export class HouseholdPlanerComponent {
       // leftover
       datasets.push({
         data: [
-          { value: monthlyLeftOver, displayTooltip: true },
+          { value: monthlyLeftOver, title: 'Left over', displayTooltip: true },
           {
             value: totalExpense.monthlyAmount - monthlyLeftOver,
             displayTooltip: false,
@@ -97,7 +101,11 @@ export class HouseholdPlanerComponent {
       });
     }
     return {
-      labels: [...expensesPerCategory.map((entries) => entries.category)],
+      labels: [
+        ...expensesPerCategory.map((entries) =>
+          new TitleCasePipe().transform(entries.category),
+        ),
+      ],
       datasets: datasets as unknown as ChartDataset<
         'doughnut',
         (number | [number, number] | null)[]
@@ -141,10 +149,17 @@ export class HouseholdPlanerComponent {
             return data.displayTooltip;
           },
           callbacks: {
+            title: (context) => {
+              const dataIndex = context[0].dataIndex;
+              const data = context[0].dataset.data[
+                dataIndex
+              ] as unknown as OverviewChartData;
+              if (data.title) {
+                return data.title;
+              }
+              return undefined;
+            },
             label: (context) => {
-              // TODO atm this displays the wrong label for second dataset
-              //  -> would require separate labels for each DS
-              //   -> as of now not supported by chart.js for doughnut charts
               let label = '';
               if (context.parsed !== null) {
                 label += new Intl.NumberFormat('en-US', {
