@@ -49,6 +49,11 @@ export class HouseholdPlanerComponent {
   readonly householdIncomeCurrency = this.#store.householdIncomes.currency;
   readonly householdExpenses = this.#store.householdExpenses.data;
   readonly householdExpenseCurrency = this.#store.householdExpenses.currency;
+  readonly householdOverviewMonthlyLeftOver =
+    this.#store.householdOverviewMonthlyLeftOver;
+  readonly householdOverviewYearlyLeftOver =
+    this.#store.householdOverviewYearlyLeftOver;
+  readonly householdOverviewCurrency = this.#store.householdOverview.currency;
 
   readonly householdOverviewData = computed<ChartData | undefined>(() => {
     const documentStyle = getComputedStyle(document.documentElement);

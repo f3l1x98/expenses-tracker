@@ -133,8 +133,21 @@
       </p-panel>
     </div>
 
-    <p-panel header="{{'householdPlaner.overview' | translate}}" class="col-span-4">
-      <div>
+    <p-panel header="{{'householdPlaner.overview.title' | translate}}" class="col-span-4">
+      <div class="grid grid-cols-3 font-bold text-lg">
+        <div>{{'householdPlaner.overview.monthlyLeftOver' | translate}}:</div>
+        <!-- appHighlightNegativeCurrency not working due to signal changes not being detected -->
+        <div class="text-right" [style]="{'color': householdOverviewMonthlyLeftOver() < 0 ? 'red' : ''}">
+          {{householdOverviewMonthlyLeftOver() | formatCurrency: householdOverviewCurrency()}}
+        </div>
+        <div class="col-span-1"></div>
+        <div>{{'householdPlaner.overview.yearlyLeftOver' | translate}}:</div>
+        <!-- appHighlightNegativeCurrency not working due to signal changes not being detected -->
+        <div class="text-right" [style]="{'color': householdOverviewYearlyLeftOver() < 0 ? 'red' : ''}">
+          {{householdOverviewYearlyLeftOver() | formatCurrency: householdOverviewCurrency()}}
+        </div>
+      </div>
+      <div class="mt-4">
         @if (!householdOverviewNoData()) {
         <p-chart class="col-start-2" type="pie" [data]="householdOverviewData()"
           [options]="householdOverviewOptions()" />

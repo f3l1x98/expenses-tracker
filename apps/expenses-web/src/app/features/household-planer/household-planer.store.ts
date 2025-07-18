@@ -60,6 +60,11 @@ export const HouseholdPlanerStore = signalStore(
       const totalIncome = householdOverview.totalIncome();
       return totalIncome.monthlyAmount - totalExpense.monthlyAmount;
     }),
+    householdOverviewYearlyLeftOver: computed(() => {
+      const totalExpense = householdOverview.totalExpense();
+      const totalIncome = householdOverview.totalIncome();
+      return totalIncome.yearlyAmount - totalExpense.yearlyAmount;
+    }),
   })),
   withMethods((store, client = inject(HouseholdPlanerApiService)) => ({
     loadHouseholdExpenses: rxMethod<void>(

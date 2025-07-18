@@ -67,7 +67,11 @@
     "title": "Household-Planer",
     "expenses": "Expenses",
     "incomes": "Incomes",
-    "overview": "Overview",
+    "overview": {
+      "title": "Overview",
+      "monthlyLeftOver": "Monthly Leftover",
+      "yearlyLeftOver": "Yearly Leftover"
+    },
     "columns": {
       "description": "Description",
       "monthlyAmount": "Monthly",
