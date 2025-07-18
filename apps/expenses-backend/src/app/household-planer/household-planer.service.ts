@@ -86,8 +86,8 @@ export class HouseholdPlanerService {
       ...row,
       amount: Number.parseFloat(row.amount),
       monthlyAmount: Number.parseFloat(row.monthlyAmount),
-      quarterlyAmount: Number.parseFloat(row.monthlyAmount),
-      yearlyAmount: Number.parseFloat(row.monthlyAmount),
+      quarterlyAmount: Number.parseFloat(row.quarterlyAmount),
+      yearlyAmount: Number.parseFloat(row.yearlyAmount),
     }));
   }
 
@@ -162,8 +162,8 @@ export class HouseholdPlanerService {
       ...row,
       amount: Number.parseFloat(row.amount),
       monthlyAmount: Number.parseFloat(row.monthlyAmount),
-      quarterlyAmount: Number.parseFloat(row.monthlyAmount),
-      yearlyAmount: Number.parseFloat(row.monthlyAmount),
+      quarterlyAmount: Number.parseFloat(row.quarterlyAmount),
+      yearlyAmount: Number.parseFloat(row.yearlyAmount),
     }));
   }
 
@@ -218,8 +218,8 @@ export class HouseholdPlanerService {
     ).map((row) => ({
       ...row,
       monthlyAmount: Number.parseFloat(row.monthlyAmount),
-      quarterlyAmount: Number.parseFloat(row.monthlyAmount),
-      yearlyAmount: Number.parseFloat(row.monthlyAmount),
+      quarterlyAmount: Number.parseFloat(row.quarterlyAmount),
+      yearlyAmount: Number.parseFloat(row.yearlyAmount),
     }));
   }
 
@@ -269,8 +269,8 @@ export class HouseholdPlanerService {
       >(sql)
     ).map((row) => ({
       monthlyAmount: Number.parseFloat(row.monthlyAmount),
-      quarterlyAmount: Number.parseFloat(row.monthlyAmount),
-      yearlyAmount: Number.parseFloat(row.monthlyAmount),
+      quarterlyAmount: Number.parseFloat(row.quarterlyAmount),
+      yearlyAmount: Number.parseFloat(row.yearlyAmount),
     }))[0];
   }
   async getTotalHouseholdIncomeForUser(
@@ -319,8 +319,8 @@ export class HouseholdPlanerService {
       >(sql)
     ).map((row) => ({
       monthlyAmount: Number.parseFloat(row.monthlyAmount),
-      quarterlyAmount: Number.parseFloat(row.monthlyAmount),
-      yearlyAmount: Number.parseFloat(row.monthlyAmount),
+      quarterlyAmount: Number.parseFloat(row.quarterlyAmount),
+      yearlyAmount: Number.parseFloat(row.yearlyAmount),
     }))[0];
   }
 }
