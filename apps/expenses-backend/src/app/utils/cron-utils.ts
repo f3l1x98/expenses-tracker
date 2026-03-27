@@ -10,11 +10,15 @@ export function constructCron(cycle: RecurringType, startDate: Date): string {
   switch (cycle) {
     case RecurringType.YEARLY:
       month = `${startDate.getMonth()}`;
-      dayOfMonth = `${startDate.getDay()}`;
+      dayOfMonth = `${startDate.getDay() + 1}`;
       break;
     case RecurringType.MONTHLY:
       // TODO no support for 'last day of month' -> 31. -> skip all months without a 31st
       dayOfMonth = `${startDate.getDate()}`;
+      break;
+    case RecurringType.QUARTERLY:
+      dayOfMonth = `${startDate.getDate()}`;
+      month = `*/3`; // every 3rd month
       break;
     case RecurringType.WEEKLY:
       dayOfWeek = `${startDate.getDay()}`;

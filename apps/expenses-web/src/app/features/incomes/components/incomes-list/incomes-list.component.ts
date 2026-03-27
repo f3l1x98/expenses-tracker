@@ -12,7 +12,7 @@ import { ConfirmationService, MenuItem } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { DataView } from 'primeng/dataview';
 import { IncomesFilterComponent } from './incomes-filter/incomes-filter.component';
-import { NgClass } from '@angular/common';
+import { NgClass, TitleCasePipe } from '@angular/common';
 import { Menu } from 'primeng/menu';
 import { Button } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
@@ -32,6 +32,7 @@ import { FormatCurrencyPipe } from '../../../../shared/pipes/format-currency.pip
     ConfirmDialog,
     FormatDatePipe,
     FormatCurrencyPipe,
+    TitleCasePipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

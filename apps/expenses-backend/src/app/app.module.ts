@@ -13,6 +13,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DbConfigService } from './db-config.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { DasboardsModule } from './dashboard/dashboard.module';
+import { HouseholdPlanerModule } from './household-planer/household-planer.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { DasboardsModule } from './dashboard/dashboard.module';
     IncomesModule,
     ExpensesModule,
     DasboardsModule,
+    HouseholdPlanerModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

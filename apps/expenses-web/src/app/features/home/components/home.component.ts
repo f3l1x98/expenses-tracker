@@ -12,7 +12,7 @@ import { AppDateRangePickerComponent } from '../../../shared/components/app-date
 import { Card, CardModule } from 'primeng/card';
 import { HighlightNegativeCurrencyDirective } from '../../../shared/directives/highlight-negative-currency.directive';
 import { ChartModule, UIChart } from 'primeng/chart';
-import { NoDataComponent } from './no-data/no-data.component';
+import { NoDataComponent } from '../../../shared/components/no-data/no-data.component';
 import { FormatCurrencyPipe } from '../../../shared/pipes/format-currency.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
