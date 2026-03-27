@@ -59,7 +59,8 @@ export class HouseholdPlanerService {
     			END AS "yearlyAmount"
     		FROM public.recurring_expense_entity
     		WHERE "userId" = '${userId}'
-    		AND "recurringType" NOT IN ('weekly', 'custom')
+    			AND "recurringType" NOT IN ('weekly', 'custom')
+        		AND NOW() BETWEEN "startDate" AND COALESCE("endDate", 'infinity')
     	) filtered
     	GROUP BY GROUPING SETS (
     		(category, description, amount, "recurringType"),
@@ -135,7 +136,8 @@ export class HouseholdPlanerService {
     			END AS "yearlyAmount"
     		FROM public.recurring_income_entity
     		WHERE "userId" = '${userId}'
-    		AND "recurringType" NOT IN ('weekly', 'custom')
+    			AND "recurringType" NOT IN ('weekly', 'custom')
+        		AND NOW() BETWEEN "startDate" AND COALESCE("endDate", 'infinity')
     	) filtered
     	GROUP BY GROUPING SETS (
     		(category, description, amount, "recurringType"),
@@ -199,7 +201,8 @@ export class HouseholdPlanerService {
     			END AS "yearlyAmount"
     		FROM public.recurring_expense_entity
     		WHERE "userId" = '${userId}'
-    		AND "recurringType" NOT IN ('weekly', 'custom')
+    			AND "recurringType" NOT IN ('weekly', 'custom')
+        		AND NOW() BETWEEN "startDate" AND COALESCE("endDate", 'infinity')
     	) filtered
     	GROUP BY category
     	ORDER BY category
@@ -254,7 +257,8 @@ export class HouseholdPlanerService {
     			END AS "yearlyAmount"
     		FROM public.recurring_expense_entity
     		WHERE "userId" = '${userId}'
-    		AND "recurringType" NOT IN ('weekly', 'custom')
+    			AND "recurringType" NOT IN ('weekly', 'custom')
+        		AND NOW() BETWEEN "startDate" AND COALESCE("endDate", 'infinity')
     	) filtered
     	GROUP BY GROUPING SETS (())
     	;
@@ -276,6 +280,7 @@ export class HouseholdPlanerService {
   async getTotalHouseholdIncomeForUser(
     userId: string,
   ): Promise<IntervalAmounts> {
+    // TODO shouldnt I restrict to incomes that are active?
     const sql = `
       SELECT COALESCE(SUM("monthlyAmount"), 0.0) AS "monthlyAmount",
     		COALESCE(SUM("quarterlyAmount"), 0.0) AS "quarterlyAmount",
@@ -304,7 +309,8 @@ export class HouseholdPlanerService {
     			END AS "yearlyAmount"
     		FROM public.recurring_income_entity
     		WHERE "userId" = '${userId}'
-    		AND "recurringType" NOT IN ('weekly', 'custom')
+    			AND "recurringType" NOT IN ('weekly', 'custom')
+        		AND NOW() BETWEEN "startDate" AND COALESCE("endDate", 'infinity')
     	) filtered
     	GROUP BY GROUPING SETS (())
     	;
