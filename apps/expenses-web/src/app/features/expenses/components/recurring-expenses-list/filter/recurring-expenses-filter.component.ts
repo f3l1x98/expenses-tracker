@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -21,15 +21,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   selector: 'app-recurring-expenses-filter',
   templateUrl: 'recurring-expenses-filter.component.html',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     ExpenseCategoryDropdownComponent,
     InputTextModule,
     AppDateRangePickerComponent,
     FloatLabelModule,
     TranslateModule,
-    RecurringTypeDropdownComponent,
-  ],
+    RecurringTypeDropdownComponent
+],
 })
 export class RecurringExpensesFilterComponent {
   #recurringExpensesStore = inject(RecurringExpensesStore);

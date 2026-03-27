@@ -32,13 +32,9 @@ export class AuthService {
     return undefined;
   }
 
-  async generateJwt(user: User, expiresIn?: number | string): Promise<string> {
-    const payload = { username: user.username, sub: user.id };
-
-    if (expiresIn !== undefined) {
-      return Promise.resolve(this.jwtService.sign(payload, { expiresIn }));
-    }
-
-    return Promise.resolve(this.jwtService.sign(payload));
+  async generateJwt(user: User): Promise<string> {
+    return Promise.resolve(
+      this.jwtService.sign({ username: user.username, sub: user.id }),
+    );
   }
 }

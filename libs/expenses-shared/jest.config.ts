@@ -1,5 +1,5 @@
 /* eslint-disable */
-export default {
+module.exports = {
   displayName: 'expenses-shared',
   preset: '../../jest.preset.js',
   testEnvironment: 'node',

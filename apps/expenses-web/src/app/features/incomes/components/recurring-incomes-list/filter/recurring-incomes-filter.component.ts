@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -21,15 +21,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   selector: 'app-recurring-incomes-filter',
   templateUrl: 'recurring-incomes-filter.component.html',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     IncomeCategoryDropdownComponent,
     InputTextModule,
     AppDateRangePickerComponent,
     FloatLabelModule,
     TranslateModule,
-    RecurringTypeDropdownComponent,
-  ],
+    RecurringTypeDropdownComponent
+],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecurringIncomesFilterComponent {

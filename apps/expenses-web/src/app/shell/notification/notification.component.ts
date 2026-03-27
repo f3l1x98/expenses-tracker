@@ -1,14 +1,14 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ToastModule } from 'primeng/toast';
 import { NotificationService } from './notification.service';
-import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
 import { MessageService } from 'primeng/api';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-notification',
   templateUrl: 'notification.component.html',
-  imports: [ToastModule, MessagesModule],
+  imports: [ToastModule, MessageModule],
   providers: [MessageService],
 })
 export class NotificationComponent implements OnInit, OnDestroy {

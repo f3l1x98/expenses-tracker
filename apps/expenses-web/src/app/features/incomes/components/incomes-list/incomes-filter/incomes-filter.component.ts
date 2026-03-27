@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -19,14 +19,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   selector: 'app-incomes-filter',
   templateUrl: 'incomes-filter.component.html',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     IncomeCategoryDropdownComponent,
     InputTextModule,
     AppDateRangePickerComponent,
     FloatLabelModule,
-    TranslateModule,
-  ],
+    TranslateModule
+],
 })
 export class IncomesFilterComponent {
   #incomesStore = inject(IncomesStore);

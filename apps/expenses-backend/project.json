@@ -7,29 +7,32 @@
   "implicitDependencies": [],
   "targets": {
     "build": {
-      "executor": "@nx/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
+      "executor": "nx:run-commands",
       "options": {
-        "target": "node",
-        "compiler": "tsc",
-        "outputPath": "dist/apps/expenses-backend",
-        "main": "apps/expenses-backend/src/main.ts",
-        "tsConfig": "apps/expenses-backend/tsconfig.app.json",
-        "assets": ["apps/expenses-backend/src/assets"],
-        "webpackConfig": "apps/expenses-backend/webpack.config.js"
+        "command": "webpack-cli build",
+        "args": [
+          "--node-env=production"
+        ],
+        "cwd": "apps/expenses-backend"
       },
       "configurations": {
-        "production": {
-          "extractLicenses": true,
-          "inspect": false
+        "development": {
+          "args": [
+            "--node-env=development"
+          ]
         }
       }
     },
     "serve": {
+      "continuous": true,
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
+      "dependsOn": [
+        "build"
+      ],
       "options": {
-        "buildTarget": "expenses-backend:build"
+        "buildTarget": "expenses-backend:build",
+        "runBuildTargetDependencies": false
       },
       "configurations": {
         "development": {
@@ -45,7 +48,9 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/apps/expenses-backend"],
+      "outputs": [
+        "{workspaceRoot}/coverage/apps/expenses-backend"
+      ],
       "options": {
         "jestConfig": "apps/expenses-backend/jest.config.ts"
       }

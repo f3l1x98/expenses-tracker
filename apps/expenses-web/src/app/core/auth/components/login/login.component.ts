@@ -16,7 +16,7 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
-import { CommonModule } from '@angular/common';
+
 import { AuthStore } from '../../auth.store';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -28,7 +28,6 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: 'login.component.html',
   imports: [
     RouterModule,
-    CommonModule,
     ReactiveFormsModule,
     CardModule,
     ButtonModule,
@@ -37,8 +36,8 @@ import { TranslateModule } from '@ngx-translate/core';
     PasswordModule,
     AppHeaderComponent,
     FloatLabelModule,
-    TranslateModule,
-  ],
+    TranslateModule
+],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {

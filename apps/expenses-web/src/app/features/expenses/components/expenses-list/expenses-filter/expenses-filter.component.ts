@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ExpenseCategoryDropdownComponent } from '../../expense-category-dropdown/expense-category-dropdown.component';
@@ -19,14 +19,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   selector: 'app-expenses-filter',
   templateUrl: 'expenses-filter.component.html',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     ExpenseCategoryDropdownComponent,
     InputTextModule,
     AppDateRangePickerComponent,
     FloatLabelModule,
-    TranslateModule,
-  ],
+    TranslateModule
+],
 })
 export class ExpensesFilterComponent {
   #expensesStore = inject(ExpensesStore);
