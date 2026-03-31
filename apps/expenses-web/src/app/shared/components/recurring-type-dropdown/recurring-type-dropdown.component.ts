@@ -25,7 +25,10 @@ export class RecurringTypeDropdownComponent implements ControlValueAccessor {
   @Input()
   showClear = false;
 
-  options = Object.values(RecurringType);
+  options = Object.values(RecurringType).map((e) => ({
+    label: `recurringType.${e}`,
+    value: e,
+  }));
   value!: RecurringType | undefined;
   private touched = false;
 

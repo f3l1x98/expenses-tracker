@@ -24,6 +24,13 @@
   "currencyInput": {
     "label": "Currency"
   },
+  "recurringType": {
+    "yearly": "Yearly",
+    "quarterly": "Quarterly",
+    "monthly": "Monthly",
+    "weekly": "Weekly",
+    "custom": "Custom"
+  },
   "filter": {
     "dateRangePicker": {
       "placeholder": "Filter date range"
@@ -88,6 +95,22 @@
       "description": "Description",
       "dateRange": "Date range"
     },
+    "categories": {
+      "clothing": "Clothing",
+      "education": "Education",
+      "entertainment": "Entertainment",
+      "food": "Food",
+      "healthcare": "Healthcare",
+      "housing": "Housing",
+      "insurance": "Insurance",
+      "membership": "Membership",
+      "misc": "Misc",
+      "savings": "Savings",
+      "subscription": "Subscription",
+      "transportation": "Transportation",
+      "utilities": "Utilities",
+      "vacation": "Vacation"
+    },
     "categoryInput": {
       "label": "Category"
     },
@@ -106,6 +129,12 @@
   "incomes": {
     "title": "Income",
     "createHeader": "Create new",
+    "categories": {
+      "gift": "Gift",
+      "misc": "Misc",
+      "salary": "Salary",
+      "stocks": "Stocks"
+    },
     "categoryInput": {
       "label": "Category"
     },

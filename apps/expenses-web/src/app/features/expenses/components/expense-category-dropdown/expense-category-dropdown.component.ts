@@ -25,7 +25,10 @@ export class ExpenseCategoryDropdownComponent implements ControlValueAccessor {
   @Input()
   showClear = false;
 
-  options = Object.values(ExpenseCategory);
+  options = Object.values(ExpenseCategory).map((e) => ({
+    label: `expenses.categories.${e}`,
+    value: e,
+  }));
   value!: ExpenseCategory | undefined;
   private touched = false;
 

@@ -25,7 +25,10 @@ export class IncomeCategoryDropdownComponent implements ControlValueAccessor {
   @Input()
   showClear = false;
 
-  options = Object.values(IncomeCategory);
+  options = Object.values(IncomeCategory).map((e) => ({
+    label: `incomes.categories.${e}`,
+    value: e,
+  }));
   value!: IncomeCategory | undefined;
   private touched = false;
 
