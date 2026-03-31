@@ -1,5 +1,5 @@
 <p-floatLabel>
-    <p-select [(ngModel)]="value" styleClass="w-full" class="w-full" inputId="category" [options]="options"
+    <p-select [(ngModel)]="value" class="w-full" class="w-full" inputId="category" [options]="options"
         [disabled]="disabled" [showClear]="showClear" (onChange)="valueChanged($event.value)" >
         <ng-template pTemplate="selectedItem" let-selectedOption>
             {{ selectedOption.label | translate }}
