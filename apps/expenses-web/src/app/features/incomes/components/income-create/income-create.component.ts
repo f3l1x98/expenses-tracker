@@ -19,6 +19,8 @@ import { RadioButton } from 'primeng/radiobutton';
 import { DatePickerModule } from 'primeng/datepicker';
 import { Button } from 'primeng/button';
 import { TranslateModule } from '@ngx-translate/core';
+import { IncomeCategoryDropdownComponent } from '../income-category-dropdown/income-category-dropdown.component';
+import { RecurringTypeDropdownComponent } from 'apps/expenses-web/src/app/shared/components/recurring-type-dropdown/recurring-type-dropdown.component';
 
 @Component({
   selector: 'app-income-create',
@@ -28,6 +30,8 @@ import { TranslateModule } from '@ngx-translate/core';
     FloatLabel,
     InputText,
     InputNumber,
+    IncomeCategoryDropdownComponent,
+    RecurringTypeDropdownComponent,
     SelectModule,
     RadioButton,
     DatePickerModule,

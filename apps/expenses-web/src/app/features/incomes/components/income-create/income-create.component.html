@@ -16,11 +16,7 @@
   </div>
 
   <div class="col-span-12 lg:col-span-2">
-    <p-floatLabel>
-      <p-select formControlName="category" styleClass="w-full" class="w-full" inputId="category"
-        [options]="categoryOptions" />
-      <label for="category">{{'incomes.categoryInput.label' | translate}}</label>
-    </p-floatLabel>
+    <app-income-category-dropdown formControlName="category"></app-income-category-dropdown>
   </div>
 
   <div class="col-span-12 flex justify-center gap-4">
@@ -36,11 +32,7 @@
 
   @if(formGroup.controls['isRecurring'].value) {
   <div class="col-span-12 lg:col-span-4">
-    <p-floatLabel>
-      <p-select formControlName="recurringType" styleClass="w-full" class="w-full" inputId="recurringType"
-        [options]="recurringTypeOptions" />
-      <label for="recurringType">{{'incomes.create.recurringType' | translate}}</label>
-    </p-floatLabel>
+    <app-recurring-type-dropdown formControlName="recurringType"></app-recurring-type-dropdown>
   </div>
 
   <div class="col-span-12 lg:col-span-4">

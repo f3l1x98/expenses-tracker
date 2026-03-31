@@ -20,6 +20,7 @@ import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
 import { Button } from 'primeng/button';
 import { TranslateModule } from '@ngx-translate/core';
+import { RecurringTypeDropdownComponent } from 'apps/expenses-web/src/app/shared/components/recurring-type-dropdown/recurring-type-dropdown.component';
 
 @Component({
   selector: 'app-expense-create',
@@ -30,6 +31,7 @@ import { TranslateModule } from '@ngx-translate/core';
     InputText,
     InputNumber,
     ExpenseCategoryDropdownComponent,
+    RecurringTypeDropdownComponent,
     RadioButton,
     SelectModule,
     DatePickerModule,

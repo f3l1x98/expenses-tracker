@@ -32,11 +32,7 @@
 
   @if (formGroup.controls['isRecurring'].value) {
   <div class="col-span-12 lg:col-span-4">
-    <p-floatLabel>
-      <p-select formControlName="recurringType" styleClass="w-full" class="w-full" inputId="recurringType"
-        [options]="recurringTypeOptions" />
-      <label for="recurringType">{{'expenses.create.recurringType' | translate}}</label>
-    </p-floatLabel>
+    <app-recurring-type-dropdown formControlName="recurringType"></app-recurring-type-dropdown>
   </div>
 
   <div class="col-span-12 lg:col-span-4">
