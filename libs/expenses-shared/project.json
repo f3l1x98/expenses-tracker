@@ -4,7 +4,6 @@
   "sourceRoot": "libs/expenses-shared/src",
   "projectType": "library",
   "tags": [],
-  "// targets": "to see all targets run: nx show project expenses-shared --web",
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",

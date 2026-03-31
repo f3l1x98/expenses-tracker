@@ -95,10 +95,10 @@ export class RecurringIncomesService implements OnApplicationBootstrap {
     const end = endDate?.getTime() ?? currentDate + 1;
     const shouldBeRunning = start <= currentDate && end > currentDate;
 
-    if (shouldBeRunning && !job.running) {
+    if (shouldBeRunning && !job.isActive) {
       this.logger.log(`Started job with id ${jobId}`);
       job.start();
-    } else if (!shouldBeRunning && job.running) {
+    } else if (!shouldBeRunning && job.isActive) {
       this.logger.log(`Started job with id ${jobId}`);
       job.stop();
     }
