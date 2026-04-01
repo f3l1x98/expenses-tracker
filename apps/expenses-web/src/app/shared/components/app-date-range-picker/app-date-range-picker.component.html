@@ -1,10 +1,10 @@
-@if(!label) {
+@if(!label()) {
 <p-datepicker [(ngModel)]="calenderValue" selectionMode="range" dateFormat="dd/mm/yy" [showClear]="showClear"
   placeholder="{{'filter.dateRangePicker.placeholder' | translate}}" (onSelect)="valueChanged()" inputId="dateRange" />
 } @else {
 <p-floatLabel>
   <p-datepicker [(ngModel)]="calenderValue" selectionMode="range" dateFormat="dd/mm/yy" [showClear]="showClear"
     (onSelect)="valueChanged()" inputId="dateRange" />
-  <label for="dateRange">{{label}}</label>
+  <label for="dateRange">{{label()}}</label>
 </p-floatLabel>
 }

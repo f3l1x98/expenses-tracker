@@ -1,4 +1,4 @@
-import { Component, Input, forwardRef } from '@angular/core';
+import { Component, forwardRef, input } from '@angular/core';
 import {
   ControlValueAccessor,
   FormsModule,
@@ -22,8 +22,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
   ],
 })
 export class ExpenseCategoryDropdownComponent implements ControlValueAccessor {
-  @Input()
-  showClear = false;
+  showClear = input<boolean>(false);
 
   options = Object.values(ExpenseCategory).map((e) => ({
     label: `expenses.categories.${e}`,

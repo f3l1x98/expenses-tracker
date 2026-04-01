@@ -1,9 +1,9 @@
 import {
   Component,
   EventEmitter,
-  Input,
   Output,
   forwardRef,
+  input,
 } from '@angular/core';
 import { DatePickerModule } from 'primeng/datepicker';
 import { DateRange } from '../../interfaces/date-range.interface';
@@ -19,12 +19,7 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-date-range-picker',
   templateUrl: 'app-date-range-picker.component.html',
-  imports: [
-    DatePickerModule,
-    FormsModule,
-    FloatLabelModule,
-    TranslateModule
-],
+  imports: [DatePickerModule, FormsModule, FloatLabelModule, TranslateModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -34,14 +29,11 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
 })
 export class AppDateRangePickerComponent implements ControlValueAccessor {
-  @Input()
-  label = '';
+  label = input<string>('');
 
-  @Input()
-  showClear = false;
+  showClear = input<boolean>(false);
 
-  @Input()
-  requireEnd = true;
+  requireEnd = input<boolean>(true);
 
   @Output()
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
