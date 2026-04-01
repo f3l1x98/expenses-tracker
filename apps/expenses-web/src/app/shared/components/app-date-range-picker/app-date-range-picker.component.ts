@@ -1,10 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Output,
-  forwardRef,
-  input,
-} from '@angular/core';
+import { Component, forwardRef, input, output } from '@angular/core';
 import { DatePickerModule } from 'primeng/datepicker';
 import { DateRange } from '../../interfaces/date-range.interface';
 import {
@@ -35,9 +29,8 @@ export class AppDateRangePickerComponent implements ControlValueAccessor {
 
   requireEnd = input<boolean>(true);
 
-  @Output()
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-  onChange = new EventEmitter<DateRange>();
+  onChange = output<DateRange | undefined>();
 
   calenderValue: Array<Date | null> | undefined;
 
@@ -69,6 +62,14 @@ export class AppDateRangePickerComponent implements ControlValueAccessor {
       }
 
       this.markAsTouched();
+    }
+  }
+
+  clear() {
+    if (!this.disabled) {
+      this.value = undefined;
+      this.onChangeFn(this.value);
+      this.onChange.emit(this.value);
     }
   }
 

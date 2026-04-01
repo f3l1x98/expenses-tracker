@@ -62,8 +62,16 @@ const initialState: HomeState = {
 export const HomeStore = signalStore(
   withState(initialState),
   withMethods((store, homeApiService = inject(HomeApiService)) => ({
-    setDateRangeFilter(filter: DateRange): void {
-      patchState(store, { filter });
+    setDateRangeFilter(filter: DateRange | undefined): void {
+      const defaultFilter = filter ?? {
+        startDate: new Date(
+          new Date().getFullYear(),
+          new Date().getMonth(),
+          new Date().getDate(),
+        ),
+        endDate: undefined,
+      };
+      patchState(store, { filter: defaultFilter });
     },
     loadCurrentMonthData: rxMethod<void>(
       pipe(
