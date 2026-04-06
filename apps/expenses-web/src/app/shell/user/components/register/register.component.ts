@@ -25,6 +25,19 @@ import { CurrencyInputComponent } from '../../../../shared/components/currency-i
 import { Currency } from '../../../../shared/components/currency-input/currencys';
 import { UserStore } from '../../user.store';
 
+interface RegistrationFormGroup {
+  credentials: FormGroup<CredentialsFormGroup>;
+  settings: FormGroup<SettingsFormGroup>;
+}
+interface CredentialsFormGroup {
+  username: FormControl<string | null>;
+  password: FormControl<string | null>;
+  confirmPassword: FormControl<string | null>;
+}
+interface SettingsFormGroup {
+  currency: FormControl<Currency | null | undefined>;
+}
+
 @Component({
   selector: 'app-register',
   templateUrl: 'register.component.html',
@@ -51,18 +64,20 @@ export class RegisterComponent implements ComponentCanDeactivate {
 
   registerStatus = this.#store.createStatus;
 
-  credentialsFormGroup: FormGroup = new FormGroup({
-    username: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required]),
-    confirmPassword: new FormControl('', [
-      Validators.required,
-      this.validateConfirmPassword(),
-    ]),
-  });
-  settingsFormGroup: FormGroup = new FormGroup({
-    currency: new FormControl<Currency | undefined>(undefined, [
-      Validators.required,
-    ]),
+  registrationFormGroup: FormGroup = new FormGroup<RegistrationFormGroup>({
+    credentials: new FormGroup<CredentialsFormGroup>({
+      username: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
+      confirmPassword: new FormControl('', [
+        Validators.required,
+        this.validateConfirmPassword(),
+      ]),
+    }),
+    settings: new FormGroup<SettingsFormGroup>({
+      currency: new FormControl<Currency | undefined>(undefined, [
+        Validators.required,
+      ]),
+    }),
   });
 
   constructor() {
@@ -70,15 +85,14 @@ export class RegisterComponent implements ComponentCanDeactivate {
       const createStatus = this.#store.createStatus();
 
       if (createStatus.status == 'success') {
-        this.credentialsFormGroup.reset();
-        this.settingsFormGroup.reset();
+        this.registrationFormGroup.reset();
       }
     });
   }
 
   @HostListener('window:beforeunload')
   canDeactivate(): boolean | Observable<boolean> {
-    if (this.credentialsFormGroup.pristine) {
+    if (this.registrationFormGroup.pristine) {
       return true;
     }
     const canDeactiveSubject$ = new Subject<boolean>();
@@ -102,8 +116,10 @@ export class RegisterComponent implements ComponentCanDeactivate {
   private validateConfirmPassword(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const formGroup = control.root as FormGroup;
-      const password = formGroup.get('password')?.value;
-      const confirmPassword = formGroup.get('confirmPassword')?.value;
+      const password = formGroup.get('credentials.password')?.value;
+      const confirmPassword = formGroup.get(
+        'credentials.confirmPassword',
+      )?.value;
 
       if (password !== confirmPassword) {
         return { notEqual: true };
@@ -114,15 +130,13 @@ export class RegisterComponent implements ComponentCanDeactivate {
   }
 
   register() {
-    if (!this.credentialsFormGroup.valid || !this.settingsFormGroup.valid)
-      return;
+    if (!this.registrationFormGroup.valid) return;
 
-    const currency = this.settingsFormGroup.get('currency')?.value as
-      | Currency
-      | undefined;
+    const currency = this.registrationFormGroup.get('settings.currency')
+      ?.value as Currency | undefined;
     this.#store.createUser({
-      password: this.credentialsFormGroup.get('password')?.value,
-      username: this.credentialsFormGroup.get('username')?.value,
+      password: this.registrationFormGroup.get('credentials.password')?.value,
+      username: this.registrationFormGroup.get('credentials.username')?.value,
       settings: {
         currency: currency?.code ?? '',
       },

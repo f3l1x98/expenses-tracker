@@ -8,61 +8,63 @@
         <p-step [value]="2">{{'user.register.settings.header' | translate}}</p-step>
       </p-step-list>
       <p-step-panels>
-        <p-step-panel [value]="1">
-          <ng-template #content let-activateCallback="activateCallback" let-index="index">
-            <div class="text-center mt-4 mb-6 text-xl font-semibold">
-              {{'user.register.credentials.title' | translate}}
-            </div>
-            <form class="grid grid-cols-12 gap-4" [formGroup]="credentialsFormGroup">
-              <div class="mb-8 col-span-12">
-                <p-floatLabel>
-                  <input pInputText class="w-full" id="username" formControlName="username" type="text" />
-                  <label for="username">{{'user.register.credentials.form.username.label' | translate}}</label>
-                </p-floatLabel>
+        <form [formGroup]="registrationFormGroup">
+          <p-step-panel [value]="1">
+            <ng-template #content let-activateCallback="activateCallback" let-index="index">
+              <div class="text-center mt-4 mb-6 text-xl font-semibold">
+                {{'user.register.credentials.title' | translate}}
               </div>
+              <div class="grid grid-cols-12 gap-4" formGroupName="credentials">
+                <div class="mb-8 col-span-12">
+                  <p-floatLabel>
+                    <input pInputText class="w-full" id="username" formControlName="username" type="text" />
+                    <label for="username">{{'user.register.credentials.form.username.label' | translate}}</label>
+                  </p-floatLabel>
+                </div>
 
-              <div class="mb-8 col-span-12">
-                <p-floatLabel>
-                  <p-password inputStyleClass="w-full" class="w-full" inputId="password" formControlName="password"
-                    [toggleMask]="true" />
-                  <label for="password">{{'user.register.credentials.form.password.label' | translate}}</label>
-                </p-floatLabel>
-              </div>
+                <div class="mb-8 col-span-12">
+                  <p-floatLabel>
+                    <p-password inputStyleClass="w-full" class="w-full" inputId="password" formControlName="password"
+                      [toggleMask]="true" />
+                    <label for="password">{{'user.register.credentials.form.password.label' | translate}}</label>
+                  </p-floatLabel>
+                </div>
 
-              <div class="mb-8 col-span-12">
-                <p-floatLabel>
-                  <p-password inputStyleClass="w-full" class="w-full" inputId="confirmPassword"
-                    formControlName="confirmPassword" [toggleMask]="true" [feedback]="false" />
-                  <label for="confirmPassword">{{'user.register.credentials.form.confirmPassword.label' |
-                    translate}}</label>
-                </p-floatLabel>
+                <div class="mb-8 col-span-12">
+                  <p-floatLabel>
+                    <p-password inputStyleClass="w-full" class="w-full" inputId="confirmPassword"
+                      formControlName="confirmPassword" [toggleMask]="true" [feedback]="false" />
+                    <label for="confirmPassword">{{'user.register.credentials.form.confirmPassword.label' |
+                      translate}}</label>
+                  </p-floatLabel>
+                </div>
               </div>
-            </form>
-            <div class="flex pt-6 justify-between">
-              <p-button label="{{'buttons.cancel' | translate}}" [link]="true" routerLink="/auth/login" />
-              <p-button (onClick)="activateCallback(2)" label="{{'user.register.buttons.next' | translate}}"
-                icon="pi pi-arrow-right" iconPos="right" [disabled]="!credentialsFormGroup.valid" />
-            </div>
-          </ng-template>
-        </p-step-panel>
-        <p-step-panel [value]="2">
-          <ng-template #content let-activateCallback="activateCallback" let-index="index">
-            <div class="text-center mt-4 mb-6 text-xl font-semibold">
-              {{'user.register.settings.title' | translate}}
-            </div>
-            <form class="grid grid-cols-12 gap-4" [formGroup]="settingsFormGroup">
-              <div class="mb-8 col-span-12">
-                <app-currency-input formControlName="currency"></app-currency-input>
+              <div class="flex pt-6 justify-between">
+                <p-button label="{{'buttons.cancel' | translate}}" [link]="true" routerLink="/auth/login" />
+                <p-button (onClick)="activateCallback(2)" label="{{'user.register.buttons.next' | translate}}"
+                  icon="pi pi-arrow-right" iconPos="right" [disabled]="!(registrationFormGroup.get('credentials')?.valid ?? false)" />
               </div>
-            </form>
-            <div class="flex pt-6 justify-between">
-              <p-button (onClick)="activateCallback(1)" label="{{'user.register.buttons.back' | translate}}"
-                icon="pi pi-arrow-left" />
-              <p-button (onClick)="register()" label="{{'user.register.buttons.register' | translate}}"
-                icon="pi pi-user-plus" iconPos="right" [disabled]="!settingsFormGroup.valid" />
-            </div>
-          </ng-template>
-        </p-step-panel>
+            </ng-template>
+          </p-step-panel>
+          <p-step-panel [value]="2">
+            <ng-template #content let-activateCallback="activateCallback" let-index="index">
+              <div class="text-center mt-4 mb-6 text-xl font-semibold">
+                {{'user.register.settings.title' | translate}}
+              </div>
+              <div class="grid grid-cols-12 gap-4" formGroupName="settings">
+                <div class="mb-8 col-span-12">
+                  <app-currency-input formControlName="currency"></app-currency-input>
+                </div>
+              </div>
+              <div class="flex pt-6 justify-between">
+                <p-button (onClick)="activateCallback(1)" label="{{'user.register.buttons.back' | translate}}"
+                  icon="pi pi-arrow-left" />
+                <p-button (onClick)="register()" label="{{'user.register.buttons.register' | translate}}"
+                  icon="pi pi-user-plus" iconPos="right" [disabled]="!(registrationFormGroup.get('settings')?.valid ?? false)" />
+              </div>
+            </ng-template>
+          </p-step-panel>
+        </form>
       </p-step-panels>
     </p-stepper>
   </p-card>
