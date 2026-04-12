@@ -1,10 +1,26 @@
 @if(!label()) {
-<p-datepicker [(ngModel)]="calenderValue" selectionMode="range" dateFormat="dd/mm/yy" [showClear]="showClear"
-  placeholder="{{'filter.dateRangePicker.placeholder' | translate}}" (onSelect)="valueChanged()" (onClear)="clear()" inputId="dateRange" />
+<p-datepicker 
+    [ngModel]="calenderValue"
+    (ngModelChange)="valueChanged($event)"
+    selectionMode="range"
+    dateFormat="dd/mm/yy"
+    [showClear]="showClear()" 
+    [disabled]="disabled()"
+    [showClear]="showClear()"
+    (onBlur)="onBlur()"
+    placeholder="{{'filter.dateRangePicker.placeholder' | translate}}" inputId="dateRange" />
 } @else {
 <p-floatLabel>
-  <p-datepicker [(ngModel)]="calenderValue" selectionMode="range" dateFormat="dd/mm/yy" [showClear]="showClear"
-    (onSelect)="valueChanged()" (onClear)="clear()" inputId="dateRange" />
+  <p-datepicker 
+    [ngModel]="calenderValue"
+    (ngModelChange)="valueChanged($event)"
+    selectionMode="range"
+    dateFormat="dd/mm/yy"
+    [showClear]="showClear()"
+    [disabled]="disabled()"
+    [showClear]="showClear()"
+    (onBlur)="onBlur()"
+    inputId="dateRange" />
   <label for="dateRange">{{label()}}</label>
 </p-floatLabel>
 }

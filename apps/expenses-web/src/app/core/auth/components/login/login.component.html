@@ -3,26 +3,28 @@
     <div class="flex justify-center px-6 pt-4 pb-8">
       <app-header></app-header>
     </div>
-    <form class="grid grid-cols-12 gap-4" [formGroup]="loginForm" (keydown.enter)="submit()">
+    <form class="grid grid-cols-12 gap-4" (keydown.enter)="submit()" (submit)="submit()">
       <div class="mb-8 col-span-12">
         <p-floatLabel>
-          <input pInputText class="w-full" id="username" formControlName="username" type="text" />
+          <input pInputText class="w-full" id="username" [formField]="loginForm.username" type="text" [class.p-invalid]="loginForm.username().dirty() && loginForm.username().invalid()" />
           <label for="username">{{'user.login.username' | translate}}</label>
         </p-floatLabel>
       </div>
 
       <div class="mb-8 col-span-12">
         <p-floatLabel>
-          <p-password inputStyleClass="w-full" class="w-full" inputId="password" formControlName="password"
+          <p-password inputStyleClass="w-full" class="w-full" inputId="password" [(ngModel)]="passwordProxy" name="password"
             [feedback]="false" />
           <label for="password">{{'user.login.password' | translate}}</label>
         </p-floatLabel>
       </div>
+
+
+      <div class="col-span-12">
+        <p-button type="submit" label="{{'user.login.buttons.login' | translate}}" icon="pi pi-user" class="w-full"
+          [loading]="loading()" [disabled]="loginForm().invalid()"></p-button>
+        <p-button label="{{'user.login.buttons.register' | translate}}" [link]="true" routerLink="/user/register" />
+      </div>
     </form>
-
-    <p-button label="{{'user.login.buttons.login' | translate}}" icon="pi pi-user" class="w-full" (onClick)="submit()"
-      [loading]="loading()" [disabled]="!loginForm.valid"></p-button>
-
-    <p-button label="{{'user.login.buttons.register' | translate}}" [link]="true" routerLink="/user/register" />
   </p-card>
 </div>

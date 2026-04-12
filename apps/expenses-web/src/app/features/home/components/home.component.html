@@ -2,7 +2,7 @@
   <div slot="header" class="flex justify-between">
     <span>{{'home.title' | translate}}</span>
     <app-date-range-picker style="font-weight: initial; font-size: initial; line-height: initial;"
-      (onChange)="onDateRangeChanged($event)">
+      (valueChange)="onDateRangeChanged($event)">
     </app-date-range-picker>
   </div>
   <div class="grid grid-cols-12 gap-4">

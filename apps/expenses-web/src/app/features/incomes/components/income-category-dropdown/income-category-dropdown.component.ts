@@ -1,9 +1,5 @@
-import { Component, forwardRef, input } from '@angular/core';
-import {
-  ControlValueAccessor,
-  FormsModule,
-  NG_VALUE_ACCESSOR,
-} from '@angular/forms';
+import { Component, input, model } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { IncomeCategory } from 'expenses-shared';
 import { SelectModule } from 'primeng/select';
@@ -13,57 +9,20 @@ import { FloatLabelModule } from 'primeng/floatlabel';
   selector: 'app-income-category-dropdown',
   templateUrl: 'income-category-dropdown.component.html',
   imports: [FloatLabelModule, SelectModule, TranslateModule, FormsModule],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      multi: true,
-      useExisting: forwardRef(() => IncomeCategoryDropdownComponent),
-    },
-  ],
 })
-export class IncomeCategoryDropdownComponent implements ControlValueAccessor {
+export class IncomeCategoryDropdownComponent {
   showClear = input<boolean>(false);
+  disabled = input<boolean>(false);
+
+  value = model<IncomeCategory | undefined>();
+  touched = model<boolean>(false);
 
   options = Object.values(IncomeCategory).map((e) => ({
     label: `incomes.categories.${e}`,
     value: e,
   }));
-  value!: IncomeCategory | undefined;
-  private touched = false;
 
-  disabled = false;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-  onChange = (value: IncomeCategory | undefined) => {};
-
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  onTouched = () => {};
-
-  valueChanged(val: IncomeCategory | undefined) {
-    if (!this.disabled) {
-      this.onChange(val);
-
-      this.markAsTouched();
-    }
-  }
-
-  private markAsTouched() {
-    if (!this.touched) {
-      this.onTouched();
-      this.touched = true;
-    }
-  }
-
-  writeValue(value: IncomeCategory | undefined): void {
-    this.value = value;
-  }
-  registerOnChange(fn: (value: IncomeCategory | undefined) => void): void {
-    this.onChange = fn;
-  }
-  registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
-  }
-  setDisabledState?(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+  onBlur() {
+    this.touched.set(true);
   }
 }

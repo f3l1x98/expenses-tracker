@@ -4,24 +4,26 @@ import {
   computed,
   effect,
   inject,
+  signal,
+  untracked,
 } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
+import { form, required, FormField, submit } from '@angular/forms/signals';
 
 import { AuthStore } from '../../auth.store';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { AppHeaderComponent } from '../../../../shared/components/app-header/app-header.component';
 import { TranslateModule } from '@ngx-translate/core';
+
+interface LoginState {
+  username: string;
+  password: string;
+}
 
 @Component({
   selector: 'app-login',
@@ -36,8 +38,9 @@ import { TranslateModule } from '@ngx-translate/core';
     PasswordModule,
     AppHeaderComponent,
     FloatLabelModule,
-    TranslateModule
-],
+    TranslateModule,
+    FormField,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
@@ -45,10 +48,18 @@ export class LoginComponent {
   #router = inject(Router);
   #route = inject(ActivatedRoute);
 
-  loginForm: FormGroup = new FormGroup({
-    username: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required]),
+  loginState = signal<LoginState>({
+    username: '',
+    password: '',
   });
+  loginForm = form(this.loginState, (schemaPath) => {
+    required(schemaPath.username); // TODO: Error msg
+    required(schemaPath.password); // TODO: Error msg
+  });
+
+  // Proxy for PrimeNG inputs until they support Signal Forms
+  passwordProxy = signal<string>('');
+
   loading = computed(() => this.#store.status().value === 'running');
 
   constructor() {
@@ -58,19 +69,28 @@ export class LoginComponent {
         const returnUrl =
           this.#route.snapshot.queryParams['returnUrl'] || '/features';
         this.#router.navigate([returnUrl]);
-        this.loginForm.reset();
+        this.loginForm().reset();
       }
+    });
+    // Bridges for Proxy due to missing Signal Forms support of PrimeNG
+    effect(() => {
+      const input = untracked(() => this.loginForm.password());
+      this.passwordProxy.set(input.value());
+    });
+    effect(() => {
+      const input = untracked(() => this.loginForm.password());
+      input.value.set(this.passwordProxy());
     });
   }
 
   submit() {
-    if (!this.loginForm.valid) return;
-
-    this.#store.login({
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      username: this.loginForm.get('username')!.value,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      password: this.loginForm.get('password')!.value,
+    submit(this.loginForm, async () => {
+      this.#store.login({
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        username: this.loginForm.username().value(),
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        password: this.loginForm.password().value(),
+      });
     });
   }
 }

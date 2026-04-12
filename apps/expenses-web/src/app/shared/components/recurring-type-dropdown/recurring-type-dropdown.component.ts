@@ -1,9 +1,5 @@
-import { Component, forwardRef, input } from '@angular/core';
-import {
-  ControlValueAccessor,
-  FormsModule,
-  NG_VALUE_ACCESSOR,
-} from '@angular/forms';
+import { Component, input, model } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { RecurringType } from 'expenses-shared';
 import { SelectModule } from 'primeng/select';
@@ -13,57 +9,20 @@ import { FloatLabelModule } from 'primeng/floatlabel';
   selector: 'app-recurring-type-dropdown',
   templateUrl: 'recurring-type-dropdown.component.html',
   imports: [FloatLabelModule, SelectModule, TranslateModule, FormsModule],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      multi: true,
-      useExisting: forwardRef(() => RecurringTypeDropdownComponent),
-    },
-  ],
 })
-export class RecurringTypeDropdownComponent implements ControlValueAccessor {
+export class RecurringTypeDropdownComponent {
   showClear = input<boolean>(false);
+  disabled = input<boolean>(false);
+
+  value = model<RecurringType | undefined>();
+  touched = model<boolean>(false);
 
   options = Object.values(RecurringType).map((e) => ({
     label: `recurringType.${e}`,
     value: e,
   }));
-  value!: RecurringType | undefined;
-  private touched = false;
 
-  disabled = false;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-  onChange = (value: RecurringType | undefined) => {};
-
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  onTouched = () => {};
-
-  valueChanged(val: RecurringType | undefined) {
-    if (!this.disabled) {
-      this.onChange(val);
-
-      this.markAsTouched();
-    }
-  }
-
-  private markAsTouched() {
-    if (!this.touched) {
-      this.onTouched();
-      this.touched = true;
-    }
-  }
-
-  writeValue(value: RecurringType | undefined): void {
-    this.value = value;
-  }
-  registerOnChange(fn: (value: RecurringType | undefined) => void): void {
-    this.onChange = fn;
-  }
-  registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
-  }
-  setDisabledState?(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+  onBlur() {
+    this.touched.set(true);
   }
 }

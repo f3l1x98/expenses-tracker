@@ -1,14 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, effect, inject } from '@angular/core';
 import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  ValidationErrors,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+  Component,
+  HostListener,
+  effect,
+  inject,
+  signal,
+  untracked,
+} from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 import { StepperModule } from 'primeng/stepper';
 import { PasswordModule } from 'primeng/password';
@@ -22,21 +21,16 @@ import { ConfirmationService } from 'primeng/api';
 import { PendingChangesDialogComponent } from '../../../../shared/components/pending-changes-dialog/pending-changes-dialog.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CurrencyInputComponent } from '../../../../shared/components/currency-input/currency-input.component';
-import { Currency } from '../../../../shared/components/currency-input/currencys';
 import { UserStore } from '../../user.store';
-
-interface RegistrationFormGroup {
-  credentials: FormGroup<CredentialsFormGroup>;
-  settings: FormGroup<SettingsFormGroup>;
-}
-interface CredentialsFormGroup {
-  username: FormControl<string | null>;
-  password: FormControl<string | null>;
-  confirmPassword: FormControl<string | null>;
-}
-interface SettingsFormGroup {
-  currency: FormControl<Currency | null | undefined>;
-}
+import { FieldState, form, FormField, submit } from '@angular/forms/signals';
+import {
+  buildCredentialsValidation,
+  buildSettingsValidation,
+  createCredentialsForm,
+  createSettingsForm,
+  RegistrationFormState,
+} from './register.model';
+import { PrimeNgSignalStatus } from 'apps/expenses-web/src/app/shared/directives/primeng-signal-status';
 
 @Component({
   selector: 'app-register',
@@ -46,7 +40,7 @@ interface SettingsFormGroup {
     RouterLinkWithHref,
     CardModule,
     StepperModule,
-    ReactiveFormsModule,
+    FormsModule,
     PasswordModule,
     FloatLabelModule,
     InputTextModule,
@@ -54,6 +48,8 @@ interface SettingsFormGroup {
     PendingChangesDialogComponent,
     TranslateModule,
     CurrencyInputComponent,
+    FormField,
+    PrimeNgSignalStatus,
   ],
   providers: [ConfirmationService],
 })
@@ -64,35 +60,58 @@ export class RegisterComponent implements ComponentCanDeactivate {
 
   registerStatus = this.#store.createStatus;
 
-  registrationFormGroup: FormGroup = new FormGroup<RegistrationFormGroup>({
-    credentials: new FormGroup<CredentialsFormGroup>({
-      username: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required]),
-      confirmPassword: new FormControl('', [
-        Validators.required,
-        this.validateConfirmPassword(),
-      ]),
-    }),
-    settings: new FormGroup<SettingsFormGroup>({
-      currency: new FormControl<Currency | undefined>(undefined, [
-        Validators.required,
-      ]),
-    }),
+  registrationState = signal<RegistrationFormState>({
+    credentials: createCredentialsForm()(),
+    settings: createSettingsForm()(),
   });
+  registrationForm = form(this.registrationState, (schemaPath) => {
+    buildCredentialsValidation(schemaPath.credentials);
+    buildSettingsValidation(schemaPath.settings);
+  });
+
+  // Proxies for PrimeNG inputs until they support Signal Forms
+  passwordProxy = signal<string>('');
+  confirmPasswordProxy = signal<string>('');
 
   constructor() {
     effect(() => {
       const createStatus = this.#store.createStatus();
 
       if (createStatus.status == 'success') {
-        this.registrationFormGroup.reset();
+        this.registrationForm().reset();
+        this.registrationForm().reset();
       }
+    });
+    // Bridges for Proxies due to missing Signal Forms support of PrimeNG
+    effect(() => {
+      const input = untracked(() =>
+        this.registrationForm.credentials.password(),
+      );
+      this.passwordProxy.set(input.value());
+    });
+    effect(() => {
+      const input = untracked(() =>
+        this.registrationForm.credentials.password(),
+      );
+      input.value.set(this.passwordProxy());
+    });
+    effect(() => {
+      const input = untracked(() =>
+        this.registrationForm.credentials.confirmPassword(),
+      );
+      this.confirmPasswordProxy.set(input.value());
+    });
+    effect(() => {
+      const input = untracked(() =>
+        this.registrationForm.credentials.confirmPassword(),
+      );
+      input.value.set(this.confirmPasswordProxy());
     });
   }
 
   @HostListener('window:beforeunload')
   canDeactivate(): boolean | Observable<boolean> {
-    if (this.registrationFormGroup.pristine) {
+    if (!this.registrationForm().dirty()) {
       return true;
     }
     const canDeactiveSubject$ = new Subject<boolean>();
@@ -113,33 +132,20 @@ export class RegisterComponent implements ComponentCanDeactivate {
     return canDeactiveSubject$;
   }
 
-  private validateConfirmPassword(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const formGroup = control.root as FormGroup;
-      const password = formGroup.get('credentials.password')?.value;
-      const confirmPassword = formGroup.get(
-        'credentials.confirmPassword',
-      )?.value;
-
-      if (password !== confirmPassword) {
-        return { notEqual: true };
-      }
-
-      return null;
-    };
+  register() {
+    submit(this.registrationForm, async () => {
+      const currency = this.registrationForm.settings.currency().value();
+      this.#store.createUser({
+        password: this.registrationForm.credentials.password().value(),
+        username: this.registrationForm.credentials.username().value(),
+        settings: {
+          currency: currency?.code ?? '',
+        },
+      });
+    });
   }
 
-  register() {
-    if (!this.registrationFormGroup.valid) return;
-
-    const currency = this.registrationFormGroup.get('settings.currency')
-      ?.value as Currency | undefined;
-    this.#store.createUser({
-      password: this.registrationFormGroup.get('credentials.password')?.value,
-      username: this.registrationFormGroup.get('credentials.username')?.value,
-      settings: {
-        currency: currency?.code ?? '',
-      },
-    });
+  isInvalid(field: FieldState<unknown, string | number>): boolean {
+    return field.dirty() && field.invalid();
   }
 }

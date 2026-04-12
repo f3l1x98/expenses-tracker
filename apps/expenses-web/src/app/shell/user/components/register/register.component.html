@@ -8,7 +8,7 @@
         <p-step [value]="2">{{'user.register.settings.header' | translate}}</p-step>
       </p-step-list>
       <p-step-panels>
-        <form [formGroup]="registrationFormGroup">
+        <form (submit)="register()">
           <p-step-panel [value]="1">
             <ng-template #content let-activateCallback="activateCallback" let-index="index">
               <div class="text-center mt-4 mb-6 text-xl font-semibold">
@@ -17,23 +17,24 @@
               <div class="grid grid-cols-12 gap-4" formGroupName="credentials">
                 <div class="mb-8 col-span-12">
                   <p-floatLabel>
-                    <input pInputText class="w-full" id="username" formControlName="username" type="text" />
+                    <input pInputText class="w-full" id="username" type="text" [formField]="registrationForm.credentials.username"
+                      [primeNgSignalStatus]="registrationForm.credentials.username" /> <!--[class.p-invalid]="isInvalid(registrationForm.credentials.username())"-->
                     <label for="username">{{'user.register.credentials.form.username.label' | translate}}</label>
                   </p-floatLabel>
                 </div>
 
                 <div class="mb-8 col-span-12">
                   <p-floatLabel>
-                    <p-password inputStyleClass="w-full" class="w-full" inputId="password" formControlName="password"
-                      [toggleMask]="true" />
+                    <p-password inputStyleClass="w-full" class="w-full" inputId="password" [(ngModel)]="passwordProxy" name="password"
+                      [toggleMask]="true" [primeNgSignalStatus]="registrationForm.credentials.password" /> <!--[class.p-invalid]="isInvalid(registrationForm.credentials.password())"-->
                     <label for="password">{{'user.register.credentials.form.password.label' | translate}}</label>
                   </p-floatLabel>
                 </div>
 
                 <div class="mb-8 col-span-12">
                   <p-floatLabel>
-                    <p-password inputStyleClass="w-full" class="w-full" inputId="confirmPassword"
-                      formControlName="confirmPassword" [toggleMask]="true" [feedback]="false" />
+                    <p-password inputStyleClass="w-full" class="w-full" inputId="confirmPassword" name="confirmPassword"
+                      [(ngModel)]="confirmPasswordProxy" [toggleMask]="true" [feedback]="false" [primeNgSignalStatus]="registrationForm.credentials.confirmPassword" />
                     <label for="confirmPassword">{{'user.register.credentials.form.confirmPassword.label' |
                       translate}}</label>
                   </p-floatLabel>
@@ -42,7 +43,7 @@
               <div class="flex pt-6 justify-between">
                 <p-button label="{{'buttons.cancel' | translate}}" [link]="true" routerLink="/auth/login" />
                 <p-button (onClick)="activateCallback(2)" label="{{'user.register.buttons.next' | translate}}"
-                  icon="pi pi-arrow-right" iconPos="right" [disabled]="!(registrationFormGroup.get('credentials')?.valid ?? false)" />
+                  icon="pi pi-arrow-right" iconPos="right" [disabled]="registrationForm.credentials().invalid()" />
               </div>
             </ng-template>
           </p-step-panel>
@@ -53,14 +54,14 @@
               </div>
               <div class="grid grid-cols-12 gap-4" formGroupName="settings">
                 <div class="mb-8 col-span-12">
-                  <app-currency-input formControlName="currency"></app-currency-input>
+                  <app-currency-input [formField]="registrationForm.settings.currency"></app-currency-input>
                 </div>
               </div>
               <div class="flex pt-6 justify-between">
                 <p-button (onClick)="activateCallback(1)" label="{{'user.register.buttons.back' | translate}}"
                   icon="pi pi-arrow-left" />
-                <p-button (onClick)="register()" label="{{'user.register.buttons.register' | translate}}"
-                  icon="pi pi-user-plus" iconPos="right" [disabled]="!(registrationFormGroup.get('settings')?.valid ?? false)" />
+                <p-button type="submit" label="{{'user.register.buttons.register' | translate}}"
+                  icon="pi pi-user-plus" iconPos="right" [disabled]="registrationForm().invalid()" />
               </div>
             </ng-template>
           </p-step-panel>
