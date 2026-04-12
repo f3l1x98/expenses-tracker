@@ -5,20 +5,24 @@ import { FormsModule } from '@angular/forms';
 import { FloatLabelModule } from 'primeng/floatlabel';
 
 import { TranslateModule } from '@ngx-translate/core';
+import { FormValueControl } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-date-range-picker',
   templateUrl: 'app-date-range-picker.component.html',
   imports: [DatePickerModule, FormsModule, FloatLabelModule, TranslateModule],
 })
-export class AppDateRangePickerComponent {
+export class AppDateRangePickerComponent
+  implements FormValueControl<DateRange | null>
+{
   label = input<string>('');
   showClear = input<boolean>(false);
   requireEnd = input<boolean>(true);
   disabled = input<boolean>(false);
 
-  value = model<DateRange | undefined>();
+  value = model<DateRange | null>(null);
   touched = model<boolean>(false);
+  invalid = model<boolean>(false);
 
   calenderValue = signal<Array<Date | null> | undefined>(undefined);
 
@@ -45,7 +49,7 @@ export class AppDateRangePickerComponent {
         });
       }
     } else if (!dates || dates.length === 0) {
-      this.value.set(undefined);
+      this.value.set(null);
     }
   }
 

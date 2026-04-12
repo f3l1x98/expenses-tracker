@@ -62,7 +62,7 @@ const initialState: HomeState = {
 export const HomeStore = signalStore(
   withState(initialState),
   withMethods((store, homeApiService = inject(HomeApiService)) => ({
-    setDateRangeFilter(filter: DateRange | undefined): void {
+    setDateRangeFilter(filter: DateRange | null): void {
       const defaultFilter = filter ?? {
         startDate: new Date(
           new Date().getFullYear(),

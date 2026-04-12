@@ -181,7 +181,7 @@ export class HomeComponent {
     this.#homeStore.loadCurrentMonthData();
   }
 
-  onDateRangeChanged(dateRange: DateRange | undefined) {
+  onDateRangeChanged(dateRange: DateRange | null) {
     this.#homeStore.setDateRangeFilter(dateRange);
   }
 }
