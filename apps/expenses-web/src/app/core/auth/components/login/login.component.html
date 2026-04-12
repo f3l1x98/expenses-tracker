@@ -6,7 +6,7 @@
     <form class="grid grid-cols-12 gap-4" (keydown.enter)="submit()" (submit)="submit()">
       <div class="mb-8 col-span-12">
         <p-floatLabel>
-          <input pInputText class="w-full" id="username" [formField]="loginForm.username" type="text" [class.p-invalid]="loginForm.username().dirty() && loginForm.username().invalid()" />
+          <input pInputText class="w-full" id="username" [formField]="loginForm.username" type="text" [primeNgSignalStatus]="loginForm.username" />
           <label for="username">{{'user.login.username' | translate}}</label>
         </p-floatLabel>
       </div>
@@ -14,7 +14,7 @@
       <div class="mb-8 col-span-12">
         <p-floatLabel>
           <p-password inputStyleClass="w-full" class="w-full" inputId="password" [(ngModel)]="passwordProxy" name="password"
-            [feedback]="false" />
+            [primeNgSignalStatus]="loginForm.password" [feedback]="false" />
           <label for="password">{{'user.login.password' | translate}}</label>
         </p-floatLabel>
       </div>

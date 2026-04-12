@@ -31,7 +31,7 @@ export class PrimeNgSignalStatus {
     alias: 'primeNgSignalStatus',
   });
 
-  // This signal tracks our computed "invalid" state
+  // Signal for invalid state for class binding
   private isInvalidState = signal(false);
 
   constructor() {
@@ -76,6 +76,7 @@ export class PrimeNgSignalStatus {
     const invalidClass = 'p-invalid';
 
     if (this.passwordComp || this.autoCompleteComp) {
+      // Separate logic for PrimeNG classes that uses inputStyleClass
       const comp: { inputStyleClass: string | undefined } = (this
         .passwordComp ?? this.autoCompleteComp)!;
       this.applyStyleToPrimeNgComp(comp, isInvalid, invalidClass);

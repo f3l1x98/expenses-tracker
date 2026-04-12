@@ -19,6 +19,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { AppHeaderComponent } from '../../../../shared/components/app-header/app-header.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { PrimeNgSignalStatus } from 'apps/expenses-web/src/app/shared/directives/primeng-signal-status';
 
 interface LoginState {
   username: string;
@@ -40,6 +41,7 @@ interface LoginState {
     FloatLabelModule,
     TranslateModule,
     FormField,
+    PrimeNgSignalStatus,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
